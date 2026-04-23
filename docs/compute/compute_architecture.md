@@ -214,6 +214,12 @@ Choose compute by workload behavior and operating model maturity. Prefer lowest-
 Workload Traits + Team Maturity + NFRs -> Platform Decision (App Service / Container Apps / Functions / AKS)
 ```
 
+**Reference decision tree (Azure):**  
+![Azure compute decision tree](../../assets/c__Users_ad_AppData_Roaming_Cursor_User_workspaceStorage_a566aba345c75dd4154cb90d631a32c3_images_image-6eba2350-7f5d-4ecd-a05c-e7665878a126.png)
+
+**How to read this diagram in interviews:**  
+Start from workload context (migrate vs build new), then narrow by control requirements, workload profile (event-driven, managed web, high-performance), and orchestration depth. Use the branch outcomes to justify why App Service, Functions, Container Apps, ACI, AKS, or VM-based options are appropriate.
+
 **Trusted reference links:**  
 - https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/compute-decision-tree
 
