@@ -78,12 +78,29 @@ The team initially considered AKS for all services but delayed it because platfo
 - Define rollback and release safety patterns before production launch.
 
 ## Common mistakes / misconceptions
-- Defaulting all workloads to AKS.
-- Ignoring cold start behavior for Functions.
-- Coupling apps to local state.
-- No scaling/latency test before go-live.
-- Optimizing for future scale before proving current workload behavior.
-- Treating compute decisions as permanent instead of evolvable architecture stages.
+- **Defaulting all workloads to AKS:**  
+  Teams often assume AKS is the "most advanced" option and therefore the default. This usually increases operational burden (cluster upgrades, networking complexity, observability setup, security hardening) before product value is proven. The result is slower delivery, higher incident risk, and platform fatigue.  
+  **Better approach:** start with managed PaaS where possible, and move to AKS only when concrete requirements demand deeper control (custom runtime, advanced scheduling, sidecars, strict tenancy controls, or service mesh policy needs).
+
+- **Ignoring cold start behavior for Functions:**  
+  Serverless is excellent for bursty/event-driven workloads, but cold starts can hurt user-facing latency and timeout budgets if not modeled. This is especially visible in synchronous APIs, heavy dependency initialization, and VNet/private endpoint scenarios.  
+  **Better approach:** classify latency-sensitive paths, use pre-warming/premium plans where needed, keep startup path lean, and keep long-running or strict-SLA paths on continuously warm compute.
+
+- **Coupling apps to local state:**  
+  Storing session, cache, uploads, or job progress in local memory/disk breaks horizontal scaling, rolling upgrades, and failover behavior. It also causes non-deterministic bugs across instances and regions.  
+  **Better approach:** externalize state to managed stores (Redis, durable DB, object storage, queue/event log), use idempotency keys for write paths, and design stateless compute instances for safe scale-out.
+
+- **No scaling/latency test before go-live:**  
+  Teams frequently validate only functional behavior, then discover p95/p99 regressions, saturation points, and dependency bottlenecks under real load. This leads to emergency reconfiguration during launch windows.  
+  **Better approach:** run pre-production load tests with realistic traffic profiles (burst, steady, and failure injection), track stage-wise latency breakdown, and validate autoscale reaction time against SLO targets.
+
+- **Optimizing for future scale before proving current workload behavior:**  
+  Over-engineering for hypothetical 10x scale can create unnecessary complexity, cost, and team cognitive load while current traffic is modest. Architecture becomes hard to operate and slow to change.  
+  **Better approach:** use evidence-based scaling. Build for present demand plus a safe growth buffer, instrument thoroughly, and evolve architecture with observed usage patterns and business growth signals.
+
+- **Treating compute decisions as permanent instead of evolvable architecture stages:**  
+  Compute choices are often framed as one-time decisions, which blocks modernization and creates sunk-cost behavior. In practice, platform maturity and workload profile change over time.  
+  **Better approach:** define migration paths upfront (for example Functions -> Container Apps -> AKS or App Service -> AKS when justified), use contract-first APIs, and keep deployment/runtime boundaries modular so transitions are low-risk.
 
 ## Industry relevance
 Compute architecture is a board-level cost and reliability driver in SaaS, fintech, retail, and healthcare platforms. Organizations with mature compute strategy typically deliver faster, recover from incidents quicker, and maintain better cloud unit economics. In architecture interviews, this topic often differentiates platform thinkers from service-level implementers.
