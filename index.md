@@ -66,6 +66,7 @@
 - [Azure Landing Zone and Platform](docs/cloud-architecture/azure_landing_zone_and_platform.md)
 - [Enterprise Azure Foundation Landing Zone](docs/cloud-architecture/enterprise_azure_foundation_landing_zone.md)
 - [Advanced Compliance, Multi-Region, Hybrid Patterns](docs/cloud-architecture/advanced_compliance_multiregion_hybrid_patterns.md)
+- [RFP Solution Architecture Estimation and ROI](docs/cloud-architecture/rfp_solution_architecture_estimation_and_roi.md)
 
 ### Compute
 - [README](docs/compute/README.md)
@@ -131,6 +132,7 @@
 - [RAG OpenAI AI Search](docs/data-ai/rag_openai_ai_search.md)
 - [RAG Retrieval Engineering Architecture](docs/data-ai/rag_retrieval_engineering_architecture.md)
 - [Agentic AI LangChain LangGraph](docs/data-ai/agentic_ai_langchain_langgraph.md)
+- [Agent Frameworks AutoGen crewAI OpenAI Agents SDK](docs/data-ai/agent_frameworks_autogen_crewai_openai_agents_sdk.md)
 - [Python FastAPI Async Backend for GenAI](docs/data-ai/python_fastapi_async_backend_for_genai.md)
 - [LLM Selection Routing Fallback Architecture](docs/data-ai/llm_selection_routing_fallback_architecture.md)
 - [Memory Retention Replay Safety Architecture](docs/data-ai/memory_retention_replay_safety_architecture.md)
