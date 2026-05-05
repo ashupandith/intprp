@@ -32,6 +32,7 @@
 - [Interview Prep Repo Gap Analysis](docs/research/interview_prep_repo_gap_analysis.md)
 - [GenAI JD Topic Gap Analysis](docs/research/genai_jd_topic_gap_analysis.md)
 - [Priority Execution Plan](docs/research/priority_execution_plan.md)
+- [JD Relevant Preparation Mapping](interview_preparation/JD_relevantprepareation1.md)
 
 ## Recommended Study Sequence
 1. Core Architecture
