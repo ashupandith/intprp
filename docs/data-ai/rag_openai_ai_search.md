@@ -419,21 +419,51 @@ RAG Success = Retrieval Quality + Generation Quality + Security/Compliance + Ope
 This question checks whether you choose models based on workload constraints rather than hype. Interviewers want to hear trade-offs among quality, latency, safety, and cost.
 
 **Crisp answer (7-8 lines):**  
-Model selection starts from use case risk and response quality needs.  
-Choose the smallest model that reliably meets quality targets.  
-Use larger models only for complex reasoning or high-stakes tasks.  
-Context window should match retrieved evidence size and task shape.  
-Oversized context increases latency, cost, and noise risk.  
-Use routing policies to map query types to model tiers.  
-Validate model choice with benchmark and production telemetry.  
-Treat model selection as an evolving operating decision.
+I choose the model based on the risk, complexity, quality requirement, latency, and cost constraint of the use case.
+My default principle is to use the smallest model that consistently meets the required quality and safety threshold.
+For simple classification, extraction, summarization, or FAQ-style answers, I prefer smaller/faster models.
+For complex reasoning, architecture decisions, multi-step planning, sensitive domains, or high-impact responses, I use a stronger model.
+For context window, I do not use the largest window by default. I size the context based on how much trusted evidence the model actually needs.
+Oversized context can increase cost, latency, and noise, and may reduce answer quality.
+In production, I use routing, evaluation benchmarks, p95 latency, cost-per-answer, groundedness, and user feedback to continuously tune the model and context strategy.
 
-**Deep explanation (~60-70 lines):** For `How do you choose model and context window?`, start by identifying where this decision sits in your RAG system control flow and what failure it prevents. A strong architecture answer should describe the request path end-to-end, not just define terms: ingress, authorization, orchestration, dependency calls, validation, and fallback. In this flow, deterministic steps must be explicit and testable, such as ACL filtering, metadata policy checks, chunk/rerank thresholds, citation presence checks. These are deterministic because policy and safety outcomes cannot depend on model creativity. Probabilistic steps are acceptable where approximation is useful, such as query rewrite interpretation and final response generation, but they still need guardrails and confidence thresholds. The key trade-off is control versus flexibility: stricter deterministic control improves safety and auditability, while probabilistic reasoning improves adaptability but increases variance in output quality. Design decisions should therefore include boundaries: which component can decide, which component must verify, and which component can block or escalate. Also explain operational behavior under stress: dependency timeout, partial failure, malformed tool output, stale context, and degraded external APIs. For each failure mode, define one mitigation path (retry with budget, route fallback, safe response, or human approval) so the system degrades safely instead of failing unpredictably. Security must be integrated into this answer: identity propagation, least-privilege access, and data boundary enforcement should happen before generation, not after. Finally, show how you will measure success in production with metrics like recall@k, groundedness rate, citation correctness, p95 latency, cost/answer, and mention rollout safety with canary + rollback criteria. This turns the answer from a definition into an operating architecture decision with clear risk, mitigation, and measurable outcomes.
+**Deep explanation (~60-70 lines):** For `How do you choose model and context window?`, Model and context window selection is an architectural trade-off, not just a model preference.
+The first factor is the use case complexity. If the task is simple, such as intent classification, keyword extraction, short summarization, or basic customer FAQ, a smaller model is usually enough. It gives lower latency and lower cost. But if the task requires reasoning, decision-making, code understanding, architecture trade-offs, legal/compliance sensitivity, or multi-step analysis, I would select a stronger model.
+The second factor is risk. For low-risk use cases, a smaller model may be acceptable even if the answer is not perfect. But for high-risk use cases, such as financial advice, security decisions, compliance interpretation, or production incident support, I would use a stronger model with stricter validation and guardrails.
+The third factor is latency and cost. A large model may give better quality, but it can increase response time and cost. So I prefer a tiered approach: small model for simple queries, medium model for moderate reasoning, and large model for complex or high-risk queries. This can be implemented through a model router.
+The context window decision is separate. A large context window means the model can process more text, but it does not mean the answer will automatically be better. If we put too much irrelevant content into the prompt, the model may get distracted, produce slower responses, and increase cost.
+So I choose the context window based on the amount of relevant evidence required. For a simple question, only a few retrieved chunks may be needed. For a complex RAG answer, contract review, architecture review, or codebase analysis, a larger context window may be justified.
+In a RAG system, I would control the context by using chunking, metadata filters, ACL checks, hybrid search, reranking, and relevance thresholds. I would send only the most relevant, authorized, and fresh information to the model.
+Finally, I would not decide once and forget it. I would validate the model and context strategy using offline benchmarks and production telemetry. Important metrics include answer accuracy, groundedness, citation correctness, p95 latency, token usage, cost per answer, fallback rate, and user satisfaction.
 **Answer summary:**
-- **Decision:** Select the pattern that best satisfies `How do you choose model and context window?` under your business and compliance constraints.
-- **Risk:** Weak control boundaries and unclear ownership create quality, security, and reliability regressions at scale.
-- **Mitigation:** Enforce policy gates, measurable SLO/SLA triggers, and tested fallback/recovery playbooks before full rollout.
-**Practical example:** In a customer support triage assistant, the team addresses 'How do you choose model and context window?' by enforcing role-scoped access, validating each critical step through policy checks, and releasing changes with canary monitoring so quality and compliance remain stable under production traffic.
+I choose the model based on workload complexity, risk, quality target, latency, and cost. My default principle is to use the smallest model that reliably meets the required quality and safety threshold. Smaller models are good for classification, extraction, short summarization, and simple FAQ use cases. Larger models are better for complex reasoning, architecture decisions, multi-step analysis, code understanding, or high-risk domains.
+
+For context window, I do not choose the largest window by default. I size it based on how much relevant and trusted evidence the model needs. Too much context can increase latency, cost, and noise. In a RAG system, I control context using retrieval filters, chunking, reranking, ACL checks, freshness checks, and relevance thresholds. In production, I validate the choice using benchmarks and telemetry such as groundedness, accuracy, p95 latency, cost per answer, citation correctness, and fallback rate. So model and context selection is not a one-time choice; it is an operating decision continuously tuned using real production data.
+**Practical example:** Suppose we are building a customer support assistant.
+
+For simple queries like:
+
+What is my refund status?
+How do I reset my password?
+What are your support hours?
+
+I would use a smaller model with a small context window, because the answer mainly needs structured data lookup or simple FAQ retrieval.
+
+But for queries like:
+
+My payment failed, refund is pending, and I was charged twice. Can you analyze my case?
+
+I would route it to a stronger model because it needs multi-step reasoning across payment history, refund policy, transaction logs, and customer profile.
+
+For context, I would not send the full customer history. I would send only:
+
+latest transaction records
+refund policy
+support ticket history
+relevant payment status
+customer entitlement details
+
+This keeps the context focused, reduces cost and latency, and improves answer quality.
 **Simple diagram:**  
 ```text
 Query Classifier -> Model Router (small/medium/large) -> Context Assembly (filtered) -> LLM -> Response
