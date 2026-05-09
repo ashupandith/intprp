@@ -267,13 +267,173 @@ Stateful Graph -> LangGraph
 
 ### Q6. How do you model state in agent workflows?
 **Question summary:** Tests state design discipline.
-**Crisp answer (7-8 lines):** Define explicit workflow state object. Store intent, context, step outputs, and control flags. Track retries and failure reasons in state. Separate transient and persistent state fields. Version state schema for evolvability. Persist checkpoints at critical transitions. Keep state minimal to reduce risk and cost.
-**Deep explanation (~60-70 lines):** For `How do you model state in agent workflows?`, start by identifying where this decision sits in your agent workflow control flow and what failure it prevents. A strong architecture answer should describe the request path end-to-end, not just define terms: ingress, authorization, orchestration, dependency calls, validation, and fallback. In this flow, deterministic steps must be explicit and testable, such as tool allowlist checks, schema validation, retry budget, stop conditions, approval gates. These are deterministic because policy and safety outcomes cannot depend on model creativity. Probabilistic steps are acceptable where approximation is useful, such as planning step decomposition and language reasoning between steps, but they still need guardrails and confidence thresholds. The key trade-off is control versus flexibility: stricter deterministic control improves safety and auditability, while probabilistic reasoning improves adaptability but increases variance in output quality. Design decisions should therefore include boundaries: which component can decide, which component must verify, and which component can block or escalate. Also explain operational behavior under stress: dependency timeout, partial failure, malformed tool output, stale context, and degraded external APIs. For each failure mode, define one mitigation path (retry with budget, route fallback, safe response, or human approval) so the system degrades safely instead of failing unpredictably. Security must be integrated into this answer: identity propagation, least-privilege access, and data boundary enforcement should happen before generation, not after. Finally, show how you will measure success in production with metrics like task completion, tool-call success, fallback rate, policy violation rate, cost/task, and mention rollout safety with canary + rollback criteria. This turns the answer from a definition into an operating architecture decision with clear risk, mitigation, and measurable outcomes.
-**Answer summary:**
-- **Decision:** Use the control pattern that best fits `How do you model state in agent workflows?` for this workload.
-- **Risk:** Unbounded autonomy, weak state control, or weak authorization will create reliability and compliance regressions.
-- **Mitigation:** Add explicit contracts, policy gates, and tested fallback/recovery paths before production rollout.
-**Practical example:** In a customer support triage assistant, the team addresses 'How do you model state in agent workflows?' by enforcing role-scoped access, validating each critical step through policy checks, and releasing changes with canary monitoring so quality and compliance remain stable under production traffic.
+### Question Summary
+
+This question tests whether you can design controlled, auditable, and recoverable agent workflows instead of letting the LLM behave like an uncontrolled black box.
+
+---
+
+### Crisp Answer
+
+In agent workflows, I model state as an explicit structured object shared across workflow nodes.
+
+It should store user intent, identity context, current step, retrieved context references, tool outputs, decisions, retry count, risk level, approval status, and errors.
+
+I keep state minimal and avoid storing secrets, full documents, or unnecessary raw prompts.
+
+I separate transient workflow state, persistent checkpoints, long-term memory, and external system state.
+
+Each node reads state, performs one responsibility, and writes only controlled updates back to state.
+
+For long-running workflows, I persist checkpoints at critical transitions so execution can resume after failure.
+
+I also version the state schema to support workflow evolution without breaking old executions.
+
+This makes the agent predictable, auditable, secure, and easier to debug.
+
+---
+
+### Deep Explanation
+
+For agent workflows, state is the structured context that moves from one step to another. It tells the system what the user wants, what has already happened, what tools were called, what results were received, what decision was made, and what should happen next.
+
+I would not model state as one large text blob. I would define a proper schema.
+
+Example:
+
+```text
+State = {
+  request_id,
+  user_id,
+  user_intent,
+  current_step,
+  retrieved_context_refs,
+  tool_results,
+  decisions,
+  risk_level,
+  approval_status,
+  retry_count,
+  errors,
+  final_response
+}
+```
+
+Each workflow node should have a clear responsibility. For example, one node identifies intent, another retrieves context, another calls a tool, another validates the result, another checks whether human approval is required, and another prepares the final response.
+
+The important design principle is that the LLM can suggest or reason, but deterministic controls should update and validate critical state.
+
+For example, authorization, tool allowlist checks, schema validation, retry limits, stop conditions, approval gates, and policy checks should not depend only on model creativity.
+
+I would separate state into four categories:
+
+| State Type | Meaning |
+|---|---|
+| Transient workflow state | Current step, retry count, temporary tool result, intermediate decision |
+| Persistent checkpoint state | Stored state after important transitions for recovery |
+| Long-term memory | Reusable user preferences or approved settings |
+| External system state | Source-of-truth data like ticket status, leave balance, order status |
+
+The agent state should not become the source of truth for business systems.
+
+For production, I would persist checkpoints at critical transitions:
+
+```text
+intent identified
+context retrieved
+tool call completed
+validation completed
+approval received
+action executed
+final response generated
+```
+
+This helps with recovery. If the workflow fails after a tool call, it can resume from the last safe checkpoint instead of starting again.
+
+State should also track risk and approval information, especially in agentic AI:
+
+```text
+risk_level = high
+requires_approval = true
+approval_status = pending
+approved_by = null
+```
+
+This prevents the agent from directly performing sensitive actions such as sending external emails, deleting records, approving payments, or changing production configuration.
+
+I would also keep state minimal. I would avoid storing passwords, API keys, full confidential documents, large raw API responses, or complete prompt history unless there is a compliance requirement.
+
+Instead of storing full documents, I would store document references, chunk IDs, source IDs, and version numbers.
+
+For observability, state should include trace identifiers such as request ID, workflow version, prompt version, model used, token usage, cost estimate, and failure reason.
+
+This helps in debugging, audit, and production monitoring.
+
+Finally, I would version the state schema. Agent workflows evolve over time, and older executions may still be running or stored. Schema versioning avoids breaking old workflows when we add new fields or change structure.
+
+---
+
+### Practical Example
+
+In a customer support triage agent, state may look like this:
+
+```text
+State = {
+  request_id: "REQ-1001",
+  user_id: "user@company.com",
+  intent: "refund_request",
+  current_step: "validate_policy",
+  retrieved_context_refs: ["refund-policy-v3-section-4"],
+  tool_results: {
+    order_status: "delivered",
+    payment_status: "paid"
+  },
+  risk_level: "medium",
+  approval_status: "pending",
+  retry_count: 0,
+  errors: []
+}
+```
+
+The agent may retrieve the refund policy, check order status, validate eligibility, prepare a refund recommendation, and then wait for human approval before executing the refund.
+
+---
+
+### Simple Diagram
+
+```text
+User Request
+   ↓
+Initialize State
+   ↓
+Intent Node
+   ↓
+Retrieval Node
+   ↓
+Tool Execution Node
+   ↓
+Validation Node
+   ↓
+Approval Gate
+   ↓
+Action / Final Response
+   ↓
+Checkpoint + Audit Logs
+```
+
+---
+
+### Final Interview Answer
+
+I model state in agent workflows as an explicit structured object that is passed across workflow nodes.
+It contains user intent, identity, current step, retrieved context references, tool outputs, decisions, risk level, approval status, retry count, errors, and final response.
+I avoid keeping state as a large unstructured text blob because that becomes hard to validate, debug, and audit.
+I separate transient workflow state from persistent checkpoints, long-term memory, and external system state.
+Each node reads the current state, performs one responsibility, and writes controlled updates.
+For long-running workflows, I persist checkpoints at important transitions so the workflow can resume after failure.
+I also track risk and approval status in state so high-risk actions require human approval.
+Finally, I version the state schema and log state transitions for observability, governance, and rollback.
+This makes the agent workflow predictable, secure, auditable, and production-ready.
+
 **Simple diagram:**  
 ```text
 State = {intent, context, tool_results, retry_count, status}
@@ -284,12 +444,408 @@ State = {intent, context, tool_results, retry_count, status}
 ### Q7. How do you design planner-executor architecture?
 **Question summary:** Checks decomposition of reasoning and action.
 **Crisp answer (7-8 lines):** Planner decomposes goals into ordered steps. Executor performs steps using tools. Planner focuses on strategy; executor on deterministic action. Use clear contract between plan and execution schemas. Add validator to verify each step outcome. Re-plan when step results diverge. Keep planner and executor independently testable.
-**Deep explanation (~60-70 lines):** For `How do you design planner-executor architecture?`, start by identifying where this decision sits in your agent workflow control flow and what failure it prevents. A strong architecture answer should describe the request path end-to-end, not just define terms: ingress, authorization, orchestration, dependency calls, validation, and fallback. In this flow, deterministic steps must be explicit and testable, such as tool allowlist checks, schema validation, retry budget, stop conditions, approval gates. These are deterministic because policy and safety outcomes cannot depend on model creativity. Probabilistic steps are acceptable where approximation is useful, such as planning step decomposition and language reasoning between steps, but they still need guardrails and confidence thresholds. The key trade-off is control versus flexibility: stricter deterministic control improves safety and auditability, while probabilistic reasoning improves adaptability but increases variance in output quality. Design decisions should therefore include boundaries: which component can decide, which component must verify, and which component can block or escalate. Also explain operational behavior under stress: dependency timeout, partial failure, malformed tool output, stale context, and degraded external APIs. For each failure mode, define one mitigation path (retry with budget, route fallback, safe response, or human approval) so the system degrades safely instead of failing unpredictably. Security must be integrated into this answer: identity propagation, least-privilege access, and data boundary enforcement should happen before generation, not after. Finally, show how you will measure success in production with metrics like task completion, tool-call success, fallback rate, policy violation rate, cost/task, and mention rollout safety with canary + rollback criteria. This turns the answer from a definition into an operating architecture decision with clear risk, mitigation, and measurable outcomes.
-**Answer summary:**
-- **Decision:** Use the control pattern that best fits `How do you design planner-executor architecture?` for this workload.
-- **Risk:** Unbounded autonomy, weak state control, or weak authorization will create reliability and compliance regressions.
-- **Mitigation:** Add explicit contracts, policy gates, and tested fallback/recovery paths before production rollout.
-**Practical example:** In a operations incident copilot, the team addresses 'How do you design planner-executor architecture?' by enforcing role-scoped access, validating each critical step through policy checks, and releasing changes with canary monitoring so quality and compliance remain stable under production traffic.
+This question checks whether you can design agentic AI systems with clear separation of planning, execution, validation, and governance.
+
+The interviewer wants to know whether you allow the LLM to directly act, or whether you use controlled orchestration with policy gates and safe execution.
+
+---
+
+### Crisp Answer
+
+I design planner-executor architecture by separating task planning from task execution.
+
+The planner understands the user goal, breaks it into ordered steps, selects required tools, identifies dependencies, and defines success criteria.
+
+The executor performs only approved steps using tools, APIs, databases, retrievers, or workflow systems.
+
+Between planner and executor, I add a policy layer for authorization, tool allowlisting, schema validation, token budget, risk classification, and human approval.
+
+After execution, a verifier checks tool output, business rules, grounding, and completion status.
+
+The workflow state tracks plan, current step, tool results, retry count, risk level, approval status, and errors.
+
+For production, I add checkpoints, bounded retries, max tool-call limits, audit logs, and safe fallback paths.
+
+This keeps the agent flexible but controlled, auditable, and secure.
+
+---
+
+### Deep Explanation
+
+A planner-executor architecture separates thinking about the task from doing the task.
+
+In agentic AI, this is important because we do not want the LLM to freely decide and execute actions without control.
+
+Simple meaning:
+
+```text
+Planner = decides what steps are needed
+Executor = performs each step using tools/APIs/RAG/models
+```
+
+The high-level flow is:
+
+```text
+User goal
+   ↓
+Intent understanding
+   ↓
+Planner creates step-by-step plan
+   ↓
+Policy engine validates the plan
+   ↓
+Executor runs each approved step
+   ↓
+Verifier checks result
+   ↓
+Planner replans if needed
+   ↓
+Final response/action
+```
+
+---
+
+### Architecture Diagram
+
+```text
+User
+ ↓
+API / Orchestrator
+ ↓
+Planner
+ ├─ Understand goal
+ ├─ Break goal into steps
+ ├─ Choose required tools
+ └─ Define success criteria
+ ↓
+Policy / Guardrail Layer
+ ├─ Tool allowlist
+ ├─ Permission check
+ ├─ Risk classification
+ └─ Approval requirement
+ ↓
+Executor
+ ├─ RAG retriever
+ ├─ APIs
+ ├─ Database
+ ├─ Workflow system
+ └─ External tools
+ ↓
+Verifier
+ ├─ Validate output
+ ├─ Check schema
+ ├─ Check business rules
+ └─ Check evidence
+ ↓
+Final response
+```
+
+---
+
+### What the Planner Does
+
+The planner should not directly execute actions. It should create a controlled plan.
+
+Example plan:
+
+```json
+{
+  "goal": "Check refund eligibility and create refund request",
+  "steps": [
+    {
+      "step": 1,
+      "action": "retrieve_refund_policy",
+      "tool": "policy_search",
+      "risk": "low"
+    },
+    {
+      "step": 2,
+      "action": "get_order_status",
+      "tool": "order_api",
+      "risk": "low"
+    },
+    {
+      "step": 3,
+      "action": "validate_refund_eligibility",
+      "tool": "business_rule_engine",
+      "risk": "medium"
+    },
+    {
+      "step": 4,
+      "action": "create_refund_draft",
+      "tool": "refund_api",
+      "risk": "medium",
+      "requires_approval": true
+    }
+  ]
+}
+```
+
+Planner responsibilities:
+
+| Responsibility | Meaning |
+|---|---|
+| Understand user goal | Identify what the user wants |
+| Decompose task | Break the goal into smaller steps |
+| Select tools | Decide which tools are needed |
+| Define order | Decide what should run first and next |
+| Identify dependencies | Understand which step depends on another |
+| Define success criteria | Decide how to know the task is complete |
+| Mark risk level | Low, medium, or high |
+| Decide approval need | Identify if human approval is required |
+
+---
+
+### What the Executor Does
+
+The executor performs the actual work.
+
+It should be deterministic as much as possible.
+
+Executor responsibilities:
+
+| Responsibility | Meaning |
+|---|---|
+| Call tools/APIs | Execute approved steps |
+| Validate input schema | Prevent malformed tool calls |
+| Apply user permissions | Ensure user can access the resource |
+| Handle retries | Retry with limit |
+| Capture outputs | Save tool result in state |
+| Return status | Success, failure, or needs approval |
+| Log execution | Support audit and debugging |
+
+The executor should not blindly trust the planner.
+
+Before every tool call, it should check:
+
+```text
+Is this tool allowed?
+Is this user allowed?
+Is the input valid?
+Is approval required?
+Is the request within quota?
+Is the action safe?
+```
+
+---
+
+### Why Separate Planner and Executor?
+
+| Without Separation | With Planner-Executor |
+|---|---|
+| LLM directly decides and acts | LLM plans, controlled executor acts |
+| Hard to audit | Plan and execution are logged separately |
+| Risky tool usage | Tool calls are validated before execution |
+| Hard to recover | State and checkpoints can resume workflow |
+| Poor governance | Policy layer can approve or block steps |
+| Difficult debugging | You know exactly which step failed |
+
+---
+
+### Policy Layer Between Planner and Executor
+
+This is very important for enterprise systems.
+
+```text
+Planner output
+   ↓
+Policy validation
+   ↓
+Executor
+```
+
+Policy checks should include:
+
+```text
+Tool allowlist
+User authorization
+Data access boundary
+Risk classification
+Cost/token budget
+Prompt injection check
+Human approval requirement
+Rate limit
+Business rule validation
+```
+
+Example:
+
+```text
+Planner says: send refund approval email
+Policy says: blocked, user approval required
+Executor says: create email draft only
+```
+
+---
+
+### Verifier After Executor
+
+The verifier checks whether the execution result is correct.
+
+Verifier checks:
+
+| Check | Example |
+|---|---|
+| Schema validation | API returned expected fields |
+| Business validation | Refund amount is within allowed limit |
+| Grounding validation | Answer is supported by retrieved documents |
+| Safety validation | No sensitive data leakage |
+| Completion check | Goal has been achieved |
+
+Flow:
+
+```text
+Executor output
+   ↓
+Verifier
+   ├─ Pass → next step
+   ├─ Fail → retry
+   ├─ Uncertain → ask user/human
+   └─ Block → safe failure
+```
+
+---
+
+### Replanning
+
+Sometimes execution fails or new information appears.
+
+Example:
+
+```text
+Planner step: get order status
+Executor result: order API timeout
+```
+
+Possible actions:
+
+```text
+Retry once
+Use fallback API
+Ask user to try later
+Escalate to human
+```
+
+Replanning should be bounded.
+
+Do not allow infinite loops.
+
+Set limits:
+
+```text
+max_plan_steps = 8
+max_tool_calls = 5
+max_retries_per_step = 1 or 2
+max_replans = 1 or 2
+```
+
+---
+
+### State Model
+
+Planner-executor architecture needs shared workflow state.
+
+Example:
+
+```json
+{
+  "request_id": "REQ-123",
+  "user_id": "user@company.com",
+  "goal": "apply leave",
+  "plan": [],
+  "current_step": 2,
+  "tool_results": {},
+  "risk_level": "medium",
+  "approval_status": "pending",
+  "retry_count": 0,
+  "errors": [],
+  "final_response": null
+}
+```
+
+The planner reads state and updates the plan.
+
+The executor reads the approved step and writes tool results.
+
+The verifier reads tool results and updates validation status.
+
+---
+
+### Human Approval
+
+For high-risk actions, add approval gates.
+
+```text
+Planner proposes action
+   ↓
+Policy classifies high risk
+   ↓
+Executor creates draft only
+   ↓
+Human approves
+   ↓
+Executor performs final action
+```
+
+Use approval for:
+
+```text
+Payments
+Data deletion
+Production changes
+External emails
+HR/legal decisions
+Access changes
+Customer-impacting updates
+```
+
+---
+
+### Practical Example: IT Ticket Resolution Agent
+
+User says:
+
+```text
+Check why my VPN is not working and create a ticket if needed.
+```
+
+Planner creates:
+
+```text
+1. Understand issue
+2. Search VPN troubleshooting KB
+3. Ask user for missing details if required
+4. Check known outage system
+5. Suggest fix
+6. If unresolved, create ticket draft
+7. Ask user to confirm
+8. Submit ticket
+```
+
+Executor performs:
+
+```text
+Search KB
+Call outage API
+Create ticket draft
+Submit only after confirmation
+```
+
+Verifier checks:
+
+```text
+Was KB result relevant?
+Did outage API return valid status?
+Did ticket contain required fields?
+Was user approval captured?
+```
+
+---
+
+### Final Interview Answer
+
+I design planner-executor architecture by separating task decomposition from task execution.
+The planner understands the user goal, breaks it into ordered steps, selects required tools, identifies dependencies, defines success criteria, and marks risk level. The executor performs only approved steps by calling tools, APIs, retrievers, or databases. Between the planner and executor, I add a policy layer for tool allowlisting, user authorization, schema validation, token budget, risk classification, and human approval. After execution, a verifier checks tool outputs, business rules, grounding, and completion status. The workflow state stores the plan, current step, tool results, retry count, risk level, approval status, and errors. For production, I add checkpoints, bounded retries, max tool-call limits, audit logs, and safe fallback paths. This design keeps agentic AI flexible but controlled, auditable, and secure.
 **Simple diagram:**  
 ```text
 Goal -> Planner -> Step Plan -> Executor -> Results -> Validator
