@@ -103,578 +103,1357 @@ These are frequently asked in enterprise product teams, consulting deliveries, f
 
 ---
 
-### Q1. Draw and explain project architecture and flow.
-**Question summary:** Tests full-stack architecture understanding from UI request to DB response.
-**Crisp answer (7-8 lines):** In enterprise .NET projects, flow is usually UI -> API Gateway -> ASP.NET Core API -> Services -> Repository/EF/Dapper -> SQL. Middleware handles auth, logging, error handling, and correlation IDs. DI creates service graph per request. Domain/service layer keeps business logic separated from transport layer. DB layer handles persistence and transactions. This separation improves testability, scalability, and maintainability.
-**Deep explanation:** Explain architecture by layers and control points. Incoming request first passes reverse proxy/API gateway and reaches ASP.NET Core middleware pipeline where CORS, auth, exception handling, and telemetry are enforced. Controller only maps request/response and delegates to application services. Service layer applies business rules and calls persistence abstractions. Data access uses EF Core or Dapper depending on complexity and performance needs. This design supports independent testing, clear ownership, and safer changes.
-**Answer summary:**
-- **Decision:** Use layered architecture with middleware + DI boundaries.
-- **Risk:** Tight coupling between controllers and DB creates fragile systems.
-- **Mitigation:** Keep business logic in services and data access behind interfaces.
-**Practical example:** Payroll approval request flows from Angular UI through JWT-authenticated API, then service validates approval rules, updates DB, and logs an audit event.
-**Simple diagram:**
-```text
-Angular -> API Middleware -> Controller -> Service -> Repository -> SQL
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/fundamentals/middleware/
+# .NET / ASP.NET Core / C# / SQL / Angular Interview Questions and Answers
 
-### Q2. Write function to reverse a string.
-**Question summary:** Tests C# coding fundamentals and edge-case handling.
-**Crisp answer (7-8 lines):** Use `char[]`, reverse in-place, and return new string. Handle null explicitly. Complexity is O(n). Avoid repeated string concatenation because it is O(n²). For interviews, show both concise and readable version.
-**Deep explanation:** A robust answer includes null handling and complexity rationale. In C#, strings are immutable, so in-place reversal requires char array conversion. This approach is memory-efficient compared to repeated concatenation loops. Mention Unicode grapheme caveat for advanced discussion.
-**Answer summary:**
-- **Decision:** Use array reversal for clarity and performance.
-- **Risk:** Null/unicode edge cases ignored in naive implementation.
-- **Mitigation:** Add null guards and clarify text-encoding limitations.
-**Practical example:** Reversing masked account identifiers in a utility service during data obfuscation tests.
-**Simple diagram:**
+## 1. Draw and explain project architecture and flow
+
+### Typical enterprise .NET architecture
+
+```text
+Client / Browser / Angular
+        ↓
+API Gateway / Load Balancer / Reverse Proxy
+        ↓
+ASP.NET Core Web API
+        ↓
+Middleware Pipeline
+        ↓
+Controller / Minimal API Endpoint
+        ↓
+Application Service / Business Layer
+        ↓
+Domain Layer
+        ↓
+Repository / Data Access Layer
+        ↓
+Database / External APIs / Cache / Queue
+```
+
+### Layer explanation
+
+| Layer | Responsibility |
+|---|---|
+| Client | Sends request and displays response |
+| API Gateway / Reverse Proxy | Routing, TLS, rate limiting, authentication offload if needed |
+| Middleware | Cross-cutting concerns like logging, exception handling, authentication, CORS |
+| Controller | Receives HTTP request and validates input |
+| Application Service | Coordinates business use case |
+| Domain Layer | Core business rules/entities |
+| Repository/Data Access | Database operations using EF Core/Dapper |
+| Infrastructure | External services like email, storage, queue, cache |
+
+### Request flow
+
+```text
+User request
+   ↓
+Routing
+   ↓
+CORS / Exception / Logging middleware
+   ↓
+Authentication middleware
+   ↓
+Authorization middleware
+   ↓
+Controller action
+   ↓
+Service layer
+   ↓
+Repository
+   ↓
+Database
+   ↓
+Response returned to client
+```
+
+### Interview answer
+
+In my project, I usually follow layered or clean architecture. The API controller receives the HTTP request, validates the model, and forwards the request to the application/service layer. The service layer contains business orchestration and calls repositories or external services. Data access is handled using EF Core or Dapper. Cross-cutting concerns like authentication, logging, exception handling, CORS, and correlation IDs are handled using middleware. This keeps the code maintainable, testable, and loosely coupled.
+
+---
+
+## 2. Write function to reverse a string
+
 ```csharp
 public static string ReverseString(string input)
 {
-    if (input is null) return null;
-    var chars = input.ToCharArray();
+    if (string.IsNullOrEmpty(input))
+        return input;
+
+    char[] chars = input.ToCharArray();
     Array.Reverse(chars);
     return new string(chars);
 }
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/csharp/programming-guide/strings/
 
-### Q3. Write LINQ query for distinct records.
-**Question summary:** Tests LINQ usage and deduplication strategy.
-**Crisp answer (7-8 lines):** Use `Distinct()` for primitive equality and `DistinctBy()` (in .NET 6+) for key-based distinct. For older versions, use `GroupBy(x => key).Select(g => g.First())`. Choose the method based on equality requirements.
-**Deep explanation:** Distinct logic depends on equality semantics. Primitive types work directly, but object distinct requires key selector or custom comparer. Mention that DB-side distinct with `IQueryable` is preferable for large sets.
-**Answer summary:**
-- **Decision:** Use key-based distinct for object collections.
-- **Risk:** In-memory dedupe on huge datasets can be expensive.
-- **Mitigation:** Push distinct operation to database where possible.
-**Practical example:** Deduplicating customer emails before campaign notification dispatch.
-**Simple diagram:**
+Using LINQ:
+
 ```csharp
-var unique = customers.DistinctBy(c => c.Email).ToList();
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/api/system.linq.enumerable.distinct
-
-### Q4. Difference between `Single()` and `SingleOrDefault()`; what if 2 records match?
-**Question summary:** Tests query semantics and exception behavior.
-**Crisp answer (7-8 lines):** `Single()` expects exactly one record and throws if zero or more than one. `SingleOrDefault()` allows zero and returns default for none, but still throws if more than one. If 2 records satisfy condition, both throw `InvalidOperationException`.
-**Deep explanation:** Use these methods only when uniqueness is guaranteed by business rule/index. If uniqueness is uncertain, use `FirstOrDefault()` and validate externally.
-**Answer summary:**
-- **Decision:** Use `Single*` only for logically unique keys.
-- **Risk:** Runtime exceptions if data integrity is weak.
-- **Mitigation:** Enforce unique constraints and validate query intention.
-**Practical example:** Fetching active payroll cycle by unique period code where DB has unique index.
-**Simple diagram:**
-```text
-0 row: Single -> error, SingleOrDefault -> default
-2 rows: Single -> error, SingleOrDefault -> error
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/api/system.linq.enumerable.single
-
-### Q5. Difference between Singleton and Scoped services; where used?
-**Question summary:** Tests DI lifetime design.
-**Crisp answer (7-8 lines):** Singleton has one instance for entire app lifetime. Scoped creates one instance per request scope. Singleton suits stateless shared services (config cache, utility). Scoped suits request-bound logic (unit-of-work, DbContext-backed services). Never inject scoped directly into singleton.
-**Deep explanation:** Lifetime mismatch can cause memory leaks, stale state, or thread-safety bugs. In web APIs, scoped is safest default for business/data services. Singleton should be immutable or thread-safe.
-**Answer summary:**
-- **Decision:** Use scoped for request data; singleton for shared stateless services.
-- **Risk:** Lifetime mismatch causes subtle production bugs.
-- **Mitigation:** Validate service graph and avoid scoped->singleton dependency.
-**Practical example:** `IClockProvider` singleton, `OrderService` scoped, `DbContext` scoped.
-**Simple diagram:**
-```text
-App Lifetime: Singleton [one]
-Request Lifetime: Scoped [one per request]
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/fundamentals/dependency-injection
-
-### Q6. Explain middleware and create custom middleware.
-**Question summary:** Tests ASP.NET Core pipeline understanding.
-**Crisp answer (7-8 lines):** Middleware is a pipeline component that handles request/response cross-cutting concerns. Each middleware can inspect, modify, short-circuit, or pass to next. Common uses: auth, logging, exception handling, correlation ID, CORS.
-**Deep explanation:** Custom middleware is used when concern applies globally and consistently. Keep it lightweight, order-aware, and resilient. Order matters: exception handling early, auth before authorization, endpoint routing near the end.
-**Answer summary:**
-- **Decision:** Use middleware for cross-cutting concerns.
-- **Risk:** Wrong order breaks security or behavior.
-- **Mitigation:** Define and test pipeline order explicitly.
-**Practical example:** Correlation-ID middleware added to every request for distributed tracing.
-**Simple diagram:**
-```csharp
-public class CorrelationMiddleware
+public static string ReverseString(string input)
 {
-  private readonly RequestDelegate _next;
-  public CorrelationMiddleware(RequestDelegate next) => _next = next;
-  public async Task Invoke(HttpContext ctx)
-  {
-    ctx.Response.Headers["X-Correlation-Id"] = Guid.NewGuid().ToString();
-    await _next(ctx);
-  }
+    if (string.IsNullOrEmpty(input))
+        return input;
+
+    return new string(input.Reverse().ToArray());
 }
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/fundamentals/middleware/write
 
-### Q7. Explain dependency injection and where used.
-**Question summary:** Tests inversion-of-control and maintainability thinking.
-**Crisp answer (7-8 lines):** DI provides dependencies from container instead of creating with `new`. It reduces coupling, improves testability, and centralizes lifecycle management. Used in controllers, services, repositories, and infrastructure clients.
-**Deep explanation:** DI enables substitutable implementations and easier unit testing via mocks/fakes. Constructor injection is preferred for required dependencies. Keep dependency graph simple and avoid service locator anti-pattern.
-**Answer summary:**
-- **Decision:** Use constructor DI across app layers.
-- **Risk:** Hidden dependencies and hard-to-test code without DI.
-- **Mitigation:** Register interfaces clearly and keep services cohesive.
-**Practical example:** `IEmailSender` swapped between SMTP and SendGrid implementations via config.
-**Simple diagram:**
-```text
-Container -> resolves -> Controller(Service -> Repo -> DB)
+Use `Array.Reverse()` for a simple and efficient approach. The LINQ approach is concise but may be slightly less efficient.
+
+---
+
+## 3. Write LINQ query for distinct records
+
+Distinct primitive values:
+
+```csharp
+var distinctNames = employees
+    .Select(e => e.Name)
+    .Distinct()
+    .ToList();
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/core/extensions/dependency-injection
 
-### Q8. Difference between ViewData and ViewBag; where used and performance wise?
-**Question summary:** Tests MVC view data-passing mechanisms.
-**Crisp answer (7-8 lines):** `ViewData` is dictionary-based (`ViewData["Key"]`), `ViewBag` is dynamic wrapper over `ViewData`. Both are request-scoped and used for small UI metadata. Performance difference is negligible; readability and compile-time safety are bigger concerns. Strongly typed ViewModel is preferred for main data.
-**Deep explanation:** Both are weakly typed and can fail at runtime due to typo/cast issues. Use them for small optional values, not core model payload.
-**Answer summary:**
-- **Decision:** Prefer ViewModel for main data; ViewData/ViewBag for minor metadata.
-- **Risk:** Runtime errors due to dynamic/weak typing.
-- **Mitigation:** Keep usage minimal and consistent.
-**Practical example:** Using `ViewBag.PageTitle` while main page data comes from typed model.
-**Simple diagram:**
-```text
-Controller -> ViewModel (primary) + ViewBag/ViewData (auxiliary)
+Distinct records by one column:
+
+```csharp
+var distinctEmployees = employees
+    .GroupBy(e => e.Email)
+    .Select(g => g.First())
+    .ToList();
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/mvc/views/overview
 
-### Q9. How to pass data to view.
-**Question summary:** Tests MVC communication pattern.
-**Crisp answer (7-8 lines):** Pass primary data via strongly typed model (`return View(model)`), temporary flow data with `TempData`, and small metadata with ViewBag/ViewData.
-**Deep explanation:** Strongly typed models ensure compile-time checks and maintainability. `TempData` is good for PRG pattern messages after redirect.
-**Answer summary:**
-- **Decision:** Use typed model as default mechanism.
-- **Risk:** Dynamic data passing reduces reliability.
-- **Mitigation:** Restrict weakly typed channels to small metadata.
-**Practical example:** Order details page receives `OrderViewModel` and success toast via `TempData`.
-**Simple diagram:**
-```text
-Controller -> View(model)
-Controller -> TempData["Message"] -> next request
+Using `DistinctBy`:
+
+```csharp
+var distinctEmployees = employees
+    .DistinctBy(e => e.Email)
+    .ToList();
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/mvc/controllers/actions
 
-### Q10. Difference between Hashtable and Dictionary.
-**Question summary:** Tests collection type choice.
-**Crisp answer (7-8 lines):** `Hashtable` is non-generic and stores `object` keys/values, causing boxing/unboxing and runtime casts. `Dictionary<TKey,TValue>` is generic, type-safe, and generally faster. Prefer Dictionary in modern .NET.
-**Deep explanation:** Generic collections improve performance and safety. `Hashtable` exists mainly for legacy interop.
-**Answer summary:**
-- **Decision:** Use `Dictionary<TKey,TValue>` for new code.
-- **Risk:** Hashtable type casting bugs and overhead.
-- **Mitigation:** Migrate legacy hashtable paths to generic collections.
-**Practical example:** API cache key map implemented using `Dictionary<string, CacheEntry>`.
-**Simple diagram:**
+`DistinctBy` is available in modern .NET versions.
+
+---
+
+## 4. Difference between Single() and SingleOrDefault(); what happens if 2 records match?
+
+| Method | Behavior |
+|---|---|
+| `Single()` | Expects exactly one matching record |
+| `SingleOrDefault()` | Expects zero or one matching record |
+
+If no record exists:
+
 ```text
-Hashtable -> object/object
-Dictionary -> strong types
+Single()           → throws exception
+SingleOrDefault()  → returns default value/null
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/standard/collections/
 
-### Q11. What is PATCH verb and syntax for partial columns?
-**Question summary:** Tests REST semantics and partial update handling.
-**Crisp answer (7-8 lines):** `PATCH` applies partial updates to resource fields instead of replacing full resource (`PUT`). In .NET, use JSON Patch (`JsonPatchDocument<T>`) or custom DTO patch endpoints.
-**Deep explanation:** PATCH reduces payload and conflict scope but needs strong validation, authorization per field, and concurrency checks.
-**Answer summary:**
-- **Decision:** Use PATCH for partial updates with strict validation.
-- **Risk:** Uncontrolled patching can violate data integrity.
-- **Mitigation:** Whitelist fields and enforce model/state validation.
-**Practical example:** Updating only employee email and phone in profile service.
-**Simple diagram:**
+If two or more records match, both throw an exception:
+
+```text
+InvalidOperationException: Sequence contains more than one matching element
+```
+
+Use `Single()` when exactly one record must exist. Use `SingleOrDefault()` when zero or one record is acceptable.
+
+---
+
+## 5. Difference between Singleton and Scoped services; where used?
+
+| Lifetime | Instance created | Best used for |
+|---|---|---|
+| Singleton | One instance for entire application lifetime | Stateless shared services, cache, config provider |
+| Scoped | One instance per HTTP request | Business services, repositories, DbContext |
+| Transient | New instance every time requested | Lightweight stateless services |
+
+Singleton example:
+
+```csharp
+builder.Services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
+```
+
+Scoped example:
+
+```csharp
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddDbContext<AppDbContext>();
+```
+
+Use Singleton for stateless, thread-safe services. Use Scoped for services that work within one request, especially `DbContext`. Do not inject a Scoped service directly into a Singleton service because it can create lifetime issues.
+
+---
+
+## 6. Explain middleware and create custom middleware
+
+Middleware is a component in the ASP.NET Core request pipeline. Each middleware can process the request before passing it to the next middleware and can also process the response on the way back.
+
+Common middleware:
+
+```csharp
+app.UseExceptionHandler();
+app.UseHttpsRedirection();
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+```
+
+Custom middleware:
+
+```csharp
+public class RequestLoggingMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public RequestLoggingMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
+
+        await _next(context);
+
+        Console.WriteLine($"Response: {context.Response.StatusCode}");
+    }
+}
+```
+
+Register middleware:
+
+```csharp
+app.UseMiddleware<RequestLoggingMiddleware>();
+```
+
+Middleware is used for cross-cutting concerns such as exception handling, logging, authentication, authorization, CORS, compression, and request tracing.
+
+---
+
+## 7. Explain dependency injection and where used
+
+Dependency Injection is a design pattern where dependencies are provided to a class from outside instead of the class creating them directly.
+
+Without DI:
+
+```csharp
+public class EmployeeService
+{
+    private readonly EmployeeRepository _repo = new EmployeeRepository();
+}
+```
+
+With DI:
+
+```csharp
+public class EmployeeService
+{
+    private readonly IEmployeeRepository _repo;
+
+    public EmployeeService(IEmployeeRepository repo)
+    {
+        _repo = repo;
+    }
+}
+```
+
+Register service:
+
+```csharp
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+```
+
+DI is used in controllers, services, repositories, logging, configuration, DbContext, external API clients, and unit testing. Benefits are loose coupling, better testability, cleaner code, easy replacement of implementation, and centralized lifetime management.
+
+---
+
+## 8. Difference between ViewData and ViewBag; where used and performance comparison
+
+| Feature | ViewData | ViewBag |
+|---|---|---|
+| Type | Dictionary | Dynamic wrapper over ViewData |
+| Syntax | `ViewData["Name"]` | `ViewBag.Name` |
+| Type safety | No | No |
+| Casting required | Yes for complex types | Usually no explicit cast |
+| Performance | Slightly faster | Slight dynamic overhead |
+
+ViewData example:
+
+```csharp
+ViewData["Message"] = "Hello";
+```
+
+```html
+<h1>@ViewData["Message"]</h1>
+```
+
+ViewBag example:
+
+```csharp
+ViewBag.Message = "Hello";
+```
+
+```html
+<h1>@ViewBag.Message</h1>
+```
+
+ViewData is slightly faster because it is dictionary-based. ViewBag uses dynamic resolution, so it has small overhead. In real applications, this difference is usually negligible. For strongly typed data, prefer ViewModel.
+
+---
+
+## 9. How to pass data to view
+
+Using ViewModel:
+
+```csharp
+public class EmployeeViewModel
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+```
+
+```csharp
+public IActionResult Details()
+{
+    var model = new EmployeeViewModel
+    {
+        Id = 1,
+        Name = "Rahul"
+    };
+
+    return View(model);
+}
+```
+
+```csharp
+@model EmployeeViewModel
+<h1>@Model.Name</h1>
+```
+
+Using ViewBag:
+
+```csharp
+ViewBag.Message = "Welcome";
+return View();
+```
+
+Using ViewData:
+
+```csharp
+ViewData["Message"] = "Welcome";
+return View();
+```
+
+Using TempData:
+
+```csharp
+TempData["Message"] = "Saved successfully";
+return RedirectToAction("Index");
+```
+
+Best practice: use ViewModel for structured data.
+
+---
+
+## 10. Difference between Hashtable and Dictionary
+
+| Feature | Hashtable | Dictionary<TKey,TValue> |
+|---|---|---|
+| Namespace | `System.Collections` | `System.Collections.Generic` |
+| Type safety | No | Yes |
+| Boxing/unboxing | Required for value types | Not required |
+| Performance | Slower | Faster |
+| Compile-time checking | No | Yes |
+| Recommended | Legacy | Preferred |
+
+Hashtable:
+
+```csharp
+Hashtable table = new Hashtable();
+table.Add(1, "One");
+table.Add("Two", 2);
+```
+
+Dictionary:
+
+```csharp
+Dictionary<int, string> dict = new Dictionary<int, string>();
+dict.Add(1, "One");
+```
+
+Dictionary is preferred in modern C# because it is generic, type-safe, faster, and avoids boxing/unboxing.
+
+---
+
+## 11. What is HTTP PATCH verb? How to pass partial columns? Syntax
+
+`PATCH` is used to partially update a resource. `PUT` usually replaces the full resource. `PATCH` updates selected fields only.
+
+Controller example using JSON Patch:
+
 ```csharp
 [HttpPatch("{id}")]
-public IActionResult Patch(int id, [FromBody] JsonPatchDocument<EmployeeDto> patch)
+public async Task<IActionResult> PatchEmployee(int id, [FromBody] JsonPatchDocument<Employee> patchDoc)
 {
-    var model = _service.Get(id);
-    patch.ApplyTo(model, ModelState);
-    if(!ModelState.IsValid) return BadRequest(ModelState);
-    _service.Update(model);
+    if (patchDoc == null)
+        return BadRequest();
+
+    var employee = await _context.Employees.FindAsync(id);
+
+    if (employee == null)
+        return NotFound();
+
+    patchDoc.ApplyTo(employee, ModelState);
+
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+    await _context.SaveChangesAsync();
+
     return NoContent();
 }
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/web-api/jsonpatch
 
-### Q12. Difference between Dapper and AutoMapper; which is better and why?
-**Question summary:** Tests tool purpose clarity.
-**Crisp answer (7-8 lines):** They solve different problems. Dapper is micro-ORM for SQL data access. AutoMapper maps object-to-object (Entity->DTO). One is not replacement for the other.
-**Deep explanation:** Choose Dapper for performance-critical SQL with manual control. Choose AutoMapper to reduce DTO mapping boilerplate. Many systems use both together.
-**Answer summary:**
-- **Decision:** Use each for its specific layer concern.
-- **Risk:** Tool misuse due to false equivalence.
-- **Mitigation:** Separate data access and object mapping responsibilities.
-**Practical example:** Dapper fetches projection, AutoMapper maps domain model to API response DTO.
-**Simple diagram:**
-```text
-SQL <-> Dapper; ObjectA -> AutoMapper -> ObjectB
+Required package:
+
+```bash
+dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson
 ```
-**Trusted reference links:**  
-- https://github.com/DapperLib/Dapper  
-- https://automapper.org/
 
-### Q13. Dapper and EF difference?
-**Question summary:** Tests ORM strategy trade-offs.
-**Crisp answer (7-8 lines):** EF Core is full ORM with change tracking, migrations, LINQ abstraction. Dapper is lightweight, SQL-first, faster for hot paths. EF improves developer velocity; Dapper gives fine SQL control.
-**Deep explanation:** Decision depends on domain complexity, team SQL maturity, and performance criticality. Hybrid usage is common.
-**Answer summary:**
-- **Decision:** EF for productivity; Dapper for critical query performance.
-- **Risk:** Wrong tool choice causes either complexity or latency issues.
-- **Mitigation:** Benchmark key workloads and choose per use case.
-**Practical example:** EF for CRUD admin module, Dapper for high-volume reporting endpoint.
-**Simple diagram:**
-```text
-EF: high abstraction
-Dapper: low abstraction / high control
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/ef/core/
+Program.cs:
 
-### Q14. Difference between `==` and `Equals()`.
-**Question summary:** Tests equality semantics.
-**Crisp answer (7-8 lines):** `==` can be operator-overloaded and may check reference/value based on type implementation. `Equals()` checks logical equality as defined by type override. For strings in C#, both compare value.
-**Deep explanation:** In custom types, override `Equals`/`GetHashCode` consistently; optionally overload `==`. Mention null-safe comparisons.
-**Answer summary:**
-- **Decision:** Use semantic equality intentionally by type.
-- **Risk:** Incorrect equality causes bugs in sets/dictionaries.
-- **Mitigation:** Implement equality contracts correctly.
-**Practical example:** ValueObject equality in domain model for Address.
-**Simple diagram:**
-```text
-== : operator semantics
-Equals(): object equality semantics
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/csharp/programming-guide/statements-expressions-operators/equality-comparisons
-
-### Q15. Difference between Encapsulation and Abstraction.
-**Question summary:** Tests OOP concept clarity.
-**Crisp answer (7-8 lines):** Encapsulation hides internal state and exposes controlled operations. Abstraction hides complexity and exposes essential behavior contract.
-**Deep explanation:** Encapsulation is about data protection and invariants; abstraction is about interface simplification and role-focused design.
-**Answer summary:**
-- **Decision:** Use encapsulation for invariants, abstraction for extensibility.
-- **Risk:** Leaky design increases coupling.
-- **Mitigation:** Keep clear contracts and private state.
-**Practical example:** `BankAccount` hides balance mutation rules while `IPaymentGateway` abstracts provider details.
-**Simple diagram:**
-```text
-Encapsulation: data + behavior boundary
-Abstraction: interface over implementation
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/csharp/fundamentals/object-oriented/
-
-### Q16. SOLID: explain first principle.
-**Question summary:** Tests SRP understanding.
-**Crisp answer (7-8 lines):** First principle is SRP (Single Responsibility Principle): a class should have one reason to change. It improves maintainability, testability, and reduces side effects.
-**Deep explanation:** SRP does not mean one method per class; it means coherent responsibility boundary. Violating SRP creates fragile change impact.
-**Answer summary:**
-- **Decision:** Partition classes by business responsibility.
-- **Risk:** God classes amplify regression risk.
-- **Mitigation:** Refactor by cohesive responsibility seams.
-**Practical example:** Split invoice generation, tax calculation, and email dispatch into separate services.
-**Simple diagram:**
-```text
-One class -> one responsibility -> one reason to change
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures
-
-### Q17. Difference between abstract class and interface.
-**Question summary:** Tests inheritance vs contract design.
-**Crisp answer (7-8 lines):** Interface defines contract; abstract class can include shared state/implementation. Use interface for capability contracts and loose coupling. Use abstract class when common base behavior is meaningful.
-**Deep explanation:** Prefer interfaces for service boundaries and testing. Use abstract base for template-method or shared code where inheritance is natural.
-**Answer summary:**
-- **Decision:** Interface for extensibility; abstract class for shared implementation.
-- **Risk:** Wrong choice creates rigid inheritance trees.
-- **Mitigation:** Favor composition and interface-first design.
-**Practical example:** `INotificationSender` interface with abstract `NotificationBase` for shared logging logic.
-**Simple diagram:**
-```text
-Interface: contract only
-Abstract class: contract + base behavior
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/interface
-
-### Q18. Use of `yield`.
-**Question summary:** Tests lazy iteration understanding.
-**Crisp answer (7-8 lines):** `yield return` enables deferred execution for iterators. It returns sequence items one by one without materializing full collection. Useful for memory efficiency and stream-like processing.
-**Deep explanation:** Ideal for large sequences and pipelines. Trade-off: execution happens during enumeration; side effects should be controlled.
-**Answer summary:**
-- **Decision:** Use `yield` for lazy, memory-efficient iteration.
-- **Risk:** Hidden deferred side effects.
-- **Mitigation:** Keep iterator logic deterministic and side-effect-light.
-**Practical example:** Paginated export generator streaming records to CSV.
-**Simple diagram:**
 ```csharp
-IEnumerable<int> Seq(){ for(int i=0;i<3;i++) yield return i; }
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson();
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/csharp/language-reference/statements/yield
 
-### Q19. Which authentication used in project?
-**Question summary:** Tests practical auth selection rationale.
-**Crisp answer (7-8 lines):** For modern SPA + API projects, JWT Bearer authentication is common. For enterprise internal apps, OpenID Connect with Azure AD/Entra ID is typical. Selection depends on trust boundaries and SSO requirements.
-**Deep explanation:** Mention token lifecycle, refresh strategy, role/claim mapping, and endpoint authorization policy.
-**Answer summary:**
-- **Decision:** Choose auth protocol based on user/channel and SSO needs.
-- **Risk:** Weak token validation causes unauthorized access.
-- **Mitigation:** Validate issuer/audience/signature/expiry and apply policies.
-**Practical example:** Angular SPA authenticates via Entra ID and calls API with bearer token.
-**Simple diagram:**
-```text
-User -> IdP login -> JWT -> API Bearer validation
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/security/authentication/
+PATCH request body:
 
-### Q20. Explain JWT token, parts, package, and code.
-**Question summary:** Tests JWT internals and implementation ability.
-**Crisp answer (7-8 lines):** JWT has 3 parts: Header, Payload (claims), Signature. API validates signature, issuer, audience, and expiry. In ASP.NET Core, use `Microsoft.AspNetCore.Authentication.JwtBearer`.
-**Deep explanation:** Security depends on proper key management, short-lived access tokens, and refresh token controls. Claims should be minimal and authorization should use policies.
-**Answer summary:**
-- **Decision:** Use standard JWT bearer middleware and strict validation params.
-- **Risk:** Token replay/misconfiguration can bypass controls.
-- **Mitigation:** Enforce expiry, audience/issuer validation, HTTPS, and key rotation.
-**Practical example:** Employee portal API validates `role=Manager` claim for approval endpoint.
-**Simple diagram:**
-```csharp
-builder.Services.AddAuthentication("Bearer")
-  .AddJwtBearer("Bearer", o =>
+```json
+[
   {
-    o.TokenValidationParameters = new TokenValidationParameters
-    {
-      ValidateIssuer = true,
-      ValidateAudience = true,
-      ValidateLifetime = true,
-      ValidateIssuerSigningKey = true
-    };
-  });
+    "op": "replace",
+    "path": "/email",
+    "value": "newemail@test.com"
+  },
+  {
+    "op": "replace",
+    "path": "/phone",
+    "value": "9999999999"
+  }
+]
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/security/authentication/jwtbearer
 
-### Q21. Difference between Thread and TPL.
-**Question summary:** Tests concurrency model choice.
-**Crisp answer (7-8 lines):** `Thread` is low-level OS thread management. TPL (`Task`, `async/await`) is higher-level abstraction using thread pool and scheduling. Prefer TPL for scalable app code.
-**Deep explanation:** Manual thread management is costly and error-prone. TPL improves composability, cancellation, and error propagation.
-**Answer summary:**
-- **Decision:** Use TPL by default in application code.
-- **Risk:** Manual threading leads to resource waste and bugs.
-- **Mitigation:** Use tasks, cancellation tokens, and async best practices.
-**Practical example:** Parallel document processing with `Task.WhenAll`.
-**Simple diagram:**
-```text
-Thread -> manual lifecycle
-Task/TPL -> scheduler-managed concurrency
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/dotnet/standard/parallel-programming/task-parallel-library-tpl
+DTO-based PATCH alternative:
 
-### Q22. How to validate model in .NET?
-**Question summary:** Tests API input safety.
-**Crisp answer (7-8 lines):** Use DataAnnotations (`[Required]`, `[StringLength]`, etc.) on DTOs and `[ApiController]` auto-validation. For custom rules, use `IValidatableObject` or FluentValidation.
-**Deep explanation:** Validation should run before business logic to reduce bad writes and simplify error contracts.
-**Answer summary:**
-- **Decision:** Validate at boundary DTO layer.
-- **Risk:** Invalid inputs propagate to domain/persistence.
-- **Mitigation:** Centralize validation and return consistent `400` payloads.
-**Practical example:** Salary update endpoint rejects negative amount and invalid employee ID format.
-**Simple diagram:**
-```text
-Request DTO -> Validation -> Controller/Service
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/mvc/models/validation
-
-### Q23. Explain `AsNoTracking()`. Where used?
-**Question summary:** Tests EF Core query performance tuning.
-**Crisp answer (7-8 lines):** `AsNoTracking()` disables change tracking for read-only queries. It reduces memory and improves query performance. Use when you do not update entities after reading.
-**Deep explanation:** Tracking adds overhead for state manager. For high-volume read APIs, no-tracking is preferred.
-**Answer summary:**
-- **Decision:** Use no-tracking for read-only workloads.
-- **Risk:** Accidentally expecting updates on detached entities.
-- **Mitigation:** Apply tracking only where updates are needed.
-**Practical example:** Dashboard listing endpoint reads 10k rows with `AsNoTracking()`.
-**Simple diagram:**
 ```csharp
-var users = await _db.Users.AsNoTracking().ToListAsync();
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/ef/core/querying/tracking
-
-### Q24. Explain routing in .NET.
-**Question summary:** Tests request dispatch mechanism.
-**Crisp answer (7-8 lines):** Routing maps URL patterns to endpoints/controllers/actions. ASP.NET Core supports conventional routing and attribute routing. Attribute routing is common for Web APIs.
-**Deep explanation:** Good routing design improves API versioning, discoverability, and governance. Keep route contracts stable and resource-oriented.
-**Answer summary:**
-- **Decision:** Prefer explicit attribute routing for APIs.
-- **Risk:** Inconsistent routes hurt maintainability.
-- **Mitigation:** Standardize route naming/versioning strategy.
-**Practical example:** `api/v1/orders/{id}` and `api/v1/orders/{id}/status`.
-**Simple diagram:**
-```text
-URL -> Endpoint matcher -> Controller action
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/fundamentals/routing
-
-### Q25. Explain CORS and how to implement.
-**Question summary:** Tests cross-origin security basics.
-**Crisp answer (7-8 lines):** CORS controls which origins can call your API from browsers. Configure explicit allowed origins, methods, and headers. Avoid `AllowAnyOrigin` in production with credentials.
-**Deep explanation:** CORS is browser enforcement, not full API security. Still require JWT/API auth server-side.
-**Answer summary:**
-- **Decision:** Use restrictive origin allowlists.
-- **Risk:** Overly broad CORS opens attack surface.
-- **Mitigation:** Per-environment policies and security review.
-**Practical example:** Allow only `https://payroll.company.com` to call payroll API.
-**Simple diagram:**
-```csharp
-builder.Services.AddCors(o => o.AddPolicy("ui", p =>
-  p.WithOrigins("https://app.example.com")
-   .AllowAnyHeader().AllowAnyMethod()));
-app.UseCors("ui");
-```
-**Trusted reference links:**  
-- https://learn.microsoft.com/aspnet/core/security/cors
-
-### Q26. Angular: how to pass token.
-**Question summary:** Tests frontend secure API consumption.
-**Crisp answer (7-8 lines):** Use Angular HTTP interceptor and append `Authorization: Bearer <token>` header for API calls. Keep token storage strategy secure and refresh flow controlled.
-**Deep explanation:** Interceptor centralizes token injection and reduces duplication. Handle token expiry and 401 retry safely.
-**Answer summary:**
-- **Decision:** Use HTTP interceptor for token propagation.
-- **Risk:** Token leakage in insecure storage/logging.
-- **Mitigation:** Secure storage practices and short token lifetimes.
-**Practical example:** Interceptor reads token from auth service and injects into all `/api/*` requests.
-**Simple diagram:**
-```typescript
-intercept(req: HttpRequest<any>, next: HttpHandler) {
-  const token = this.auth.getToken();
-  const authReq = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
-  return next.handle(authReq);
+public class EmployeePatchDto
+{
+    public string? Email { get; set; }
+    public string? Phone { get; set; }
 }
 ```
-**Trusted reference links:**  
-- https://angular.io/guide/http#intercepting-requests-and-responses
 
-### Q27. DB: difference between DROP, DELETE, TRUNCATE.
-**Question summary:** Tests DDL vs DML and logging behavior.
-**Crisp answer (7-8 lines):** `DELETE` removes rows (can use WHERE, fully logged). `TRUNCATE` removes all rows quickly (minimal logging, no WHERE). `DROP` removes table object/schema itself.
-**Deep explanation:** Choose command by intent and recovery needs. Drop is destructive schema operation.
-**Answer summary:**
-- **Decision:** Use DELETE for selective row removal.
-- **Risk:** Wrong command can cause irreversible loss.
-- **Mitigation:** Use transaction/backup and least-privilege permissions.
-**Practical example:** Cleanup old audit rows with `DELETE WHERE CreatedOn < ...`.
-**Simple diagram:**
-```text
-DELETE -> rows
-TRUNCATE -> all rows
-DROP -> table object
+```csharp
+[HttpPatch("{id}")]
+public async Task<IActionResult> UpdatePartial(int id, EmployeePatchDto dto)
+{
+    var employee = await _context.Employees.FindAsync(id);
+
+    if (employee == null)
+        return NotFound();
+
+    if (dto.Email != null)
+        employee.Email = dto.Email;
+
+    if (dto.Phone != null)
+        employee.Phone = dto.Phone;
+
+    await _context.SaveChangesAsync();
+
+    return NoContent();
+}
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/sql/t-sql/statements/
 
-### Q28. DB: optimize stored procedure.
-**Question summary:** Tests SQL tuning approach.
-**Crisp answer (7-8 lines):** Analyze execution plan, add proper indexes, avoid `SELECT *`, parameterize inputs, reduce RBAR loops, and track IO/time stats.
-**Deep explanation:** Optimization is workload-specific. Validate cardinality, sargability, and parameter sniffing issues.
-**Answer summary:**
-- **Decision:** Tune using execution-plan evidence, not guesswork.
-- **Risk:** Untuned SPs cause latency spikes and blocking.
-- **Mitigation:** Baseline metrics, index strategy, and periodic review.
-**Practical example:** Rewriting non-sargable date filter improved report API from 8s to 600ms.
-**Simple diagram:**
-```text
-Slow SP -> Plan analysis -> index/query fix -> benchmark -> deploy
+---
+
+## 12. Difference between Dapper and AutoMapper; which is better and why?
+
+Dapper and AutoMapper solve different problems.
+
+| Tool | Purpose |
+|---|---|
+| Dapper | Micro ORM for database access |
+| AutoMapper | Object-to-object mapping library |
+
+Dapper executes SQL queries and maps database results to C# objects.
+
+```csharp
+var employees = connection.Query<Employee>(
+    "SELECT * FROM Employees WHERE DepartmentId = @DeptId",
+    new { DeptId = 10 }
+);
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/sql/relational-databases/performance/performance-tuning
 
-### Q29. DB: impact of multiple clustered indexes.
-**Question summary:** Tests indexing fundamentals.
-**Crisp answer (7-8 lines):** A table can have only one clustered index because clustered index defines physical row order. Attempting multiple clustered indexes is invalid.
-**Deep explanation:** Additional access paths should use nonclustered indexes. Choose clustered key carefully for range queries and write behavior.
-**Answer summary:**
-- **Decision:** One clustered index per table; others nonclustered.
-- **Risk:** Poor clustered key increases fragmentation and write cost.
-- **Mitigation:** Choose narrow, stable, selective clustered keys.
-**Practical example:** Orders table uses clustered index on `OrderId` and nonclustered on `CustomerId, CreatedOn`.
-**Simple diagram:**
-```text
-Table -> [one clustered] + [many nonclustered]
+AutoMapper maps one object type to another, for example Entity to DTO.
+
+```csharp
+var employeeDto = _mapper.Map<EmployeeDto>(employee);
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described
 
-### Q30. DB: remove duplicate records from table.
-**Question summary:** Tests window-function cleanup pattern.
-**Crisp answer (7-8 lines):** Use `ROW_NUMBER()` partitioned by duplicate key and delete rows where row number > 1.
-**Deep explanation:** Keep deterministic ordering (latest created or smallest ID) to retain correct record.
-**Answer summary:**
-- **Decision:** Use window functions for safe dedupe.
-- **Risk:** Non-deterministic delete can remove wrong row.
-- **Mitigation:** Define business rule for record retention.
-**Practical example:** Remove duplicate users by email keeping latest verified entry.
-**Simple diagram:**
+They are not alternatives. Use Dapper for database access. Use AutoMapper for object mapping. You can use both together.
+
+---
+
+## 13. Difference between Dapper and Entity Framework
+
+| Feature | Dapper | Entity Framework Core |
+|---|---|---|
+| Type | Micro ORM | Full ORM |
+| Control over SQL | High | Medium |
+| Performance | Very fast | Slightly slower |
+| Change tracking | No built-in tracking | Built-in tracking |
+| LINQ support | No | Yes |
+| Migrations | No | Yes |
+| Complex domain model | Manual | Easier |
+| Best for | Performance, stored procedures, custom SQL | CRUD, domain models, maintainability |
+
+Dapper example:
+
+```csharp
+var employee = connection.QueryFirstOrDefault<Employee>(
+    "SELECT * FROM Employees WHERE Id = @Id",
+    new { Id = id }
+);
+```
+
+EF Core example:
+
+```csharp
+var employee = await _context.Employees
+    .FirstOrDefaultAsync(e => e.Id == id);
+```
+
+Dapper is better when high performance and full SQL control are required. EF Core is better when productivity, change tracking, LINQ, migrations, and maintainable CRUD operations are required.
+
+---
+
+## 14. Difference between == and Equals()
+
+For value types:
+
+```csharp
+int a = 10;
+int b = 10;
+
+Console.WriteLine(a == b);       // true
+Console.WriteLine(a.Equals(b));  // true
+```
+
+For reference types:
+
+```csharp
+Employee e1 = new Employee { Id = 1 };
+Employee e2 = new Employee { Id = 1 };
+
+Console.WriteLine(e1 == e2);       // false by default
+Console.WriteLine(e1.Equals(e2));  // false unless overridden
+```
+
+String exception:
+
+```csharp
+string s1 = "test";
+string s2 = "test";
+
+Console.WriteLine(s1 == s2);       // true
+Console.WriteLine(s1.Equals(s2));  // true
+```
+
+`==` is an operator and can be overloaded. `Equals()` is a method that can be overridden. For reference types, `==` usually checks reference equality unless overloaded. `Equals()` can be customized to check value equality.
+
+---
+
+## 15. Difference between Encapsulation and Abstraction
+
+| Concept | Meaning | Example |
+|---|---|---|
+| Encapsulation | Hiding internal data and controlling access | Private fields with public methods/properties |
+| Abstraction | Hiding implementation complexity and exposing only essentials | Interface or abstract class |
+
+Encapsulation example:
+
+```csharp
+public class BankAccount
+{
+    private decimal _balance;
+
+    public void Deposit(decimal amount)
+    {
+        if (amount <= 0)
+            throw new ArgumentException("Invalid amount");
+
+        _balance += amount;
+    }
+
+    public decimal GetBalance()
+    {
+        return _balance;
+    }
+}
+```
+
+Abstraction example:
+
+```csharp
+public interface IPaymentService
+{
+    void Pay(decimal amount);
+}
+```
+
+Encapsulation protects data inside a class. Abstraction hides implementation details and exposes only required behavior.
+
+---
+
+## 16. SOLID: explain first principle
+
+The first principle of SOLID is **S — Single Responsibility Principle**.
+
+Meaning:
+
+```text
+A class should have only one reason to change.
+```
+
+Bad example:
+
+```csharp
+public class EmployeeService
+{
+    public void AddEmployee() { }
+    public void SendEmail() { }
+    public void GenerateReport() { }
+}
+```
+
+Better example:
+
+```csharp
+public class EmployeeService
+{
+    public void AddEmployee() { }
+}
+
+public class EmailService
+{
+    public void SendEmail() { }
+}
+
+public class ReportService
+{
+    public void GenerateReport() { }
+}
+```
+
+Single Responsibility Principle improves maintainability, testability, and reduces side effects when code changes.
+
+---
+
+## 17. Difference between abstract class and interface
+
+| Feature | Abstract Class | Interface |
+|---|---|---|
+| Purpose | Base class with common behavior | Contract/capability |
+| Multiple inheritance | Not possible | Multiple interfaces possible |
+| Fields | Can have fields | Cannot have normal instance fields |
+| Constructor | Can have constructor | Cannot have normal constructor |
+| Access modifiers | Supported | Members are usually public |
+| Implementation | Can provide implementation | Can provide default methods in modern C#, but mostly used as contract |
+
+Abstract class:
+
+```csharp
+public abstract class Animal
+{
+    public void Sleep()
+    {
+        Console.WriteLine("Sleeping");
+    }
+
+    public abstract void Speak();
+}
+```
+
+Interface:
+
+```csharp
+public interface IAnimal
+{
+    void Speak();
+}
+```
+
+Use abstract class when classes share common base behavior. Use interface when defining a contract that different classes can implement.
+
+---
+
+## 18. Use of yield
+
+`yield` is used to return elements one by one from an iterator without creating the full collection in memory.
+
+```csharp
+public static IEnumerable<int> GetNumbers()
+{
+    yield return 1;
+    yield return 2;
+    yield return 3;
+}
+```
+
+Usage:
+
+```csharp
+foreach (var number in GetNumbers())
+{
+    Console.WriteLine(number);
+}
+```
+
+Practical example:
+
+```csharp
+public static IEnumerable<int> GetEvenNumbers(int max)
+{
+    for (int i = 0; i <= max; i++)
+    {
+        if (i % 2 == 0)
+            yield return i;
+    }
+}
+```
+
+`yield` enables lazy evaluation and is useful when working with large sequences.
+
+---
+
+## 19. Which authentication is used in project?
+
+Sample interview answer:
+
+In most modern ASP.NET Core Web API projects, we use **JWT Bearer Token authentication** with OAuth2/OpenID Connect. The frontend obtains a token after login and passes it in the `Authorization` header for every API request.
+
+```text
+Authorization: Bearer <token>
+```
+
+In enterprise projects, authentication may be integrated with Azure AD / Microsoft Entra ID, OAuth2, OpenID Connect, JWT Bearer authentication, IdentityServer, or a custom identity provider.
+
+Strong answer:
+
+In my project, APIs are protected using JWT Bearer authentication. The user logs in through the identity provider, receives an access token, and sends it with each API request. The API validates token signature, issuer, audience, expiry, and claims. Authorization is then applied using roles or policies.
+
+---
+
+## 20. Explain JWT token and parts. Required package and sample code
+
+JWT means JSON Web Token. It is a compact token format used to securely transmit user identity and claims between client and server.
+
+JWT has 3 parts:
+
+```text
+Header.Payload.Signature
+```
+
+| Part | Meaning |
+|---|---|
+| Header | Token type and algorithm |
+| Payload | Claims like user id, role, email, expiry |
+| Signature | Verifies token integrity |
+
+Required package:
+
+```bash
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+```
+
+Program.cs configuration:
+
+```csharp
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
+app.UseAuthentication();
+app.UseAuthorization();
+```
+
+Generate JWT token:
+
+```csharp
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+
+public string GenerateToken(string username, string role)
+{
+    var claims = new[]
+    {
+        new Claim(ClaimTypes.Name, username),
+        new Claim(ClaimTypes.Role, role)
+    };
+
+    var key = new SymmetricSecurityKey(
+        Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])
+    );
+
+    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+    var token = new JwtSecurityToken(
+        issuer: _configuration["Jwt:Issuer"],
+        audience: _configuration["Jwt:Audience"],
+        claims: claims,
+        expires: DateTime.Now.AddHours(1),
+        signingCredentials: creds
+    );
+
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}
+```
+
+Protect API:
+
+```csharp
+[Authorize]
+[HttpGet]
+public IActionResult GetData()
+{
+    return Ok("Secured data");
+}
+```
+
+---
+
+## 21. Difference between Thread and TPL
+
+| Feature | Thread | TPL |
+|---|---|---|
+| Full form | Thread class | Task Parallel Library |
+| Level | Low-level | Higher-level abstraction |
+| Management | Manual | Managed by .NET ThreadPool |
+| Return value | Difficult | Easy with Task<T> |
+| Exception handling | Manual | Easier |
+| Async/await support | No direct | Yes |
+| Recommended | Rarely | Preferred |
+
+Thread example:
+
+```csharp
+Thread thread = new Thread(() =>
+{
+    Console.WriteLine("Running on separate thread");
+});
+
+thread.Start();
+```
+
+TPL example:
+
+```csharp
+Task.Run(() =>
+{
+    Console.WriteLine("Running using task");
+});
+```
+
+Async example:
+
+```csharp
+public async Task<string> GetDataAsync()
+{
+    await Task.Delay(1000);
+    return "Done";
+}
+```
+
+Thread is a low-level construct. TPL provides a higher-level abstraction using Task and async/await. In modern .NET, TPL is preferred for asynchronous and parallel programming.
+
+---
+
+## 22. How to validate model in .NET?
+
+Using data annotations:
+
+```csharp
+public class EmployeeDto
+{
+    [Required]
+    public string Name { get; set; }
+
+    [EmailAddress]
+    public string Email { get; set; }
+
+    [Range(18, 60)]
+    public int Age { get; set; }
+}
+```
+
+Controller validation:
+
+```csharp
+[HttpPost]
+public IActionResult Create(EmployeeDto employee)
+{
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+    return Ok();
+}
+```
+
+With `[ApiController]`, model validation errors automatically return `400 Bad Request`.
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class EmployeeController : ControllerBase
+{
+}
+```
+
+For complex validation rules, we can use FluentValidation.
+
+---
+
+## 23. Explain AsNoTracking(). Where used?
+
+`AsNoTracking()` tells Entity Framework Core not to track returned entities in the change tracker.
+
+```csharp
+var employees = await _context.Employees
+    .AsNoTracking()
+    .ToListAsync();
+```
+
+Use it for read-only queries where you do not plan to update the entity.
+
+Benefits:
+
+```text
+Better performance
+Less memory usage
+Faster read operations
+```
+
+Do not use `AsNoTracking()` when you want to update the entity directly after fetching it.
+
+---
+
+## 24. Explain routing in .NET
+
+Routing maps incoming HTTP requests to controller actions or endpoints.
+
+Controller route:
+
+```csharp
+[Route("api/[controller]")]
+[ApiController]
+public class EmployeesController : ControllerBase
+{
+    [HttpGet("{id}")]
+    public IActionResult GetEmployee(int id)
+    {
+        return Ok();
+    }
+}
+```
+
+Request:
+
+```text
+GET /api/employees/1
+```
+
+Conventional routing in MVC:
+
+```csharp
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+```
+
+Attribute routing:
+
+```csharp
+[HttpGet("active")]
+public IActionResult GetActiveEmployees()
+{
+    return Ok();
+}
+```
+
+Routing decides which controller action should handle an incoming request based on URL pattern and HTTP verb.
+
+---
+
+## 25. Explain CORS and how to implement
+
+CORS stands for Cross-Origin Resource Sharing. It controls whether a browser allows a frontend application from one origin to call an API hosted on another origin.
+
+Example:
+
+```text
+Angular app: https://app.company.com
+API: https://api.company.com
+```
+
+Implement CORS:
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.WithOrigins("https://app.company.com")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+```
+
+Use CORS:
+
+```csharp
+app.UseCors("AllowAngularApp");
+```
+
+Important order:
+
+```csharp
+app.UseRouting();
+app.UseCors("AllowAngularApp");
+app.UseAuthentication();
+app.UseAuthorization();
+```
+
+Avoid `AllowAnyOrigin()` in production unless the API is truly public.
+
+---
+
+## 26. Angular: how to pass token
+
+JWT token is usually passed in the HTTP `Authorization` header.
+
+Manual way:
+
+```typescript
+const headers = new HttpHeaders({
+  Authorization: `Bearer ${token}`
+});
+
+this.http.get('/api/employees', { headers }).subscribe();
+```
+
+Better way: HTTP Interceptor.
+
+```typescript
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const token = localStorage.getItem('access_token');
+
+    if (token) {
+      const cloned = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      return next.handle(cloned);
+    }
+
+    return next.handle(req);
+  }
+}
+```
+
+Register interceptor:
+
+```typescript
+providers: [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }
+]
+```
+
+For better security, avoid storing sensitive tokens in localStorage if the application has high security requirements. Consider secure cookies depending on architecture.
+
+---
+
+## 27. DB: difference between DROP, DELETE, TRUNCATE
+
+| Command | Type | Removes | Rollback | Identity reset | WHERE allowed |
+|---|---|---|---|---|---|
+| DELETE | DML | Selected/all rows | Yes inside transaction | No | Yes |
+| TRUNCATE | DDL | All rows | Yes in many DBs if inside transaction | Yes | No |
+| DROP | DDL | Entire table object | Depends | Table removed | No |
+
+DELETE:
+
 ```sql
-WITH cte AS (
-  SELECT *, ROW_NUMBER() OVER (PARTITION BY Email ORDER BY Id DESC) rn
-  FROM Users
+DELETE FROM Employees WHERE DepartmentId = 10;
+```
+
+TRUNCATE:
+
+```sql
+TRUNCATE TABLE Employees;
+```
+
+DROP:
+
+```sql
+DROP TABLE Employees;
+```
+
+DELETE removes rows and supports WHERE. TRUNCATE removes all rows faster and resets identity. DROP removes the complete table structure.
+
+---
+
+## 28. DB: optimize stored procedure
+
+Common ways to optimize stored procedure:
+
+```text
+Check execution plan
+Add proper indexes
+Avoid SELECT *
+Use proper WHERE clauses
+Avoid unnecessary cursors
+Avoid scalar functions in WHERE
+Use temp tables carefully
+Avoid parameter sniffing issues
+Update statistics
+Use SET NOCOUNT ON
+Reduce unnecessary joins
+Return only required columns
+Use pagination for large result sets
+```
+
+Example:
+
+```sql
+CREATE PROCEDURE GetEmployeesByDepartment
+    @DepartmentId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT Id, Name, Email
+    FROM Employees
+    WHERE DepartmentId = @DepartmentId;
+END
+```
+
+Index:
+
+```sql
+CREATE INDEX IX_Employees_DepartmentId
+ON Employees(DepartmentId);
+```
+
+Parameter sniffing mitigation:
+
+```sql
+OPTION (RECOMPILE);
+```
+
+or
+
+```sql
+DECLARE @LocalDepartmentId INT = @DepartmentId;
+```
+
+Strong answer:
+
+I start by checking the actual execution plan and identifying scans, expensive joins, missing indexes, key lookups, and parameter sniffing. Then I optimize indexes, queries, joins, filters, and returned columns. I validate improvement using logical reads, CPU time, duration, and execution plan comparison.
+
+---
+
+## 29. DB: impact of multiple clustered indexes
+
+A table can have only **one clustered index**.
+
+Reason:
+
+```text
+Clustered index defines the physical/logical order of data rows in the table.
+```
+
+Since data can be ordered only one way, only one clustered index is allowed. SQL Server will throw an error if you try to create multiple clustered indexes on the same table. You can create one clustered index and multiple non-clustered indexes.
+
+Clustered index:
+
+```sql
+CREATE CLUSTERED INDEX IX_Employees_Id
+ON Employees(Id);
+```
+
+Multiple non-clustered indexes:
+
+```sql
+CREATE NONCLUSTERED INDEX IX_Employees_Email
+ON Employees(Email);
+
+CREATE NONCLUSTERED INDEX IX_Employees_DepartmentId
+ON Employees(DepartmentId);
+```
+
+---
+
+## 30. DB: remove duplicate records from table
+
+Assume table:
+
+```sql
+Employees(Id, Name, Email)
+```
+
+Remove duplicates by Email, keeping the lowest Id:
+
+```sql
+WITH CTE AS
+(
+    SELECT *,
+           ROW_NUMBER() OVER(PARTITION BY Email ORDER BY Id) AS rn
+    FROM Employees
 )
-DELETE FROM cte WHERE rn > 1;
+DELETE FROM CTE
+WHERE rn > 1;
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/sql/t-sql/functions/row-number-transact-sql
 
-### Q31. DB: get records in table A not present in table B.
-**Question summary:** Tests anti-join query patterns.
-**Crisp answer (7-8 lines):** Use `LEFT JOIN ... WHERE B.key IS NULL` or `NOT EXISTS`.
-**Deep explanation:** `NOT EXISTS` is usually safer with NULL semantics and optimizer support.
-**Answer summary:**
-- **Decision:** Prefer `NOT EXISTS` for anti-join clarity.
-- **Risk:** Incorrect NULL handling with `NOT IN`.
-- **Mitigation:** Use tested anti-join patterns.
-**Practical example:** Find employees without payroll record for current month.
-**Simple diagram:**
+Preview duplicates first:
+
 ```sql
-SELECT a.*
-FROM A a
-WHERE NOT EXISTS (SELECT 1 FROM B b WHERE b.Id = a.Id);
+SELECT Email, COUNT(*) AS Count
+FROM Employees
+GROUP BY Email
+HAVING COUNT(*) > 1;
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/sql/t-sql/queries/from-transact-sql
 
-### Q32. DB: update gender male->female and female->male.
-**Question summary:** Tests conditional update logic.
-**Crisp answer (7-8 lines):** Use single `UPDATE` with `CASE` expression to swap values atomically.
-**Deep explanation:** Ensure only expected values are updated and protect with transaction in critical tables.
-**Answer summary:**
-- **Decision:** Use CASE-based set update.
-- **Risk:** Accidental updates for unexpected values.
-- **Mitigation:** Add WHERE clause and verification query.
-**Practical example:** Data correction migration for legacy import inconsistency.
-**Simple diagram:**
+---
+
+## 31. DB: get records in table A not present in table B
+
+Using LEFT JOIN:
+
+```sql
+SELECT A.*
+FROM TableA A
+LEFT JOIN TableB B ON A.Id = B.Id
+WHERE B.Id IS NULL;
+```
+
+Using NOT EXISTS:
+
+```sql
+SELECT A.*
+FROM TableA A
+WHERE NOT EXISTS
+(
+    SELECT 1
+    FROM TableB B
+    WHERE B.Id = A.Id
+);
+```
+
+`NOT EXISTS` is often preferred because it handles NULL scenarios better than `NOT IN`.
+
+---
+
+## 32. DB: update gender column male->female and female->male
+
 ```sql
 UPDATE Employees
-SET Gender = CASE
-    WHEN Gender = 'Male' THEN 'Female'
-    WHEN Gender = 'Female' THEN 'Male'
-    ELSE Gender
-END
-WHERE Gender IN ('Male','Female');
+SET Gender =
+    CASE
+        WHEN Gender = 'Male' THEN 'Female'
+        WHEN Gender = 'Female' THEN 'Male'
+        ELSE Gender
+    END;
 ```
-**Trusted reference links:**  
-- https://learn.microsoft.com/sql/t-sql/queries/update-transact-sql
+
+If values are M/F:
+
+```sql
+UPDATE Employees
+SET Gender =
+    CASE
+        WHEN Gender = 'M' THEN 'F'
+        WHEN Gender = 'F' THEN 'M'
+        ELSE Gender
+    END;
+```
+
+---
+
+# Quick Revision Summary
+
+| Topic | Key Point |
+|---|---|
+| Architecture | Controller → Service → Repository → DB |
+| Reverse string | Use `Array.Reverse()` |
+| LINQ distinct | Use `Distinct()`, `DistinctBy()`, or `GroupBy()` |
+| Single vs SingleOrDefault | Both fail if more than one match |
+| Singleton vs Scoped | Singleton app-wide, Scoped per request |
+| Middleware | Request pipeline component |
+| DI | Inject dependency instead of creating manually |
+| ViewData vs ViewBag | ViewData dictionary, ViewBag dynamic |
+| Hashtable vs Dictionary | Dictionary is generic and preferred |
+| PATCH | Partial update |
+| Dapper vs AutoMapper | DB access vs object mapping |
+| Dapper vs EF | Micro ORM vs full ORM |
+| == vs Equals | Operator vs method |
+| Encapsulation vs Abstraction | Data hiding vs implementation hiding |
+| SRP | One class, one responsibility |
+| Abstract vs Interface | Base behavior vs contract |
+| yield | Lazy iteration |
+| JWT | Header.Payload.Signature |
+| Thread vs TPL | Low-level vs Task-based |
+| Model validation | Data annotations / FluentValidation |
+| AsNoTracking | Read-only EF query optimization |
+| Routing | URL to endpoint mapping |
+| CORS | Browser cross-origin access control |
+| Angular token | Authorization Bearer header |
+| DROP/DELETE/TRUNCATE | Object removal vs row removal |
+| SP optimization | Execution plan, indexes, query tuning |
+| Clustered index | Only one per table |
+| Remove duplicates | ROW_NUMBER CTE |
+| A not in B | LEFT JOIN / NOT EXISTS |
+| Gender swap | CASE expression |
