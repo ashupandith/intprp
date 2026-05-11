@@ -1147,7 +1147,7 @@ I keep controllers thin, business logic in application/domain layers, and extern
 In this platform, controllers should not contain payment, PoS, Cosmos DB, or subsidy rules. Controllers receive requests and call handlers. The application layer coordinates use cases. The domain layer enforces business rules. The infrastructure layer connects to Cosmos DB, Service Bus, Blob Storage, payment gateways, PoS, CMS, and notifications.
 
 #### Final Interview Answer
-I apply separation of concerns by keeping HTTP logic in controllers, business use cases in the application layer, domain rules in the domain layer, and external dependencies in infrastructure. This makes the system easier to test, maintain, and evolve.
+I apply Separation of Concerns by giving each component one clear responsibility. Controllers handle HTTP request/response concerns, application services or handlers coordinate use cases, domain classes enforce business rules, infrastructure components handle database and external integrations, and middleware handles cross-cutting concerns like logging, authentication, exception handling, and correlation IDs. This prevents mixing responsibilities and keeps the system maintainable.
 
 ---
 
@@ -1163,7 +1163,7 @@ I separate the solution into API, Application, Domain, Infrastructure, and Tests
 The domain should not depend on Cosmos DB, Azure Functions, Service Bus, payment SDKs, or PoS APIs. The application layer defines interfaces. The infrastructure layer implements those interfaces. This keeps business logic independent of technology choices.
 
 #### Final Interview Answer
-I apply Clean Architecture by keeping domain logic independent and placing Azure and third-party integrations in infrastructure. This makes the solution testable, maintainable, and easier to change.
+I apply Clean Architecture by organizing the solution into API, Application, Domain, and Infrastructure layers. The Domain layer contains core business rules and remains independent of frameworks and external systems. The Application layer contains use cases, commands, queries, DTOs, validators, and interfaces. The Infrastructure layer implements database, Azure, payment, PoS, CMS, notification, and storage integrations. Dependencies point inward, which keeps the system testable, maintainable, and flexible.
 
 ---
 
@@ -1179,7 +1179,10 @@ I choose modular monolith when the domain is still evolving and the team wants s
 For a food ordering platform, cart, checkout, order, payment, refund, CMS, and PoS can be separated as modules first. If independent scaling or ownership becomes necessary, they can evolve into services. Starting with too many microservices can increase operational complexity.
 
 #### Final Interview Answer
-I would not blindly choose microservices. I would start with clear domain modules and decide service boundaries based on business ownership, scaling needs, deployment independence, and operational maturity. This avoids unnecessary distributed system complexity.
+I would not blindly choose microservices. I would first understand domain complexity, team structure, scaling needs, deployment independence, data ownership, and operational maturity.
+If the domain is still evolving or the team is small, I would start with a modular monolith where modules like cart, checkout, order, payment, refund, CMS, and PoS are clearly separated inside one deployable application. This gives clean boundaries without adding distributed system complexity.
+I would move to microservices only when boundaries are stable and there is a real need for independent scaling, independent deployment, separate team ownership, or different technology/runtime needs. For example, payment, notification, PoS integration, and order processing may later become separate services.
+The key is to avoid a distributed monolith. Service boundaries should be based on business capability, data ownership, scalability, and operational readiness.
 
 ---
 
