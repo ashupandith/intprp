@@ -1232,7 +1232,7 @@ The system should be open for adding new payment providers but closed for changi
 Checkout should depend on an IPaymentGateway interface. Each provider implements this interface. Adding a new provider should require a new adapter, not changes in core checkout logic.
 
 #### Final Interview Answer
-I apply Open/Closed Principle by introducing abstractions like IPaymentGateway. New payment providers can be added as new implementations without modifying checkout business logic.
+Open/Closed Principle means the system should be open for extension but closed for modification. In payment integration, checkout should not directly contain Razorpay, Stripe, or Adyen-specific logic. I would define an abstraction like IPaymentGateway, and each provider would implement it separately. If a new provider is added, we add a new adapter class instead of modifying checkout logic. This reduces regression risk and makes the system extensible.
 
 ---
 
@@ -1248,7 +1248,7 @@ High-level business logic should depend on abstractions, not concrete infrastruc
 The application layer should define interfaces such as IPaymentGateway, IOrderRepository, IEventPublisher, and INotificationService. Infrastructure implements these interfaces using Azure services or vendor SDKs.
 
 #### Final Interview Answer
-I apply Dependency Inversion by keeping application/domain logic dependent on interfaces, while infrastructure provides implementations. This keeps business logic independent from Azure SDKs, payment gateways, and PoS systems.
+Dependency Inversion Principle means high-level business logic should depend on abstractions, not concrete infrastructure. For example, the order service should depend on IOrderRepository and IEventPublisher, not directly on CosmosOrderRepository or ServiceBusPublisher. The infrastructure layer implements these interfaces using Cosmos DB, Service Bus, payment gateway SDKs, or PoS APIs. This keeps business logic independent, testable, and easier to change.
 
 ---
 
@@ -1261,10 +1261,10 @@ Tests Interface Segregation Principle.
 I create small, role-specific interfaces instead of one large interface.
 
 #### Detailed Explanation
-Instead of one large IOrderService with many unrelated methods, I can define focused interfaces or command handlers. This reduces unnecessary dependencies and makes testing easier.
+Large interfaces create unnecessary coupling because classes are forced to depend on methods they do not use. For example, an invoice service should not be forced to implement payment, refund, or PoS methods. In a food ordering platform, I would separate capabilities into focused interfaces such as cart, checkout, order, payment, refund, invoice, notification, subsidy, and PoS connector. This improves maintainability, testability, and allows each capability to evolve independently.
 
 #### Final Interview Answer
-I avoid large interfaces by following Interface Segregation. Each interface should represent a focused capability, such as payment capture, refund processing, or notification sending.
+I avoid large interfaces by applying the Interface Segregation Principle. Instead of creating one large service interface with many unrelated methods, I split it into smaller capability-based interfaces. For example, in a food ordering platform, payment capture, refund processing, invoice generation, notification sending, subsidy validation, and PoS submission should not all be part of one interface. I would create focused interfaces like IPaymentService, IRefundService, IInvoiceService, INotificationService, and IPoSConnector. This reduces unnecessary coupling, makes testing easier, and keeps each service focused on its responsibility.
 
 ---
 
