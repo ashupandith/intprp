@@ -2081,10 +2081,12 @@ Tests your understanding of end-to-end digital food ordering architecture in the
 For end-to-end digital food ordering architecture, I would define the business requirement, identify the impacted components, and apply the right .NET/Azure design pattern. The design should consider security, scalability, reliability, observability, cost, and operational support.
 
 ### Detailed Explanation
-In this platform, end-to-end digital food ordering architecture should not be handled as an isolated technical item. I would first map it to the relevant domain flow such as cart, checkout, order, payment, refund, CMS, PoS, notification, or invoice. Then I would decide whether it belongs in the API layer, application layer, domain layer, infrastructure layer, APIM policy, Azure service, or DevOps pipeline. For production readiness, I would define validation rules, error handling, retry/fallback behavior, security controls, logging, monitoring, and ownership. If the flow involves data updates or third-party calls, I would also include idempotency, correlation ID, audit logging, and failure recovery. The final design should be documented in HLD/LLD, API contracts, sequence diagrams, and ADRs where required.
+While designing enterprise applications, I mainly follow separation of concerns, SOLID, Clean Architecture, security by design, observability by design, and resilience by design. These are my baseline principles because they keep the system maintainable, testable, secure, and production-ready.
+Based on the use case, I apply additional patterns. For example, if the domain is complex, I use DDD to model bounded contexts like cart, checkout, order, payment, refund, and subsidy. If read and write workloads are different, I use CQRS. If payment, PoS, invoice, and notification workflows need decoupling, I use event-driven design with Service Bus. For critical operations like checkout and payment, I apply idempotency.
+So I do not apply every principle blindly. I select the right principle based on complexity, scalability, maintainability, security, and operational needs.
 
 ### Final Interview Answer
-For end-to-end digital food ordering architecture, my approach would be to treat it as part of the overall platform architecture, not just an implementation detail. I would align it with Clean Architecture, CQRS, REST/OpenAPI standards, Azure services, security, and observability. I would define clear contracts, ownership, failure handling, monitoring, and governance so the solution remains scalable, secure, and maintainable in production.
+My baseline principles are separation of concerns, SOLID, Clean Architecture, security, observability, and resilience. Then, based on the problem, I apply DDD, CQRS, event-driven design, idempotency, or API-first design. I do not use all patterns blindly; I use them where they solve a real architectural problem.
 
 ---
 
