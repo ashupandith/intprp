@@ -15,18 +15,1510 @@ Each question contains:
 
 ---
 
-## Table of Contents
+# Question List / Index
 
-1. [01 Architecture and Platform Design](#01-architecture-and-platform-design)
-2. [02 .NET Core ASP.NET Core Web API and Clean Architecture](#02-.net-core-asp.net-core-web-api-and-clean-architecture)
-3. [03 CQRS Domain Modelling and Event Driven Architecture](#03-cqrs-domain-modelling-and-event-driven-architecture)
-4. [04 Cosmos DB Modelling Partitioning RU Optimization and ETag](#04-cosmos-db-modelling-partitioning-ru-optimization-and-etag)
-5. [05 Azure Services Deployment and Cloud Operations](#05-azure-services-deployment-and-cloud-operations)
-6. [06 Integrations Payment PoS CMS Notifications Invoice and Third Party APIs](#06-integrations-payment-pos-cms-notifications-invoice-and-third-party-apis)
-7. [07 Security Identity APIM OWASP and PII](#07-security-identity-apim-owasp-and-pii)
-8. [08 Frontend React Ionic PWA and API Consumption](#08-frontend-react-ionic-pwa-and-api-consumption)
-9. [09 Domain Specific Food Ordering Workflows](#09-domain-specific-food-ordering-workflows)
-10. [10 DevOps CI CD SonarQube Governance and Interview Scenarios](#10-devops-ci-cd-sonarqube-governance-and-interview-scenarios)
+> Use this index for quick revision. Search by `Q number` in GitHub to jump to the detailed answer.
+
+- **Q1.** How would you handle end-to-end digital food ordering architecture in this JD?
+- **Q2.** How would you handle mobile app and PWA architecture in this JD?
+- **Q3.** How would you handle API-first architecture in this JD?
+- **Q4.** How would you handle cloud-native architecture in this JD?
+- **Q5.** How would you handle event-driven platform design in this JD?
+- **Q6.** How would you handle bounded context identification in this JD?
+- **Q7.** How would you handle domain decomposition in this JD?
+- **Q8.** How would you handle HLD preparation in this JD?
+- **Q9.** How would you handle LLD preparation in this JD?
+- **Q10.** How would you handle C4 context diagram in this JD?
+- **Q11.** How would you handle C4 container diagram in this JD?
+- **Q12.** How would you handle sequence diagram preparation in this JD?
+- **Q13.** How would you handle deployment architecture in this JD?
+- **Q14.** How would you handle integration architecture in this JD?
+- **Q15.** How would you handle current state vs target state in this JD?
+- **Q16.** How would you handle non-functional requirements in this JD?
+- **Q17.** How would you handle availability design in this JD?
+- **Q18.** How would you handle scalability design in this JD?
+- **Q19.** How would you handle performance design in this JD?
+- **Q20.** How would you handle security architecture in this JD?
+- **Q21.** How would you handle operability design in this JD?
+- **Q22.** How would you handle maintainability design in this JD?
+- **Q23.** How would you handle resilience design in this JD?
+- **Q24.** How would you handle cost optimization design in this JD?
+- **Q25.** How would you handle active-active architecture in this JD?
+- **Q26.** How would you handle active-passive architecture in this JD?
+- **Q27.** How would you handle multi-region deployment in this JD?
+- **Q28.** How would you handle disaster recovery in this JD?
+- **Q29.** How would you handle RTO and RPO in this JD?
+- **Q30.** How would you handle frontend-backend separation in this JD?
+- **Q31.** How would you handle backend-for-frontend pattern in this JD?
+- **Q32.** How would you handle API gateway pattern in this JD?
+- **Q33.** How would you handle service decomposition in this JD?
+- **Q34.** How would you handle modular monolith vs microservices in this JD?
+- **Q35.** How would you handle microservices boundaries in this JD?
+- **Q36.** How would you handle shared kernel risks in this JD?
+- **Q37.** How would you handle anti-corruption layer in this JD?
+- **Q38.** How would you handle integration adapter pattern in this JD?
+- **Q39.** How would you handle outbox pattern in this JD?
+- **Q40.** How would you handle saga pattern in this JD?
+- **Q41.** How would you handle orchestration vs choreography in this JD?
+- **Q42.** How would you handle state machine design in this JD?
+- **Q43.** How would you handle order workflow design in this JD?
+- **Q44.** How would you handle payment workflow design in this JD?
+- **Q45.** How would you handle refund workflow design in this JD?
+- **Q46.** How would you handle PoS workflow design in this JD?
+- **Q47.** How would you handle invoice workflow design in this JD?
+- **Q48.** How would you handle notification workflow design in this JD?
+- **Q49.** How would you handle CMS sync architecture in this JD?
+- **Q50.** How would you handle data ownership in this JD?
+- **Q51.** How would you handle source of truth in this JD?
+- **Q52.** How would you handle data consistency in this JD?
+- **Q53.** How would you handle eventual consistency in this JD?
+- **Q54.** How would you handle transaction boundary in this JD?
+- **Q55.** How would you handle idempotency architecture in this JD?
+- **Q56.** How would you handle duplicate prevention in this JD?
+- **Q57.** How would you handle correlation ID architecture in this JD?
+- **Q58.** How would you handle observability architecture in this JD?
+- **Q59.** How would you handle logging strategy in this JD?
+- **Q60.** How would you handle monitoring strategy in this JD?
+- **Q61.** How would you handle alerting strategy in this JD?
+- **Q62.** How would you handle runbook design in this JD?
+- **Q63.** How would you handle operational dashboard in this JD?
+- **Q64.** How would you handle production readiness in this JD?
+- **Q65.** How would you handle release readiness in this JD?
+- **Q66.** How would you handle capacity planning in this JD?
+- **Q67.** How would you handle peak load handling in this JD?
+- **Q68.** How would you handle lunch-hour traffic surge in this JD?
+- **Q69.** How would you handle menu browsing scale in this JD?
+- **Q70.** How would you handle checkout scale in this JD?
+- **Q71.** How would you handle payment scale in this JD?
+- **Q72.** How would you handle PoS scale in this JD?
+- **Q73.** How would you handle fault isolation in this JD?
+- **Q74.** How would you handle bulkhead pattern in this JD?
+- **Q75.** How would you handle circuit breaker in this JD?
+- **Q76.** How would you handle retry strategy in this JD?
+- **Q77.** How would you handle fallback strategy in this JD?
+- **Q78.** How would you handle graceful degradation in this JD?
+- **Q79.** How would you handle feature flag strategy in this JD?
+- **Q80.** How would you handle canary release in this JD?
+- **Q81.** How would you handle blue-green deployment in this JD?
+- **Q82.** How would you handle rollback design in this JD?
+- **Q83.** How would you handle zero-downtime deployment in this JD?
+- **Q84.** How would you handle API versioning strategy in this JD?
+- **Q85.** How would you handle contract-first design in this JD?
+- **Q86.** How would you handle OpenAPI governance in this JD?
+- **Q87.** How would you handle data model governance in this JD?
+- **Q88.** How would you handle technical debt governance in this JD?
+- **Q89.** How would you handle architecture review board in this JD?
+- **Q90.** How would you handle architecture decision records in this JD?
+- **Q91.** How would you handle risk register in this JD?
+- **Q92.** How would you handle dependency mapping in this JD?
+- **Q93.** How would you handle third-party dependency risk in this JD?
+- **Q94.** How would you handle vendor lock-in risk in this JD?
+- **Q95.** How would you handle latency budget in this JD?
+- **Q96.** How would you handle cost budget in this JD?
+- **Q97.** How would you handle cloud landing zone alignment in this JD?
+- **Q98.** How would you handle environment strategy in this JD?
+- **Q99.** How would you handle dev-test-prod separation in this JD?
+- **Q100.** How would you handle configuration strategy in this JD?
+- **Q101.** How would you handle secret management strategy in this JD?
+- **Q102.** How would you handle network isolation in this JD?
+- **Q103.** How would you handle private endpoint strategy in this JD?
+- **Q104.** How would you handle platform modernization approach in this JD?
+- **Q105.** How would you handle architecture trade-off communication in this JD?
+- **Q106.** How would you handle .NET Core benefits in this JD?
+- **Q107.** How would you handle .NET Framework vs .NET Core in this JD?
+- **Q108.** How would you handle ASP.NET Core Web API in this JD?
+- **Q109.** How would you handle Program.cs responsibility in this JD?
+- **Q110.** How would you handle startup pipeline in this JD?
+- **Q111.** How would you handle middleware pipeline in this JD?
+- **Q112.** How would you handle custom middleware in this JD?
+- **Q113.** How would you handle exception middleware in this JD?
+- **Q114.** How would you handle correlation ID middleware in this JD?
+- **Q115.** How would you handle request logging middleware in this JD?
+- **Q116.** How would you handle dependency injection in this JD?
+- **Q117.** How would you handle service lifetimes in this JD?
+- **Q118.** How would you handle Singleton lifetime in this JD?
+- **Q119.** How would you handle Scoped lifetime in this JD?
+- **Q120.** How would you handle Transient lifetime in this JD?
+- **Q121.** How would you handle lifetime mismatch in this JD?
+- **Q122.** How would you handle controller design in this JD?
+- **Q123.** How would you handle thin controllers in this JD?
+- **Q124.** How would you handle ControllerBase vs Controller in this JD?
+- **Q125.** How would you handle IActionResult vs ActionResult in this JD?
+- **Q126.** How would you handle model binding in this JD?
+- **Q127.** How would you handle model validation in this JD?
+- **Q128.** How would you handle ApiController attribute in this JD?
+- **Q129.** How would you handle DTO design in this JD?
+- **Q130.** How would you handle request response models in this JD?
+- **Q131.** How would you handle FluentValidation in this JD?
+- **Q132.** How would you handle data annotations in this JD?
+- **Q133.** How would you handle global exception handling in this JD?
+- **Q134.** How would you handle problem details response in this JD?
+- **Q135.** How would you handle REST controller conventions in this JD?
+- **Q136.** How would you handle minimal APIs in this JD?
+- **Q137.** How would you handle filters in ASP.NET Core in this JD?
+- **Q138.** How would you handle action filters in this JD?
+- **Q139.** How would you handle authorization filters in this JD?
+- **Q140.** How would you handle endpoint filters in this JD?
+- **Q141.** How would you handle configuration management in this JD?
+- **Q142.** How would you handle Options pattern in this JD?
+- **Q143.** How would you handle IOptions vs IOptionsSnapshot in this JD?
+- **Q144.** How would you handle logging with ILogger in this JD?
+- **Q145.** How would you handle structured logging in this JD?
+- **Q146.** How would you handle health checks in this JD?
+- **Q147.** How would you handle readiness and liveness in this JD?
+- **Q148.** How would you handle HttpClientFactory in this JD?
+- **Q149.** How would you handle typed HttpClient in this JD?
+- **Q150.** How would you handle named HttpClient in this JD?
+- **Q151.** How would you handle Polly integration in this JD?
+- **Q152.** How would you handle async await in this JD?
+- **Q153.** How would you handle Task vs ValueTask in this JD?
+- **Q154.** How would you handle cancellation tokens in this JD?
+- **Q155.** How would you handle background services in this JD?
+- **Q156.** How would you handle hosted services in this JD?
+- **Q157.** How would you handle worker services in this JD?
+- **Q158.** How would you handle repository pattern in this JD?
+- **Q159.** How would you handle unit of work in this JD?
+- **Q160.** How would you handle DbContext lifetime in this JD?
+- **Q161.** How would you handle Clean Architecture layers in this JD?
+- **Q162.** How would you handle API layer in this JD?
+- **Q163.** How would you handle Application layer in this JD?
+- **Q164.** How would you handle Domain layer in this JD?
+- **Q165.** How would you handle Infrastructure layer in this JD?
+- **Q166.** How would you handle Domain entities in this JD?
+- **Q167.** How would you handle value objects in this JD?
+- **Q168.** How would you handle aggregates in this JD?
+- **Q169.** How would you handle domain services in this JD?
+- **Q170.** How would you handle application services in this JD?
+- **Q171.** How would you handle domain events in this JD?
+- **Q172.** How would you handle MediatR usage in this JD?
+- **Q173.** How would you handle CQRS handlers in this JD?
+- **Q174.** How would you handle pipeline behaviors in this JD?
+- **Q175.** How would you handle validation behavior in this JD?
+- **Q176.** How would you handle logging behavior in this JD?
+- **Q177.** How would you handle transaction behavior in this JD?
+- **Q178.** How would you handle mapping DTOs in this JD?
+- **Q179.** How would you handle AutoMapper usage in this JD?
+- **Q180.** How would you handle manual mapping in this JD?
+- **Q181.** How would you handle unit testing controllers in this JD?
+- **Q182.** How would you handle unit testing handlers in this JD?
+- **Q183.** How would you handle integration testing APIs in this JD?
+- **Q184.** How would you handle mocking dependencies in this JD?
+- **Q185.** How would you handle test containers in this JD?
+- **Q186.** How would you handle configuration per environment in this JD?
+- **Q187.** How would you handle secrets in local development in this JD?
+- **Q188.** How would you handle user secrets in this JD?
+- **Q189.** How would you handle appsettings management in this JD?
+- **Q190.** How would you handle secure coding practices in this JD?
+- **Q191.** How would you handle input validation in this JD?
+- **Q192.** How would you handle output encoding in this JD?
+- **Q193.** How would you handle file upload handling in this JD?
+- **Q194.** How would you handle pagination design in this JD?
+- **Q195.** How would you handle sorting and filtering in this JD?
+- **Q196.** How would you handle API response envelope in this JD?
+- **Q197.** How would you handle error code strategy in this JD?
+- **Q198.** How would you handle Swagger integration in this JD?
+- **Q199.** How would you handle OpenAPI comments in this JD?
+- **Q200.** How would you handle API versioning in ASP.NET Core in this JD?
+- **Q201.** How would you handle authentication middleware in this JD?
+- **Q202.** How would you handle authorization middleware in this JD?
+- **Q203.** How would you handle policy-based authorization in this JD?
+- **Q204.** How would you handle role-based authorization in this JD?
+- **Q205.** How would you handle claims-based authorization in this JD?
+- **Q206.** How would you handle CORS setup in this JD?
+- **Q207.** How would you handle rate limiting in ASP.NET Core in this JD?
+- **Q208.** How would you handle response compression in this JD?
+- **Q209.** How would you handle response caching in this JD?
+- **Q210.** How would you handle memory cache in this JD?
+- **Q211.** How would you handle distributed cache in this JD?
+- **Q212.** How would you handle Redis integration in this JD?
+- **Q213.** How would you handle CQRS definition in this JD?
+- **Q214.** How would you handle CQRS benefits in this JD?
+- **Q215.** How would you handle CQRS trade-offs in this JD?
+- **Q216.** How would you handle command design in this JD?
+- **Q217.** How would you handle query design in this JD?
+- **Q218.** How would you handle command handler in this JD?
+- **Q219.** How would you handle query handler in this JD?
+- **Q220.** How would you handle MediatR with CQRS in this JD?
+- **Q221.** How would you handle command validation in this JD?
+- **Q222.** How would you handle query optimization in this JD?
+- **Q223.** How would you handle read model in this JD?
+- **Q224.** How would you handle write model in this JD?
+- **Q225.** How would you handle projection design in this JD?
+- **Q226.** How would you handle eventual consistency in this JD?
+- **Q227.** How would you handle domain events in this JD?
+- **Q228.** How would you handle integration events in this JD?
+- **Q229.** How would you handle event naming in this JD?
+- **Q230.** How would you handle event versioning in this JD?
+- **Q231.** How would you handle message contracts in this JD?
+- **Q232.** How would you handle event payload design in this JD?
+- **Q233.** How would you handle event metadata in this JD?
+- **Q234.** How would you handle correlation ID in events in this JD?
+- **Q235.** How would you handle causation ID in this JD?
+- **Q236.** How would you handle idempotent consumer in this JD?
+- **Q237.** How would you handle duplicate event handling in this JD?
+- **Q238.** How would you handle outbox pattern in this JD?
+- **Q239.** How would you handle inbox pattern in this JD?
+- **Q240.** How would you handle transactional messaging in this JD?
+- **Q241.** How would you handle saga pattern in this JD?
+- **Q242.** How would you handle process manager in this JD?
+- **Q243.** How would you handle orchestration saga in this JD?
+- **Q244.** How would you handle choreography saga in this JD?
+- **Q245.** How would you handle compensation action in this JD?
+- **Q246.** How would you handle state machine in this JD?
+- **Q247.** How would you handle order state machine in this JD?
+- **Q248.** How would you handle payment state machine in this JD?
+- **Q249.** How would you handle refund state machine in this JD?
+- **Q250.** How would you handle cart aggregate in this JD?
+- **Q251.** How would you handle order aggregate in this JD?
+- **Q252.** How would you handle payment aggregate in this JD?
+- **Q253.** How would you handle refund aggregate in this JD?
+- **Q254.** How would you handle subsidy aggregate in this JD?
+- **Q255.** How would you handle menu aggregate in this JD?
+- **Q256.** How would you handle counter aggregate in this JD?
+- **Q257.** How would you handle aggregate boundaries in this JD?
+- **Q258.** How would you handle aggregate consistency in this JD?
+- **Q259.** How would you handle aggregate invariants in this JD?
+- **Q260.** How would you handle value object design in this JD?
+- **Q261.** How would you handle domain service use in this JD?
+- **Q262.** How would you handle application service use in this JD?
+- **Q263.** How would you handle domain event publishing in this JD?
+- **Q264.** How would you handle event handler design in this JD?
+- **Q265.** How would you handle queue vs topic in this JD?
+- **Q266.** How would you handle Service Bus Queue in this JD?
+- **Q267.** How would you handle Service Bus Topic in this JD?
+- **Q268.** How would you handle topic subscriptions in this JD?
+- **Q269.** How would you handle message sessions in this JD?
+- **Q270.** How would you handle ordered processing in this JD?
+- **Q271.** How would you handle dead-letter queue in this JD?
+- **Q272.** How would you handle retry policy in this JD?
+- **Q273.** How would you handle exponential backoff in this JD?
+- **Q274.** How would you handle poison message in this JD?
+- **Q275.** How would you handle message TTL in this JD?
+- **Q276.** How would you handle duplicate detection in this JD?
+- **Q277.** How would you handle scheduled messages in this JD?
+- **Q278.** How would you handle deferred messages in this JD?
+- **Q279.** How would you handle message lock duration in this JD?
+- **Q280.** How would you handle peek-lock mode in this JD?
+- **Q281.** How would you handle receive-and-delete mode in this JD?
+- **Q282.** How would you handle fan-out pattern in this JD?
+- **Q283.** How would you handle competing consumers in this JD?
+- **Q284.** How would you handle consumer scaling in this JD?
+- **Q285.** How would you handle event replay in this JD?
+- **Q286.** How would you handle projection rebuild in this JD?
+- **Q287.** How would you handle materialized views in this JD?
+- **Q288.** How would you handle read-side cache in this JD?
+- **Q289.** How would you handle menu read model in this JD?
+- **Q290.** How would you handle order history read model in this JD?
+- **Q291.** How would you handle active orders read model in this JD?
+- **Q292.** How would you handle store dashboard read model in this JD?
+- **Q293.** How would you handle customer order tracking in this JD?
+- **Q294.** How would you handle checkout command flow in this JD?
+- **Q295.** How would you handle place order command flow in this JD?
+- **Q296.** How would you handle payment captured event flow in this JD?
+- **Q297.** How would you handle PoS accepted event flow in this JD?
+- **Q298.** How would you handle invoice generated event flow in this JD?
+- **Q299.** How would you handle notification requested event flow in this JD?
+- **Q300.** How would you handle refund completed event flow in this JD?
+- **Q301.** How would you handle domain modelling workshop in this JD?
+- **Q302.** How would you handle event storming in this JD?
+- **Q303.** How would you handle ubiquitous language in this JD?
+- **Q304.** How would you handle bounded context mapping in this JD?
+- **Q305.** How would you handle anti-corruption layer in this JD?
+- **Q306.** How would you handle shared contract ownership in this JD?
+- **Q307.** How would you handle schema evolution in this JD?
+- **Q308.** How would you handle backward compatibility in this JD?
+- **Q309.** How would you handle message schema registry in this JD?
+- **Q310.** How would you handle event-driven observability in this JD?
+- **Q311.** How would you handle business event audit in this JD?
+- **Q312.** How would you handle eventual consistency UX in this JD?
+- **Q313.** How would you handle event ordering issues in this JD?
+- **Q314.** How would you handle distributed transaction avoidance in this JD?
+- **Q315.** How would you handle when not to use CQRS in this JD?
+- **Q316.** How would you handle CQRS complexity in this JD?
+- **Q317.** How would you handle CQRS testing in this JD?
+- **Q318.** How would you handle Cosmos DB use cases in this JD?
+- **Q319.** How would you handle NoSQL modelling in this JD?
+- **Q320.** How would you handle document modelling in this JD?
+- **Q321.** How would you handle access-pattern-first design in this JD?
+- **Q322.** How would you handle container design in this JD?
+- **Q323.** How would you handle cart container design in this JD?
+- **Q324.** How would you handle order container design in this JD?
+- **Q325.** How would you handle customer container design in this JD?
+- **Q326.** How would you handle menu container design in this JD?
+- **Q327.** How would you handle subsidy container design in this JD?
+- **Q328.** How would you handle partition key selection in this JD?
+- **Q329.** How would you handle high-cardinality partition key in this JD?
+- **Q330.** How would you handle hot partition in this JD?
+- **Q331.** How would you handle synthetic partition key in this JD?
+- **Q332.** How would you handle logical partition in this JD?
+- **Q333.** How would you handle physical partition in this JD?
+- **Q334.** How would you handle partition strategy for cart in this JD?
+- **Q335.** How would you handle partition strategy for order in this JD?
+- **Q336.** How would you handle partition strategy for store active orders in this JD?
+- **Q337.** How would you handle customer order history query in this JD?
+- **Q338.** How would you handle order lookup by id in this JD?
+- **Q339.** How would you handle store dashboard query in this JD?
+- **Q340.** How would you handle multi-tenant partitioning in this JD?
+- **Q341.** How would you handle tenantId partition key in this JD?
+- **Q342.** How would you handle customerId partition key in this JD?
+- **Q343.** How would you handle storeId partition key in this JD?
+- **Q344.** How would you handle orderId partition key in this JD?
+- **Q345.** How would you handle composite partition key in this JD?
+- **Q346.** How would you handle denormalization in this JD?
+- **Q347.** How would you handle embedding child documents in this JD?
+- **Q348.** How would you handle referencing documents in this JD?
+- **Q349.** How would you handle order snapshot in this JD?
+- **Q350.** How would you handle pricing snapshot in this JD?
+- **Q351.** How would you handle subsidy snapshot in this JD?
+- **Q352.** How would you handle document size limit in this JD?
+- **Q353.** How would you handle large document risk in this JD?
+- **Q354.** How would you handle schema design in this JD?
+- **Q355.** How would you handle schema versioning in this JD?
+- **Q356.** How would you handle schema evolution in this JD?
+- **Q357.** How would you handle backward compatibility in this JD?
+- **Q358.** How would you handle RU basics in this JD?
+- **Q359.** How would you handle RU estimation in this JD?
+- **Q360.** How would you handle RU optimization in this JD?
+- **Q361.** How would you handle point read in this JD?
+- **Q362.** How would you handle cross-partition query in this JD?
+- **Q363.** How would you handle SELECT star issue in this JD?
+- **Q364.** How would you handle projection query in this JD?
+- **Q365.** How would you handle indexing policy in this JD?
+- **Q366.** How would you handle exclude paths in this JD?
+- **Q367.** How would you handle included paths in this JD?
+- **Q368.** How would you handle composite indexes in this JD?
+- **Q369.** How would you handle spatial indexes in this JD?
+- **Q370.** How would you handle TTL in this JD?
+- **Q371.** How would you handle change feed in this JD?
+- **Q372.** How would you handle change feed processor in this JD?
+- **Q373.** How would you handle analytical store in this JD?
+- **Q374.** How would you handle consistency levels in this JD?
+- **Q375.** How would you handle session consistency in this JD?
+- **Q376.** How would you handle strong consistency in this JD?
+- **Q377.** How would you handle bounded staleness in this JD?
+- **Q378.** How would you handle eventual consistency in this JD?
+- **Q379.** How would you handle multi-region writes in this JD?
+- **Q380.** How would you handle conflict resolution in this JD?
+- **Q381.** How would you handle ETag concurrency in this JD?
+- **Q382.** How would you handle optimistic concurrency in this JD?
+- **Q383.** How would you handle If-Match condition in this JD?
+- **Q384.** How would you handle lost update prevention in this JD?
+- **Q385.** How would you handle cart concurrency in this JD?
+- **Q386.** How would you handle order status concurrency in this JD?
+- **Q387.** How would you handle payment callback concurrency in this JD?
+- **Q388.** How would you handle retry after 429 in this JD?
+- **Q389.** How would you handle throttling handling in this JD?
+- **Q390.** How would you handle autoscale RU in this JD?
+- **Q391.** How would you handle manual throughput in this JD?
+- **Q392.** How would you handle serverless Cosmos in this JD?
+- **Q393.** How would you handle provisioned throughput in this JD?
+- **Q394.** How would you handle shared throughput database in this JD?
+- **Q395.** How would you handle dedicated container throughput in this JD?
+- **Q396.** How would you handle bulk operations in this JD?
+- **Q397.** How would you handle transactional batch in this JD?
+- **Q398.** How would you handle stored procedures in this JD?
+- **Q399.** How would you handle patch operations in this JD?
+- **Q400.** How would you handle partial document update in this JD?
+- **Q401.** How would you handle Cosmos SDK usage in this JD?
+- **Q402.** How would you handle LINQ queries in this JD?
+- **Q403.** How would you handle SQL API queries in this JD?
+- **Q404.** How would you handle query diagnostics in this JD?
+- **Q405.** How would you handle RU monitoring in this JD?
+- **Q406.** How would you handle hot partition monitoring in this JD?
+- **Q407.** How would you handle index transformation in this JD?
+- **Q408.** How would you handle data migration in this JD?
+- **Q409.** How would you handle container split strategy in this JD?
+- **Q410.** How would you handle read model container in this JD?
+- **Q411.** How would you handle write model container in this JD?
+- **Q412.** How would you handle audit container in this JD?
+- **Q413.** How would you handle idempotency container in this JD?
+- **Q414.** How would you handle outbox container in this JD?
+- **Q415.** How would you handle Cosmos backup in this JD?
+- **Q416.** How would you handle point-in-time restore in this JD?
+- **Q417.** How would you handle security with RBAC in this JD?
+- **Q418.** How would you handle managed identity to Cosmos in this JD?
+- **Q419.** How would you handle private endpoint for Cosmos in this JD?
+- **Q420.** How would you handle encryption at rest in this JD?
+- **Q421.** How would you handle Cosmos cost control in this JD?
+- **Q422.** How would you handle Cosmos performance testing in this JD?
+- **Q423.** How would you handle Cosmos anti-patterns in this JD?
+- **Q424.** How would you handle relational thinking mistake in this JD?
+- **Q425.** How would you handle Azure App Service design in this JD?
+- **Q426.** How would you handle App Service autoscale in this JD?
+- **Q427.** How would you handle deployment slots in this JD?
+- **Q428.** How would you handle slot swap in this JD?
+- **Q429.** How would you handle App Service plan sizing in this JD?
+- **Q430.** How would you handle Azure Functions design in this JD?
+- **Q431.** How would you handle Function triggers in this JD?
+- **Q432.** How would you handle Service Bus trigger in this JD?
+- **Q433.** How would you handle HTTP trigger in this JD?
+- **Q434.** How would you handle Timer trigger in this JD?
+- **Q435.** How would you handle Blob trigger in this JD?
+- **Q436.** How would you handle Durable Functions in this JD?
+- **Q437.** How would you handle Function retry in this JD?
+- **Q438.** How would you handle Function timeout in this JD?
+- **Q439.** How would you handle Function hosting plan in this JD?
+- **Q440.** How would you handle Consumption vs Premium plan in this JD?
+- **Q441.** How would you handle Azure APIM design in this JD?
+- **Q442.** How would you handle APIM tiers in this JD?
+- **Q443.** How would you handle internal APIM in this JD?
+- **Q444.** How would you handle external APIM in this JD?
+- **Q445.** How would you handle APIM policies in this JD?
+- **Q446.** How would you handle validate-jwt policy in this JD?
+- **Q447.** How would you handle rate-limit policy in this JD?
+- **Q448.** How would you handle quota policy in this JD?
+- **Q449.** How would you handle CORS policy in this JD?
+- **Q450.** How would you handle IP filter policy in this JD?
+- **Q451.** How would you handle rewrite URI policy in this JD?
+- **Q452.** How would you handle set header policy in this JD?
+- **Q453.** How would you handle backend routing policy in this JD?
+- **Q454.** How would you handle APIM versioning in this JD?
+- **Q455.** How would you handle APIM products in this JD?
+- **Q456.** How would you handle APIM subscriptions in this JD?
+- **Q457.** How would you handle APIM developer portal in this JD?
+- **Q458.** How would you handle Azure Service Bus namespace in this JD?
+- **Q459.** How would you handle queue configuration in this JD?
+- **Q460.** How would you handle topic configuration in this JD?
+- **Q461.** How would you handle DLQ monitoring in this JD?
+- **Q462.** How would you handle message sessions in this JD?
+- **Q463.** How would you handle Azure Blob Storage in this JD?
+- **Q464.** How would you handle private containers in this JD?
+- **Q465.** How would you handle SAS token in this JD?
+- **Q466.** How would you handle managed identity Blob access in this JD?
+- **Q467.** How would you handle Blob lifecycle management in this JD?
+- **Q468.** How would you handle Blob versioning in this JD?
+- **Q469.** How would you handle soft delete in this JD?
+- **Q470.** How would you handle immutable storage in this JD?
+- **Q471.** How would you handle Azure Key Vault in this JD?
+- **Q472.** How would you handle Key Vault references in this JD?
+- **Q473.** How would you handle secret rotation in this JD?
+- **Q474.** How would you handle certificate management in this JD?
+- **Q475.** How would you handle Managed Identity in this JD?
+- **Q476.** How would you handle system-assigned identity in this JD?
+- **Q477.** How would you handle user-assigned identity in this JD?
+- **Q478.** How would you handle Application Insights in this JD?
+- **Q479.** How would you handle Log Analytics in this JD?
+- **Q480.** How would you handle KQL queries in this JD?
+- **Q481.** How would you handle custom metrics in this JD?
+- **Q482.** How would you handle distributed tracing in this JD?
+- **Q483.** How would you handle dependency tracking in this JD?
+- **Q484.** How would you handle availability tests in this JD?
+- **Q485.** How would you handle alerts in this JD?
+- **Q486.** How would you handle action groups in this JD?
+- **Q487.** How would you handle dashboards in this JD?
+- **Q488.** How would you handle Azure Monitor in this JD?
+- **Q489.** How would you handle Azure Front Door in this JD?
+- **Q490.** How would you handle Application Gateway in this JD?
+- **Q491.** How would you handle WAF in this JD?
+- **Q492.** How would you handle Traffic Manager in this JD?
+- **Q493.** How would you handle Private Endpoint in this JD?
+- **Q494.** How would you handle Private DNS Zone in this JD?
+- **Q495.** How would you handle VNet integration in this JD?
+- **Q496.** How would you handle network security groups in this JD?
+- **Q497.** How would you handle Azure Firewall in this JD?
+- **Q498.** How would you handle service endpoints in this JD?
+- **Q499.** How would you handle landing zone alignment in this JD?
+- **Q500.** How would you handle resource group strategy in this JD?
+- **Q501.** How would you handle naming convention in this JD?
+- **Q502.** How would you handle tagging strategy in this JD?
+- **Q503.** How would you handle Azure Policy in this JD?
+- **Q504.** How would you handle RBAC in this JD?
+- **Q505.** How would you handle least privilege in this JD?
+- **Q506.** How would you handle environment separation in this JD?
+- **Q507.** How would you handle dev environment in this JD?
+- **Q508.** How would you handle test environment in this JD?
+- **Q509.** How would you handle staging environment in this JD?
+- **Q510.** How would you handle production environment in this JD?
+- **Q511.** How would you handle blue-green deployment in this JD?
+- **Q512.** How would you handle canary deployment in this JD?
+- **Q513.** How would you handle rollback in this JD?
+- **Q514.** How would you handle backup strategy in this JD?
+- **Q515.** How would you handle DR strategy in this JD?
+- **Q516.** How would you handle multi-region App Service in this JD?
+- **Q517.** How would you handle multi-region Functions in this JD?
+- **Q518.** How would you handle multi-region Service Bus in this JD?
+- **Q519.** How would you handle multi-region Cosmos in this JD?
+- **Q520.** How would you handle storage replication in this JD?
+- **Q521.** How would you handle GRS storage in this JD?
+- **Q522.** How would you handle RA-GRS storage in this JD?
+- **Q523.** How would you handle cost management in this JD?
+- **Q524.** How would you handle budget alerts in this JD?
+- **Q525.** How would you handle capacity planning in this JD?
+- **Q526.** How would you handle Azure DevOps deployment in this JD?
+- **Q527.** How would you handle Infrastructure as Code in this JD?
+- **Q528.** How would you handle Terraform modules in this JD?
+- **Q529.** How would you handle Bicep templates in this JD?
+- **Q530.** How would you handle pipeline approvals in this JD?
+- **Q531.** How would you handle release gates in this JD?
+- **Q532.** How would you handle production support in this JD?
+- **Q533.** How would you handle payment gateway integration in this JD?
+- **Q534.** How would you handle payment authorization in this JD?
+- **Q535.** How would you handle payment capture in this JD?
+- **Q536.** How would you handle payment refund in this JD?
+- **Q537.** How would you handle payment webhook in this JD?
+- **Q538.** How would you handle payment reconciliation in this JD?
+- **Q539.** How would you handle payment idempotency in this JD?
+- **Q540.** How would you handle payment timeout in this JD?
+- **Q541.** How would you handle payment failure handling in this JD?
+- **Q542.** How would you handle payment security in this JD?
+- **Q543.** How would you handle PCI considerations in this JD?
+- **Q544.** How would you handle tokenized payment in this JD?
+- **Q545.** How would you handle duplicate payment prevention in this JD?
+- **Q546.** How would you handle partial payment in this JD?
+- **Q547.** How would you handle failed payment retry in this JD?
+- **Q548.** How would you handle PoS integration in this JD?
+- **Q549.** How would you handle PoS connector in this JD?
+- **Q550.** How would you handle PoS order submission in this JD?
+- **Q551.** How would you handle PoS acknowledgement in this JD?
+- **Q552.** How would you handle PoS timeout in this JD?
+- **Q553.** How would you handle PoS retry in this JD?
+- **Q554.** How would you handle PoS idempotency in this JD?
+- **Q555.** How would you handle PoS mapping in this JD?
+- **Q556.** How would you handle menu item code mapping in this JD?
+- **Q557.** How would you handle store code mapping in this JD?
+- **Q558.** How would you handle counter mapping in this JD?
+- **Q559.** How would you handle PoS status update in this JD?
+- **Q560.** How would you handle PoS reconciliation in this JD?
+- **Q561.** How would you handle PoS offline handling in this JD?
+- **Q562.** How would you handle CMS integration in this JD?
+- **Q563.** How would you handle CMS menu sync in this JD?
+- **Q564.** How would you handle CMS webhook in this JD?
+- **Q565.** How would you handle CMS scheduled sync in this JD?
+- **Q566.** How would you handle CMS content validation in this JD?
+- **Q567.** How would you handle CMS image handling in this JD?
+- **Q568.** How would you handle CMS promotion sync in this JD?
+- **Q569.** How would you handle CMS cache invalidation in this JD?
+- **Q570.** How would you handle CMS fallback in this JD?
+- **Q571.** How would you handle notification service in this JD?
+- **Q572.** How would you handle email notification in this JD?
+- **Q573.** How would you handle SMS notification in this JD?
+- **Q574.** How would you handle push notification in this JD?
+- **Q575.** How would you handle in-app notification in this JD?
+- **Q576.** How would you handle notification templates in this JD?
+- **Q577.** How would you handle notification localization in this JD?
+- **Q578.** How would you handle notification user preferences in this JD?
+- **Q579.** How would you handle notification retry in this JD?
+- **Q580.** How would you handle notification provider fallback in this JD?
+- **Q581.** How would you handle notification audit in this JD?
+- **Q582.** How would you handle invoice engine integration in this JD?
+- **Q583.** How would you handle invoice generation in this JD?
+- **Q584.** How would you handle invoice template versioning in this JD?
+- **Q585.** How would you handle invoice PDF storage in this JD?
+- **Q586.** How would you handle invoice metadata in this JD?
+- **Q587.** How would you handle invoice retry in this JD?
+- **Q588.** How would you handle invoice duplicate prevention in this JD?
+- **Q589.** How would you handle invoice download security in this JD?
+- **Q590.** How would you handle third-party API adapter in this JD?
+- **Q591.** How would you handle anti-corruption layer in this JD?
+- **Q592.** How would you handle adapter pattern in this JD?
+- **Q593.** How would you handle facade pattern in this JD?
+- **Q594.** How would you handle external API timeout in this JD?
+- **Q595.** How would you handle external API retry in this JD?
+- **Q596.** How would you handle external API circuit breaker in this JD?
+- **Q597.** How would you handle external API fallback in this JD?
+- **Q598.** How would you handle malformed response handling in this JD?
+- **Q599.** How would you handle API contract testing in this JD?
+- **Q600.** How would you handle consumer-driven contract tests in this JD?
+- **Q601.** How would you handle mocking external APIs in this JD?
+- **Q602.** How would you handle sandbox vs production endpoints in this JD?
+- **Q603.** How would you handle webhook signature validation in this JD?
+- **Q604.** How would you handle webhook replay protection in this JD?
+- **Q605.** How would you handle webhook idempotency in this JD?
+- **Q606.** How would you handle API key rotation in this JD?
+- **Q607.** How would you handle OAuth client credential flow in this JD?
+- **Q608.** How would you handle mTLS integration in this JD?
+- **Q609.** How would you handle IP allowlisting in this JD?
+- **Q610.** How would you handle rate limits from vendor in this JD?
+- **Q611.** How would you handle vendor throttling in this JD?
+- **Q612.** How would you handle vendor outage handling in this JD?
+- **Q613.** How would you handle manual reconciliation dashboard in this JD?
+- **Q614.** How would you handle integration audit trail in this JD?
+- **Q615.** How would you handle error code mapping in this JD?
+- **Q616.** How would you handle external to internal status mapping in this JD?
+- **Q617.** How would you handle integration observability in this JD?
+- **Q618.** How would you handle integration correlation ID in this JD?
+- **Q619.** How would you handle integration runbook in this JD?
+- **Q620.** How would you handle integration SLA in this JD?
+- **Q621.** How would you handle integration ownership in this JD?
+- **Q622.** How would you handle integration data privacy in this JD?
+- **Q623.** How would you handle PII sharing with vendor in this JD?
+- **Q624.** How would you handle third-party risk assessment in this JD?
+- **Q625.** How would you handle change management with vendors in this JD?
+- **Q626.** How would you handle versioned integration contracts in this JD?
+- **Q627.** How would you handle integration rollback in this JD?
+- **Q628.** How would you handle feature flag for integrations in this JD?
+- **Q629.** How would you handle payment and order consistency in this JD?
+- **Q630.** How would you handle refund and order consistency in this JD?
+- **Q631.** How would you handle PoS and order consistency in this JD?
+- **Q632.** How would you handle CMS and menu consistency in this JD?
+- **Q633.** How would you handle notification failure impact in this JD?
+- **Q634.** How would you handle invoice failure impact in this JD?
+- **Q635.** How would you handle compensation workflow in this JD?
+- **Q636.** How would you handle integration testing strategy in this JD?
+- **Q637.** How would you handle OAuth2 in this JD?
+- **Q638.** How would you handle OpenID Connect in this JD?
+- **Q639.** How would you handle JWT authentication in this JD?
+- **Q640.** How would you handle JWT validation in this JD?
+- **Q641.** How would you handle token issuer in this JD?
+- **Q642.** How would you handle token audience in this JD?
+- **Q643.** How would you handle token signature in this JD?
+- **Q644.** How would you handle token expiry in this JD?
+- **Q645.** How would you handle refresh token in this JD?
+- **Q646.** How would you handle access token in this JD?
+- **Q647.** How would you handle ID token in this JD?
+- **Q648.** How would you handle scopes in this JD?
+- **Q649.** How would you handle roles in this JD?
+- **Q650.** How would you handle claims in this JD?
+- **Q651.** How would you handle policy-based authorization in this JD?
+- **Q652.** How would you handle role-based authorization in this JD?
+- **Q653.** How would you handle claims-based authorization in this JD?
+- **Q654.** How would you handle resource-based authorization in this JD?
+- **Q655.** How would you handle Entra ID integration in this JD?
+- **Q656.** How would you handle Azure AD integration in this JD?
+- **Q657.** How would you handle Okta integration in this JD?
+- **Q658.** How would you handle CIAM integration in this JD?
+- **Q659.** How would you handle customer identity in this JD?
+- **Q660.** How would you handle admin identity in this JD?
+- **Q661.** How would you handle service-to-service authentication in this JD?
+- **Q662.** How would you handle client credentials flow in this JD?
+- **Q663.** How would you handle authorization code flow with PKCE in this JD?
+- **Q664.** How would you handle managed identity in this JD?
+- **Q665.** How would you handle secretless access in this JD?
+- **Q666.** How would you handle Key Vault in this JD?
+- **Q667.** How would you handle OWASP API Security in this JD?
+- **Q668.** How would you handle broken object-level authorization in this JD?
+- **Q669.** How would you handle broken authentication in this JD?
+- **Q670.** How would you handle broken function-level authorization in this JD?
+- **Q671.** How would you handle excessive data exposure in this JD?
+- **Q672.** How would you handle lack of rate limiting in this JD?
+- **Q673.** How would you handle injection in this JD?
+- **Q674.** How would you handle security misconfiguration in this JD?
+- **Q675.** How would you handle unsafe API consumption in this JD?
+- **Q676.** How would you handle mass assignment in this JD?
+- **Q677.** How would you handle SSRF risk in this JD?
+- **Q678.** How would you handle CORS security in this JD?
+- **Q679.** How would you handle CSRF consideration in this JD?
+- **Q680.** How would you handle XSS token risk in this JD?
+- **Q681.** How would you handle secure token storage in this JD?
+- **Q682.** How would you handle PII identification in this JD?
+- **Q683.** How would you handle PII classification in this JD?
+- **Q684.** How would you handle PII masking in this JD?
+- **Q685.** How would you handle PII encryption in this JD?
+- **Q686.** How would you handle PII in logs in this JD?
+- **Q687.** How would you handle PII retention in this JD?
+- **Q688.** How would you handle data minimization in this JD?
+- **Q689.** How would you handle right to access/delete in this JD?
+- **Q690.** How would you handle audit logging in this JD?
+- **Q691.** How would you handle security monitoring in this JD?
+- **Q692.** How would you handle threat modelling in this JD?
+- **Q693.** How would you handle STRIDE in this JD?
+- **Q694.** How would you handle secure coding in this JD?
+- **Q695.** How would you handle input validation in this JD?
+- **Q696.** How would you handle output encoding in this JD?
+- **Q697.** How would you handle SQL injection prevention in this JD?
+- **Q698.** How would you handle NoSQL injection prevention in this JD?
+- **Q699.** How would you handle Cosmos query parameterization in this JD?
+- **Q700.** How would you handle file upload security in this JD?
+- **Q701.** How would you handle malware scanning in this JD?
+- **Q702.** How would you handle secure headers in this JD?
+- **Q703.** How would you handle HSTS in this JD?
+- **Q704.** How would you handle HTTPS enforcement in this JD?
+- **Q705.** How would you handle APIM validate-jwt in this JD?
+- **Q706.** How would you handle APIM rate limit in this JD?
+- **Q707.** How would you handle APIM quota in this JD?
+- **Q708.** How would you handle APIM IP filter in this JD?
+- **Q709.** How would you handle APIM CORS in this JD?
+- **Q710.** How would you handle APIM subscription keys in this JD?
+- **Q711.** How would you handle backend API authorization in this JD?
+- **Q712.** How would you handle defense in depth in this JD?
+- **Q713.** How would you handle least privilege in this JD?
+- **Q714.** How would you handle RBAC in this JD?
+- **Q715.** How would you handle ABAC in this JD?
+- **Q716.** How would you handle network isolation in this JD?
+- **Q717.** How would you handle private endpoints in this JD?
+- **Q718.** How would you handle WAF in this JD?
+- **Q719.** How would you handle DDoS protection in this JD?
+- **Q720.** How would you handle secrets rotation in this JD?
+- **Q721.** How would you handle certificate rotation in this JD?
+- **Q722.** How would you handle key rotation in this JD?
+- **Q723.** How would you handle vulnerability scanning in this JD?
+- **Q724.** How would you handle dependency scanning in this JD?
+- **Q725.** How would you handle SonarQube security rules in this JD?
+- **Q726.** How would you handle SAST in this JD?
+- **Q727.** How would you handle DAST in this JD?
+- **Q728.** How would you handle container image scanning in this JD?
+- **Q729.** How would you handle security incident response in this JD?
+- **Q730.** How would you handle security audit in this JD?
+- **Q731.** How would you handle penetration testing in this JD?
+- **Q732.** How would you handle security sign-off in this JD?
+- **Q733.** How would you handle compliance evidence in this JD?
+- **Q734.** How would you handle React architecture in this JD?
+- **Q735.** How would you handle Ionic architecture in this JD?
+- **Q736.** How would you handle PWA architecture in this JD?
+- **Q737.** How would you handle mobile app integration in this JD?
+- **Q738.** How would you handle frontend routing in this JD?
+- **Q739.** How would you handle state management in this JD?
+- **Q740.** How would you handle API client design in this JD?
+- **Q741.** How would you handle token passing in this JD?
+- **Q742.** How would you handle Authorization header in this JD?
+- **Q743.** How would you handle token refresh in this JD?
+- **Q744.** How would you handle secure token storage in this JD?
+- **Q745.** How would you handle localStorage risk in this JD?
+- **Q746.** How would you handle secure cookie approach in this JD?
+- **Q747.** How would you handle PKCE flow in this JD?
+- **Q748.** How would you handle login flow in this JD?
+- **Q749.** How would you handle logout flow in this JD?
+- **Q750.** How would you handle session timeout in this JD?
+- **Q751.** How would you handle silent token renewal in this JD?
+- **Q752.** How would you handle API error handling in this JD?
+- **Q753.** How would you handle global HTTP interceptor in this JD?
+- **Q754.** How would you handle retry from frontend in this JD?
+- **Q755.** How would you handle offline UX in this JD?
+- **Q756.** How would you handle PWA caching in this JD?
+- **Q757.** How would you handle service worker in this JD?
+- **Q758.** How would you handle asset caching in this JD?
+- **Q759.** How would you handle menu caching in this JD?
+- **Q760.** How would you handle offline cart in this JD?
+- **Q761.** How would you handle offline limitations in this JD?
+- **Q762.** How would you handle checkout online validation in this JD?
+- **Q763.** How would you handle payment redirection in this JD?
+- **Q764.** How would you handle payment callback UX in this JD?
+- **Q765.** How would you handle order status polling in this JD?
+- **Q766.** How would you handle real-time order updates in this JD?
+- **Q767.** How would you handle SignalR notifications in this JD?
+- **Q768.** How would you handle push notifications in this JD?
+- **Q769.** How would you handle in-app notifications in this JD?
+- **Q770.** How would you handle loading state in this JD?
+- **Q771.** How would you handle error state in this JD?
+- **Q772.** How would you handle empty state in this JD?
+- **Q773.** How would you handle form validation in this JD?
+- **Q774.** How would you handle accessibility in this JD?
+- **Q775.** How would you handle responsive design in this JD?
+- **Q776.** How would you handle mobile-first design in this JD?
+- **Q777.** How would you handle Ionic native capabilities in this JD?
+- **Q778.** How would you handle camera/file upload in this JD?
+- **Q779.** How would you handle deep linking in this JD?
+- **Q780.** How would you handle app version compatibility in this JD?
+- **Q781.** How would you handle API version compatibility in this JD?
+- **Q782.** How would you handle feature flags in frontend in this JD?
+- **Q783.** How would you handle configuration management in this JD?
+- **Q784.** How would you handle environment config in this JD?
+- **Q785.** How would you handle frontend build pipeline in this JD?
+- **Q786.** How would you handle static asset hosting in this JD?
+- **Q787.** How would you handle CDN usage in this JD?
+- **Q788.** How would you handle performance optimization in this JD?
+- **Q789.** How would you handle lazy loading in this JD?
+- **Q790.** How would you handle bundle optimization in this JD?
+- **Q791.** How would you handle image optimization in this JD?
+- **Q792.** How would you handle caching headers in this JD?
+- **Q793.** How would you handle PWA installability in this JD?
+- **Q794.** How would you handle manifest file in this JD?
+- **Q795.** How would you handle service worker update in this JD?
+- **Q796.** How would you handle offline fallback page in this JD?
+- **Q797.** How would you handle frontend observability in this JD?
+- **Q798.** How would you handle frontend error logging in this JD?
+- **Q799.** How would you handle user journey tracking in this JD?
+- **Q800.** How would you handle correlation ID from frontend in this JD?
+- **Q801.** How would you handle request ID propagation in this JD?
+- **Q802.** How would you handle frontend security in this JD?
+- **Q803.** How would you handle XSS prevention in this JD?
+- **Q804.** How would you handle CSP header in this JD?
+- **Q805.** How would you handle CORS understanding in this JD?
+- **Q806.** How would you handle CSRF understanding in this JD?
+- **Q807.** How would you handle sensitive data display in this JD?
+- **Q808.** How would you handle masking PII in UI in this JD?
+- **Q809.** How would you handle role-based UI rendering in this JD?
+- **Q810.** How would you handle admin screens in this JD?
+- **Q811.** How would you handle customer screens in this JD?
+- **Q812.** How would you handle store manager screens in this JD?
+- **Q813.** How would you handle cart UX in this JD?
+- **Q814.** How would you handle checkout UX in this JD?
+- **Q815.** How would you handle pre-order UX in this JD?
+- **Q816.** How would you handle multi-counter UX in this JD?
+- **Q817.** How would you handle refund UX in this JD?
+- **Q818.** How would you handle subsidy display UX in this JD?
+- **Q819.** How would you handle menu availability UX in this JD?
+- **Q820.** How would you handle price change UX in this JD?
+- **Q821.** How would you handle PoS failure UX in this JD?
+- **Q822.** How would you handle payment failure UX in this JD?
+- **Q823.** How would you handle order cancellation UX in this JD?
+- **Q824.** How would you handle invoice download UX in this JD?
+- **Q825.** How would you handle notification preference UX in this JD?
+- **Q826.** How would you handle frontend testing in this JD?
+- **Q827.** How would you handle unit tests in this JD?
+- **Q828.** How would you handle component tests in this JD?
+- **Q829.** How would you handle E2E tests in this JD?
+- **Q830.** How would you handle contract testing with API in this JD?
+- **Q831.** How would you handle mock API usage in this JD?
+- **Q832.** How would you handle frontend release governance in this JD?
+- **Q833.** How would you handle rollback frontend in this JD?
+- **Q834.** How would you handle blue-green frontend in this JD?
+- **Q835.** How would you handle monitoring frontend in this JD?
+- **Q836.** How would you handle PWA production readiness in this JD?
+- **Q837.** How would you handle cart creation in this JD?
+- **Q838.** How would you handle add item to cart in this JD?
+- **Q839.** How would you handle update item quantity in this JD?
+- **Q840.** How would you handle remove item from cart in this JD?
+- **Q841.** How would you handle cart expiry in this JD?
+- **Q842.** How would you handle cart concurrency in this JD?
+- **Q843.** How would you handle cart price refresh in this JD?
+- **Q844.** How would you handle cart validation in this JD?
+- **Q845.** How would you handle checkout start in this JD?
+- **Q846.** How would you handle checkout validation in this JD?
+- **Q847.** How would you handle price validation in this JD?
+- **Q848.** How would you handle menu availability in this JD?
+- **Q849.** How would you handle store availability in this JD?
+- **Q850.** How would you handle counter availability in this JD?
+- **Q851.** How would you handle inventory check in this JD?
+- **Q852.** How would you handle subsidy eligibility in this JD?
+- **Q853.** How would you handle subsidy balance in this JD?
+- **Q854.** How would you handle apply subsidy in this JD?
+- **Q855.** How would you handle remove subsidy in this JD?
+- **Q856.** How would you handle coupon vs subsidy in this JD?
+- **Q857.** How would you handle tax calculation in this JD?
+- **Q858.** How would you handle service charge in this JD?
+- **Q859.** How would you handle final amount calculation in this JD?
+- **Q860.** How would you handle payment initiation in this JD?
+- **Q861.** How would you handle payment authorization in this JD?
+- **Q862.** How would you handle payment capture in this JD?
+- **Q863.** How would you handle payment failure in this JD?
+- **Q864.** How would you handle order creation in this JD?
+- **Q865.** How would you handle order confirmation in this JD?
+- **Q866.** How would you handle order status in this JD?
+- **Q867.** How would you handle order lifecycle in this JD?
+- **Q868.** How would you handle order cancellation in this JD?
+- **Q869.** How would you handle order modification in this JD?
+- **Q870.** How would you handle order timeout in this JD?
+- **Q871.** How would you handle abandoned checkout in this JD?
+- **Q872.** How would you handle pre-order creation in this JD?
+- **Q873.** How would you handle pre-order slot validation in this JD?
+- **Q874.** How would you handle pre-order activation in this JD?
+- **Q875.** How would you handle pre-order cancellation in this JD?
+- **Q876.** How would you handle future menu availability in this JD?
+- **Q877.** How would you handle multi-counter split in this JD?
+- **Q878.** How would you handle counter fulfilment task in this JD?
+- **Q879.** How would you handle counter status update in this JD?
+- **Q880.** How would you handle overall order status aggregation in this JD?
+- **Q881.** How would you handle ready for pickup in this JD?
+- **Q882.** How would you handle order completion in this JD?
+- **Q883.** How would you handle refund eligibility in this JD?
+- **Q884.** How would you handle full refund in this JD?
+- **Q885.** How would you handle partial refund in this JD?
+- **Q886.** How would you handle refund approval in this JD?
+- **Q887.** How would you handle refund processing in this JD?
+- **Q888.** How would you handle refund failure in this JD?
+- **Q889.** How would you handle refund reconciliation in this JD?
+- **Q890.** How would you handle invoice request in this JD?
+- **Q891.** How would you handle invoice generation in this JD?
+- **Q892.** How would you handle invoice download in this JD?
+- **Q893.** How would you handle receipt generation in this JD?
+- **Q894.** How would you handle notification trigger in this JD?
+- **Q895.** How would you handle order placed notification in this JD?
+- **Q896.** How would you handle order ready notification in this JD?
+- **Q897.** How would you handle refund notification in this JD?
+- **Q898.** How would you handle payment failure notification in this JD?
+- **Q899.** How would you handle PoS submission in this JD?
+- **Q900.** How would you handle PoS acknowledgement in this JD?
+- **Q901.** How would you handle PoS rejection in this JD?
+- **Q902.** How would you handle PoS retry in this JD?
+- **Q903.** How would you handle PoS reconciliation in this JD?
+- **Q904.** How would you handle CMS menu update in this JD?
+- **Q905.** How would you handle menu image update in this JD?
+- **Q906.** How would you handle promotion update in this JD?
+- **Q907.** How would you handle menu cache refresh in this JD?
+- **Q908.** How would you handle item unavailable scenario in this JD?
+- **Q909.** How would you handle price changed during checkout in this JD?
+- **Q910.** How would you handle store closed during checkout in this JD?
+- **Q911.** How would you handle payment success PoS failure in this JD?
+- **Q912.** How would you handle payment success invoice failure in this JD?
+- **Q913.** How would you handle notification failure in this JD?
+- **Q914.** How would you handle duplicate checkout in this JD?
+- **Q915.** How would you handle duplicate webhook in this JD?
+- **Q916.** How would you handle duplicate refund in this JD?
+- **Q917.** How would you handle customer order history in this JD?
+- **Q918.** How would you handle store active order board in this JD?
+- **Q919.** How would you handle admin order search in this JD?
+- **Q920.** How would you handle customer support order lookup in this JD?
+- **Q921.** How would you handle subsidy audit in this JD?
+- **Q922.** How would you handle payment audit in this JD?
+- **Q923.** How would you handle refund audit in this JD?
+- **Q924.** How would you handle manual intervention in this JD?
+- **Q925.** How would you handle operational dashboard in this JD?
+- **Q926.** How would you handle SLA for order placement in this JD?
+- **Q927.** How would you handle lunch peak scenario in this JD?
+- **Q928.** How would you handle rush hour scaling in this JD?
+- **Q929.** How would you handle large order handling in this JD?
+- **Q930.** How would you handle group ordering in this JD?
+- **Q931.** How would you handle entitlement expiry in this JD?
+- **Q932.** How would you handle employee subsidy scenario in this JD?
+- **Q933.** How would you handle guest checkout in this JD?
+- **Q934.** How would you handle registered user checkout in this JD?
+- **Q935.** How would you handle multi-tenant food platform in this JD?
+- **Q936.** How would you handle multi-store ordering in this JD?
+- **Q937.** How would you handle multi-currency consideration in this JD?
+- **Q938.** How would you handle localization in this JD?
+- **Q939.** How would you handle tax compliance in this JD?
+- **Q940.** How would you handle invoice compliance in this JD?
+- **Q941.** How would you handle data retention for orders in this JD?
+- **Q942.** How would you handle customer privacy in orders in this JD?
+- **Q943.** How would you handle business KPI tracking in this JD?
+- **Q944.** How would you handle Azure DevOps pipeline in this JD?
+- **Q945.** How would you handle build pipeline in this JD?
+- **Q946.** How would you handle release pipeline in this JD?
+- **Q947.** How would you handle YAML pipeline in this JD?
+- **Q948.** How would you handle multi-stage pipeline in this JD?
+- **Q949.** How would you handle CI trigger in this JD?
+- **Q950.** How would you handle PR validation in this JD?
+- **Q951.** How would you handle branch policies in this JD?
+- **Q952.** How would you handle protected branches in this JD?
+- **Q953.** How would you handle trunk-based development in this JD?
+- **Q954.** How would you handle GitFlow in this JD?
+- **Q955.** How would you handle feature branches in this JD?
+- **Q956.** How would you handle release branches in this JD?
+- **Q957.** How would you handle hotfix branches in this JD?
+- **Q958.** How would you handle build validation in this JD?
+- **Q959.** How would you handle unit test stage in this JD?
+- **Q960.** How would you handle integration test stage in this JD?
+- **Q961.** How would you handle contract test stage in this JD?
+- **Q962.** How would you handle performance test stage in this JD?
+- **Q963.** How would you handle security scan stage in this JD?
+- **Q964.** How would you handle dependency scan in this JD?
+- **Q965.** How would you handle SAST in this JD?
+- **Q966.** How would you handle DAST in this JD?
+- **Q967.** How would you handle SonarQube integration in this JD?
+- **Q968.** How would you handle SonarQube quality gate in this JD?
+- **Q969.** How would you handle code coverage gate in this JD?
+- **Q970.** How would you handle duplication gate in this JD?
+- **Q971.** How would you handle vulnerability gate in this JD?
+- **Q972.** How would you handle code smell management in this JD?
+- **Q973.** How would you handle technical debt management in this JD?
+- **Q974.** How would you handle artifact publishing in this JD?
+- **Q975.** How would you handle Docker image build in this JD?
+- **Q976.** How would you handle container registry in this JD?
+- **Q977.** How would you handle image scanning in this JD?
+- **Q978.** How would you handle deployment to dev in this JD?
+- **Q979.** How would you handle deployment to QA in this JD?
+- **Q980.** How would you handle deployment to staging in this JD?
+- **Q981.** How would you handle deployment to prod in this JD?
+- **Q982.** How would you handle approval gates in this JD?
+- **Q983.** How would you handle manual validation in this JD?
+- **Q984.** How would you handle automated smoke tests in this JD?
+- **Q985.** How would you handle post-deployment validation in this JD?
+- **Q986.** How would you handle rollback strategy in this JD?
+- **Q987.** How would you handle deployment slots in this JD?
+- **Q988.** How would you handle slot swap in this JD?
+- **Q989.** How would you handle blue-green deployment in this JD?
+- **Q990.** How would you handle canary deployment in this JD?
+- **Q991.** How would you handle feature flags in this JD?
+- **Q992.** How would you handle release notes in this JD?
+- **Q993.** How would you handle change management in this JD?
+- **Q994.** How would you handle release governance in this JD?
+- **Q995.** How would you handle environment variables in this JD?
+- **Q996.** How would you handle secret variables in this JD?
+- **Q997.** How would you handle Key Vault in pipeline in this JD?
+- **Q998.** How would you handle IaC pipeline in this JD?
+- **Q999.** How would you handle Terraform plan in this JD?
+- **Q1000.** How would you handle Terraform apply in this JD?
+- **Q1001.** How would you handle Bicep deployment in this JD?
+- **Q1002.** How would you handle drift detection in this JD?
+- **Q1003.** How would you handle infrastructure review in this JD?
+- **Q1004.** How would you handle configuration drift in this JD?
+- **Q1005.** How would you handle database migration strategy in this JD?
+- **Q1006.** How would you handle expand-contract migration in this JD?
+- **Q1007.** How would you handle backward compatible deployment in this JD?
+- **Q1008.** How would you handle zero downtime deployment in this JD?
+- **Q1009.** How would you handle monitoring after release in this JD?
+- **Q1010.** How would you handle alert validation in this JD?
+- **Q1011.** How would you handle runbook validation in this JD?
+- **Q1012.** How would you handle incident management in this JD?
+- **Q1013.** How would you handle problem management in this JD?
+- **Q1014.** How would you handle RCA process in this JD?
+- **Q1015.** How would you handle production support handover in this JD?
+- **Q1016.** How would you handle SRE collaboration in this JD?
+- **Q1017.** How would you handle DevSecOps in this JD?
+- **Q1018.** How would you handle quality checklist in this JD?
+- **Q1019.** How would you handle architecture governance in this JD?
+- **Q1020.** How would you handle design review in this JD?
+- **Q1021.** How would you handle PR review in this JD?
+- **Q1022.** How would you handle risk assessment in this JD?
+- **Q1023.** How would you handle technical debt review in this JD?
+- **Q1024.** How would you handle ADR review in this JD?
+- **Q1025.** How would you handle security review in this JD?
+- **Q1026.** How would you handle performance review in this JD?
+- **Q1027.** How would you handle NFR review in this JD?
+- **Q1028.** How would you handle API contract review in this JD?
+- **Q1029.** How would you handle data model review in this JD?
+- **Q1030.** How would you handle integration review in this JD?
+- **Q1031.** How would you handle stakeholder communication in this JD?
+- **Q1032.** How would you handle product collaboration in this JD?
+- **Q1033.** How would you handle UX collaboration in this JD?
+- **Q1034.** How would you handle QA collaboration in this JD?
+- **Q1035.** How would you handle DevOps collaboration in this JD?
+- **Q1036.** How would you handle security team collaboration in this JD?
+- **Q1037.** How would you handle client stakeholder management in this JD?
+- **Q1038.** How would you handle estimation support in this JD?
+- **Q1039.** How would you handle delivery risk communication in this JD?
+- **Q1040.** How would you handle trade-off explanation in this JD?
+- **Q1041.** How would you handle option analysis in this JD?
+- **Q1042.** How would you handle cost-risk analysis in this JD?
+- **Q1043.** How would you handle go-live checklist in this JD?
+- **Q1044.** How would you handle production readiness checklist in this JD?
+- **Q1045.** How would you handle interview project explanation in this JD?
+- **Q1046.** How would you handle 60-second introduction in this JD?
+- **Q1047.** How would you handle architecture diagram explanation in this JD?
+- **Q1048.** How would you handle failure scenario explanation in this JD?
+- **Q1049.** How would you handle payment PoS failure scenario in this JD?
+- **Q1050.** How would you handle Cosmos hot partition scenario in this JD?
+- **Q1051.** How would you handle Service Bus DLQ scenario in this JD?
+- **Q1052.** How would you handle API security scenario in this JD?
+
+
+---
+
+# Dedicated Section: Design Principles for This JD
+
+## Why this section is important
+
+Yes, design principles were partially covered across architecture, Clean Architecture, CQRS, security, scalability, and governance topics.  
+However, for this JD, it is better to keep a dedicated **Design Principles** section because interviewers may directly ask:
+
+- What design principles do you follow?
+- How do you ensure maintainability?
+- How do you design scalable APIs?
+- How do you avoid tight coupling?
+- How do you design reliable integrations?
+- How do you govern architecture decisions?
+
+---
+
+## Core Design Principles to Mention in Interview
+
+| Principle | What it means in this JD |
+|---|---|
+| Separation of Concerns | Keep API, Application, Domain, and Infrastructure responsibilities separate |
+| Clean Architecture | Business logic should not depend on frameworks or external systems |
+| SOLID Principles | Write maintainable, extensible, testable code |
+| Domain-Driven Design | Model cart, checkout, order, payment, refund, subsidy, and PoS as clear domain capabilities |
+| CQRS | Separate command/write workloads from query/read workloads |
+| API-First Design | Define REST/OpenAPI contracts before implementation |
+| Event-Driven Design | Use Service Bus events to decouple payment, PoS, invoice, and notification workflows |
+| Idempotency | Prevent duplicate order, payment, refund, and webhook processing |
+| Resilience by Design | Use retry, timeout, circuit breaker, DLQ, and fallback |
+| Security by Design | Enforce OAuth2/OIDC, APIM policies, OWASP controls, least privilege, and PII protection |
+| Observability by Design | Add correlation IDs, structured logs, metrics, traces, dashboards, and alerts |
+| Cost-Aware Design | Optimize Cosmos DB RUs, App Service sizing, Functions, and API traffic |
+| Scalability by Design | Use stateless APIs, autoscale, queues, partitioning, and caching |
+| Backward Compatibility | Use API versioning, schema versioning, and message contract versioning |
+| Governance by Design | Use HLD, LLD, ADRs, PR reviews, design reviews, and release gates |
+
+---
+
+## 100 Design Principle Interview Questions
+
+## DP-Q1. What design principles do you follow while designing enterprise applications?
+
+### Question Summary
+Tests whether you can explain your architecture thinking beyond technologies.
+
+### Crisp Answer
+I follow separation of concerns, SOLID, Clean Architecture, API-first design, domain-driven design, CQRS, event-driven architecture, security by design, observability by design, and resilience by design.
+
+### Detailed Explanation
+For enterprise applications, design principles help maintain quality as the system grows. In this JD, the platform includes cart, checkout, payments, PoS, CMS, notifications, invoices, and subsidies. If these concerns are mixed together, the system becomes hard to change. I would separate API, application, domain, and infrastructure responsibilities. I would use CQRS for clear command/query separation and events for async integration workflows.
+
+### Final Interview Answer
+I follow design principles like separation of concerns, SOLID, Clean Architecture, DDD, CQRS, event-driven design, security by design, observability by design, and resilience by design. These principles help keep the platform maintainable, scalable, secure, and production-ready.
+
+---
+
+## DP-Q2. How do you apply separation of concerns?
+
+### Question Summary
+Tests whether you can avoid mixing API, business, and infrastructure logic.
+
+### Crisp Answer
+I keep controllers thin, business logic in application/domain layers, and external integration logic in infrastructure.
+
+### Detailed Explanation
+In this platform, controllers should not contain payment, PoS, Cosmos DB, or subsidy rules. Controllers receive requests and call handlers. Application layer coordinates use cases. Domain layer enforces business rules. Infrastructure connects to Cosmos DB, Service Bus, Blob, payment gateways, PoS, CMS, and notifications.
+
+### Final Interview Answer
+I apply separation of concerns by keeping HTTP logic in controllers, business use cases in the application layer, domain rules in the domain layer, and external dependencies in infrastructure. This makes the system easier to test, maintain, and evolve.
+
+---
+
+## DP-Q3. How do you apply SOLID principles?
+
+### Question Summary
+Tests object-oriented design maturity.
+
+### Crisp Answer
+I apply SOLID by keeping classes focused, depending on abstractions, extending behavior without modifying stable code, and avoiding tight coupling.
+
+### Detailed Explanation
+Single Responsibility keeps services focused. Open/Closed allows adding new payment provider without changing checkout logic. Liskov ensures implementations behave consistently. Interface Segregation avoids large interfaces. Dependency Inversion ensures domain/application layers depend on abstractions, not concrete infrastructure.
+
+### Final Interview Answer
+I use SOLID to keep code maintainable. For example, payment gateway integration should depend on an IPaymentGateway interface. New providers can be added without changing checkout logic. This improves testability and reduces regression risk.
+
+---
+
+## DP-Q4. How do you apply Clean Architecture?
+
+### Question Summary
+Tests whether you can structure enterprise .NET Core applications properly.
+
+### Crisp Answer
+I separate the solution into API, Application, Domain, Infrastructure, and Tests, with dependencies pointing inward.
+
+### Detailed Explanation
+The domain should not depend on Cosmos DB, Azure Functions, Service Bus, payment SDKs, or PoS APIs. The application layer defines interfaces. Infrastructure implements those interfaces. This keeps business logic independent of technology choices.
+
+### Final Interview Answer
+I apply Clean Architecture by keeping domain logic independent and placing Azure and third-party integrations in infrastructure. This makes the solution testable, maintainable, and easier to change.
+
+---
+
+## DP-Q5. How do you apply API-first design?
+
+### Question Summary
+Tests REST/OpenAPI contract discipline.
+
+### Crisp Answer
+I define OpenAPI contracts, request/response schemas, error models, authentication, versioning, and examples before implementation.
+
+### Detailed Explanation
+For mobile/PWA teams, API contracts are critical. APIs like cart, checkout, order, payment, refund, subsidy, and menu should be contract-driven. OpenAPI helps frontend, QA, and integration teams work in parallel.
+
+### Final Interview Answer
+I use API-first design by defining REST/OpenAPI contracts before implementation. This includes endpoints, schemas, status codes, error contracts, auth requirements, and examples. It improves alignment and reduces integration issues.
+
+---
+
+## DP-Q6. How do you apply Domain-Driven Design?
+
+### Question Summary
+Tests domain modelling skill.
+
+### Crisp Answer
+I identify bounded contexts and model core business entities like Cart, Order, Payment, Refund, Subsidy, Store, Counter, and Menu.
+
+### Detailed Explanation
+DDD helps model business rules correctly. Order lifecycle, refund eligibility, subsidy calculation, and multi-counter fulfilment are domain problems. These rules should live in the domain layer, not scattered across controllers or database code.
+
+### Final Interview Answer
+I apply DDD by identifying bounded contexts like cart, checkout, order, payment, refund, subsidy, CMS, and PoS. I model aggregates and value objects around business rules so the code reflects the real domain.
+
+---
+
+## DP-Q7. How do you apply CQRS?
+
+### Question Summary
+Tests command/query separation.
+
+### Crisp Answer
+I use commands for state changes and queries for reads.
+
+### Detailed Explanation
+Commands include PlaceOrder, CapturePayment, ApplySubsidy, CancelOrder, and InitiateRefund. Queries include GetMenu, GetCart, GetOrderStatus, and GetOrderHistory. This separation helps optimize reads and writes independently.
+
+### Final Interview Answer
+I apply CQRS by separating write use cases from read use cases. Command handlers enforce business rules and publish events, while query handlers use optimized read models and caching.
+
+---
+
+## DP-Q8. How do you apply event-driven design?
+
+### Question Summary
+Tests asynchronous integration design.
+
+### Crisp Answer
+I use events to decouple workflows like payment, PoS submission, invoice generation, and notifications.
+
+### Detailed Explanation
+After payment capture, the system can publish PaymentCaptured. PoS, invoice, notification, and reporting consumers can process independently. This reduces coupling and improves resilience.
+
+### Final Interview Answer
+I use event-driven design with Service Bus to decouple workflows. Events like OrderPlaced, PaymentCaptured, InvoiceRequested, and NotificationRequested allow independent consumers to process asynchronously.
+
+---
+
+## DP-Q9. How do you design for idempotency?
+
+### Question Summary
+Tests duplicate prevention.
+
+### Crisp Answer
+I use idempotency keys for critical operations like checkout, payment, refund, and webhook processing.
+
+### Detailed Explanation
+Network retries can create duplicate orders or payments. The backend should store idempotency key, request hash, operation status, and response. Repeated requests return the original result.
+
+### Final Interview Answer
+I design idempotency for critical APIs by using idempotency keys and processed-event tracking. This prevents duplicate orders, duplicate payments, duplicate refunds, and repeated webhook processing.
+
+---
+
+## DP-Q10. How do you design for resilience?
+
+### Question Summary
+Tests production reliability thinking.
+
+### Crisp Answer
+I use timeout, retry, circuit breaker, fallback, DLQ, idempotency, and reconciliation.
+
+### Detailed Explanation
+External systems like payment gateway, PoS, CMS, and notification providers can fail. Resilience patterns ensure the platform does not fail unpredictably. Service Bus helps recover async workflows.
+
+### Final Interview Answer
+I design resilience using bounded retries, timeouts, circuit breakers, fallback paths, DLQ, idempotency, and reconciliation jobs. This ensures safe recovery from external dependency failures.
+
+---
+
+## DP-Q11. How do you design for security?
+
+### Question Summary
+Tests security-by-design thinking.
+
+### Crisp Answer
+I apply OAuth2/OIDC, JWT validation, APIM policies, least privilege, Key Vault, PII masking, and OWASP API controls.
+
+### Detailed Explanation
+Security should be built into the design, not added later. Every API should enforce authentication and authorization. Sensitive data should be protected in logs and storage. Secrets should be in Key Vault.
+
+### Final Interview Answer
+I design security using Entra ID/Okta/CIAM, OAuth2/OIDC, APIM JWT validation, policy-based authorization, Key Vault, managed identity, PII masking, and OWASP API Security controls.
+
+---
+
+## DP-Q12. How do you design for observability?
+
+### Question Summary
+Tests supportability and production readiness.
+
+### Crisp Answer
+I add correlation IDs, structured logging, metrics, traces, dashboards, alerts, and business KPIs.
+
+### Detailed Explanation
+A single order flow may cross API, Service Bus, Function, payment, PoS, invoice, and notification systems. Correlation ID links these steps. Application Insights and dashboards help troubleshoot production issues.
+
+### Final Interview Answer
+I design observability by adding correlation IDs, structured logs, distributed traces, metrics, dashboards, and alerts across APIs, Functions, Service Bus, Cosmos DB, and external integrations.
+
+---
+
+## DP-Q13. How do you design for scalability?
+
+### Question Summary
+Tests high-volume platform design.
+
+### Crisp Answer
+I use stateless APIs, autoscaling, queues, partitioning, caching, and optimized read models.
+
+### Detailed Explanation
+Food ordering traffic may spike during lunch hours. Menu browsing and checkout should scale independently. Cosmos partitioning and cache strategy are critical for performance.
+
+### Final Interview Answer
+I design scalability with stateless App Services, autoscaling Functions, Service Bus decoupling, Cosmos DB partitioning, menu caching, and read-optimized models.
+
+---
+
+## DP-Q14. How do you design for cost optimization?
+
+### Question Summary
+Tests cloud cost awareness.
+
+### Crisp Answer
+I optimize Cosmos RUs, App Service sizing, Functions plan, APIM tier, caching, and unnecessary external calls.
+
+### Detailed Explanation
+Cosmos DB queries, APIM tier, App Service plan, and third-party calls can increase cost. Cost should be monitored and optimized based on usage patterns.
+
+### Final Interview Answer
+I design cost optimization by monitoring RU usage, avoiding cross-partition queries, caching read-heavy data, sizing App Services correctly, choosing the right Function plan, and tracking Azure budgets.
+
+---
+
+## DP-Q15. How do you design for backward compatibility?
+
+### Question Summary
+Tests API and schema evolution thinking.
+
+### Crisp Answer
+I use API versioning, message versioning, schema versioning, and backward-compatible changes.
+
+### Detailed Explanation
+Mobile/PWA clients may not upgrade immediately. APIs and message contracts should support older clients. Breaking changes should go to a new version.
+
+### Final Interview Answer
+I maintain backward compatibility using versioned APIs, versioned event contracts, schemaVersion fields, and additive changes. Breaking changes are released through new versions.
+
+---
+
+## DP-Q16. How do you decide between synchronous and asynchronous design?
+
+### Question Summary
+Tests workflow design maturity.
+
+### Crisp Answer
+Use synchronous calls for immediate user feedback and asynchronous events for long-running or unreliable operations.
+
+### Detailed Explanation
+Cart validation and price calculation may be synchronous. PoS submission, invoice generation, notification, and reconciliation should be asynchronous.
+
+### Final Interview Answer
+I use synchronous APIs for immediate user-facing validation and asynchronous Service Bus workflows for long-running or external dependency operations.
+
+---
+
+## DP-Q17. How do you avoid tight coupling with third-party systems?
+
+### Question Summary
+Tests integration architecture.
+
+### Crisp Answer
+Use adapter/connector pattern and anti-corruption layer.
+
+### Detailed Explanation
+Payment, PoS, CMS, notification, and invoice engines should be behind interfaces and adapters. Domain should not depend on vendor-specific models.
+
+### Final Interview Answer
+I avoid tight coupling by using adapters and anti-corruption layers. Third-party schemas are transformed into internal contracts, keeping the domain stable.
+
+---
+
+## DP-Q18. How do you design for testability?
+
+### Question Summary
+Tests maintainable code design.
+
+### Crisp Answer
+Use interfaces, dependency injection, Clean Architecture, unit tests, integration tests, and contract tests.
+
+### Detailed Explanation
+Business rules should be testable without Azure dependencies. External systems should be mocked or tested with contract tests. Domain logic should be covered by unit tests.
+
+### Final Interview Answer
+I design for testability by isolating domain logic, using dependency injection, defining interfaces for external dependencies, and writing unit, integration, and contract tests.
+
+---
+
+## DP-Q19. How do you design for maintainability?
+
+### Question Summary
+Tests long-term platform thinking.
+
+### Crisp Answer
+Use clear boundaries, naming conventions, coding standards, documentation, ADRs, and reviews.
+
+### Detailed Explanation
+Maintainability comes from good structure, not just clean code. HLD, LLD, OpenAPI contracts, ADRs, and code reviews help keep the platform understandable.
+
+### Final Interview Answer
+I design maintainability through Clean Architecture, clear domain boundaries, consistent API standards, documentation, ADRs, PR reviews, and technical debt tracking.
+
+---
+
+## DP-Q20. How do you design for governance?
+
+### Question Summary
+Tests architect-level ownership.
+
+### Crisp Answer
+Use design reviews, PR reviews, quality gates, ADRs, risk assessments, and release governance.
+
+### Detailed Explanation
+Governance ensures teams follow architecture standards. It includes HLD/LLD review, API contract review, data model review, security review, and production readiness checks.
+
+### Final Interview Answer
+I design governance through architecture standards, design reviews, PR reviews, SonarQube quality gates, ADRs, risk registers, and release approval processes.
+
+---
+
+## Additional Design Principle Questions to Prepare
+
+21. How do you apply single responsibility principle in service design?  
+22. How do you apply open/closed principle in payment gateway integration?  
+23. How do you apply dependency inversion in Clean Architecture?  
+24. How do you design extensible payment provider integration?  
+25. How do you design replaceable PoS connectors?  
+26. How do you design stable domain models?  
+27. How do you design aggregate boundaries?  
+28. How do you prevent anemic domain model?  
+29. How do you decide aggregate root?  
+30. How do you define domain events?  
+31. How do you design immutable order snapshot?  
+32. How do you design mutable cart and immutable order?  
+33. How do you design API error contracts?  
+34. How do you design standard response models?  
+35. How do you design pagination standards?  
+36. How do you design API filtering standards?  
+37. How do you design OpenAPI governance?  
+38. How do you design API deprecation strategy?  
+39. How do you design event contract versioning?  
+40. How do you design schema versioning in Cosmos DB?  
+41. How do you design data retention?  
+42. How do you design audit trail?  
+43. How do you design secure logging?  
+44. How do you design PII masking?  
+45. How do you design least privilege access?  
+46. How do you design resource-level authorization?  
+47. How do you design APIM policy governance?  
+48. How do you design reusable integration connectors?  
+49. How do you design failure recovery?  
+50. How do you design DLQ replay safely?  
+51. How do you design retry without duplication?  
+52. How do you design circuit breaker thresholds?  
+53. How do you design timeout strategy?  
+54. How do you design fallback behavior?  
+55. How do you design reconciliation jobs?  
+56. How do you design operational dashboards?  
+57. How do you design production alerts?  
+58. How do you design health checks?  
+59. How do you design readiness probes?  
+60. How do you design liveness probes?  
+61. How do you design CI/CD quality gates?  
+62. How do you design release rollback?  
+63. How do you design blue-green deployment?  
+64. How do you design canary release?  
+65. How do you design feature flags?  
+66. How do you design environment-specific configuration?  
+67. How do you design secret rotation?  
+68. How do you design key rotation?  
+69. How do you design multi-region failover?  
+70. How do you design active-active consistency?  
+71. How do you design cost controls?  
+72. How do you design Cosmos RU governance?  
+73. How do you design Service Bus governance?  
+74. How do you design Function scaling?  
+75. How do you design App Service scaling?  
+76. How do you design frontend/backend contract alignment?  
+77. How do you design PWA offline limitations?  
+78. How do you design secure token flow?  
+79. How do you design customer identity integration?  
+80. How do you design admin identity integration?  
+81. How do you design multi-tenant boundaries?  
+82. How do you design tenant isolation?  
+83. How do you design store isolation?  
+84. How do you design counter-level fulfilment?  
+85. How do you design pre-order activation?  
+86. How do you design refund approval flow?  
+87. How do you design payment reconciliation?  
+88. How do you design PoS reconciliation?  
+89. How do you design CMS cache invalidation?  
+90. How do you design invoice template versioning?  
+91. How do you design notification preference handling?  
+92. How do you design localization?  
+93. How do you design accessibility support?  
+94. How do you design performance testing?  
+95. How do you design contract testing?  
+96. How do you design integration testing?  
+97. How do you design architecture risk register?  
+98. How do you design ADR process?  
+99. How do you design technical debt backlog?  
+100. How do you design architecture governance checklist?  
+
+
 
 ---
 
