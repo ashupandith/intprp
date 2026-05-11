@@ -1079,8 +1079,10 @@ Each question contains:
 
 ## Why this section is important
 
-Yes, design principles were partially covered across architecture, Clean Architecture, CQRS, security, scalability, and governance topics.  
-However, for this JD, it is better to keep a dedicated **Design Principles** section because interviewers may directly ask:
+Design principles are very important for this JD because the role is not only coding.  
+The role expects architecture ownership, HLD/LLD, API contracts, integration flows, security, scalability, governance, and production readiness.
+
+In interview, you may be asked:
 
 - What design principles do you follow?
 - How do you ensure maintainability?
@@ -1091,13 +1093,13 @@ However, for this JD, it is better to keep a dedicated **Design Principles** sec
 
 ---
 
-## Core Design Principles to Mention in Interview
+## Core Design Principles Summary
 
 | Principle | What it means in this JD |
 |---|---|
 | Separation of Concerns | Keep API, Application, Domain, and Infrastructure responsibilities separate |
 | Clean Architecture | Business logic should not depend on frameworks or external systems |
-| SOLID Principles | Write maintainable, extensible, testable code |
+| SOLID Principles | Write maintainable, extensible, and testable code |
 | Domain-Driven Design | Model cart, checkout, order, payment, refund, subsidy, and PoS as clear domain capabilities |
 | CQRS | Separate command/write workloads from query/read workloads |
 | API-First Design | Define REST/OpenAPI contracts before implementation |
@@ -1113,414 +1115,959 @@ However, for this JD, it is better to keep a dedicated **Design Principles** sec
 
 ---
 
-## 100 Design Principle Interview Questions
+## Section A: Core Architecture Design Principles
 
-## DP-Q1. What design principles do you follow while designing enterprise applications?
+### DP-A1. What design principles do you follow while designing enterprise applications?
 
-### Question Summary
+#### Question Summary
 Tests whether you can explain your architecture thinking beyond technologies.
 
-### Crisp Answer
+#### Crisp Answer
 I follow separation of concerns, SOLID, Clean Architecture, API-first design, domain-driven design, CQRS, event-driven architecture, security by design, observability by design, and resilience by design.
 
-### Detailed Explanation
-For enterprise applications, design principles help maintain quality as the system grows. In this JD, the platform includes cart, checkout, payments, PoS, CMS, notifications, invoices, and subsidies. If these concerns are mixed together, the system becomes hard to change. I would separate API, application, domain, and infrastructure responsibilities. I would use CQRS for clear command/query separation and events for async integration workflows.
+#### Detailed Explanation
+For enterprise applications, design principles help maintain quality as the system grows. In this JD, the platform includes cart, checkout, payments, PoS, CMS, notifications, invoices, and subsidies. If these concerns are mixed together, the system becomes hard to change. I would separate API, application, domain, and infrastructure responsibilities. I would use CQRS for clear command/query separation and events for asynchronous integration workflows.
 
-### Final Interview Answer
+#### Final Interview Answer
 I follow design principles like separation of concerns, SOLID, Clean Architecture, DDD, CQRS, event-driven design, security by design, observability by design, and resilience by design. These principles help keep the platform maintainable, scalable, secure, and production-ready.
 
 ---
 
-## DP-Q2. How do you apply separation of concerns?
+### DP-A2. How do you apply separation of concerns?
 
-### Question Summary
+#### Question Summary
 Tests whether you can avoid mixing API, business, and infrastructure logic.
 
-### Crisp Answer
+#### Crisp Answer
 I keep controllers thin, business logic in application/domain layers, and external integration logic in infrastructure.
 
-### Detailed Explanation
-In this platform, controllers should not contain payment, PoS, Cosmos DB, or subsidy rules. Controllers receive requests and call handlers. Application layer coordinates use cases. Domain layer enforces business rules. Infrastructure connects to Cosmos DB, Service Bus, Blob, payment gateways, PoS, CMS, and notifications.
+#### Detailed Explanation
+In this platform, controllers should not contain payment, PoS, Cosmos DB, or subsidy rules. Controllers receive requests and call handlers. The application layer coordinates use cases. The domain layer enforces business rules. The infrastructure layer connects to Cosmos DB, Service Bus, Blob Storage, payment gateways, PoS, CMS, and notifications.
 
-### Final Interview Answer
+#### Final Interview Answer
 I apply separation of concerns by keeping HTTP logic in controllers, business use cases in the application layer, domain rules in the domain layer, and external dependencies in infrastructure. This makes the system easier to test, maintain, and evolve.
 
 ---
 
-## DP-Q3. How do you apply SOLID principles?
+### DP-A3. How do you apply Clean Architecture?
 
-### Question Summary
-Tests object-oriented design maturity.
-
-### Crisp Answer
-I apply SOLID by keeping classes focused, depending on abstractions, extending behavior without modifying stable code, and avoiding tight coupling.
-
-### Detailed Explanation
-Single Responsibility keeps services focused. Open/Closed allows adding new payment provider without changing checkout logic. Liskov ensures implementations behave consistently. Interface Segregation avoids large interfaces. Dependency Inversion ensures domain/application layers depend on abstractions, not concrete infrastructure.
-
-### Final Interview Answer
-I use SOLID to keep code maintainable. For example, payment gateway integration should depend on an IPaymentGateway interface. New providers can be added without changing checkout logic. This improves testability and reduces regression risk.
-
----
-
-## DP-Q4. How do you apply Clean Architecture?
-
-### Question Summary
+#### Question Summary
 Tests whether you can structure enterprise .NET Core applications properly.
 
-### Crisp Answer
+#### Crisp Answer
 I separate the solution into API, Application, Domain, Infrastructure, and Tests, with dependencies pointing inward.
 
-### Detailed Explanation
-The domain should not depend on Cosmos DB, Azure Functions, Service Bus, payment SDKs, or PoS APIs. The application layer defines interfaces. Infrastructure implements those interfaces. This keeps business logic independent of technology choices.
+#### Detailed Explanation
+The domain should not depend on Cosmos DB, Azure Functions, Service Bus, payment SDKs, or PoS APIs. The application layer defines interfaces. The infrastructure layer implements those interfaces. This keeps business logic independent of technology choices.
 
-### Final Interview Answer
+#### Final Interview Answer
 I apply Clean Architecture by keeping domain logic independent and placing Azure and third-party integrations in infrastructure. This makes the solution testable, maintainable, and easier to change.
 
 ---
 
-## DP-Q5. How do you apply API-first design?
+### DP-A4. How do you decide between modular monolith and microservices?
 
-### Question Summary
-Tests REST/OpenAPI contract discipline.
+#### Question Summary
+Tests whether you choose architecture based on complexity, team size, scalability, and operational maturity.
 
-### Crisp Answer
-I define OpenAPI contracts, request/response schemas, error models, authentication, versioning, and examples before implementation.
+#### Crisp Answer
+I choose modular monolith when the domain is still evolving and the team wants simplicity. I choose microservices when independent scaling, deployment, ownership, and domain boundaries are clear.
 
-### Detailed Explanation
-For mobile/PWA teams, API contracts are critical. APIs like cart, checkout, order, payment, refund, subsidy, and menu should be contract-driven. OpenAPI helps frontend, QA, and integration teams work in parallel.
+#### Detailed Explanation
+For a food ordering platform, cart, checkout, order, payment, refund, CMS, and PoS can be separated as modules first. If independent scaling or ownership becomes necessary, they can evolve into services. Starting with too many microservices can increase operational complexity.
 
-### Final Interview Answer
-I use API-first design by defining REST/OpenAPI contracts before implementation. This includes endpoints, schemas, status codes, error contracts, auth requirements, and examples. It improves alignment and reduces integration issues.
+#### Final Interview Answer
+I would not blindly choose microservices. I would start with clear domain modules and decide service boundaries based on business ownership, scaling needs, deployment independence, and operational maturity. This avoids unnecessary distributed system complexity.
 
 ---
 
-## DP-Q6. How do you apply Domain-Driven Design?
+### DP-A5. How do you communicate architecture trade-offs?
 
-### Question Summary
+#### Question Summary
+Tests whether you can explain options to stakeholders.
+
+#### Crisp Answer
+I present options with pros, cons, cost, risk, complexity, impact, and recommendation.
+
+#### Detailed Explanation
+Every architecture decision has trade-offs. For example, active-active improves availability but increases cost and consistency complexity. Cosmos partition key choice improves some queries and may hurt others. These decisions should be documented and communicated clearly.
+
+#### Final Interview Answer
+I communicate trade-offs using option analysis. I explain assumptions, benefits, risks, cost, complexity, and impact, then provide a recommendation. This helps stakeholders make informed decisions.
+
+---
+
+## Section B: SOLID and Object-Oriented Design Principles
+
+### DP-B1. What is Single Responsibility Principle?
+
+#### Question Summary
+Tests whether you can design focused classes and services.
+
+#### Crisp Answer
+A class should have only one reason to change.
+
+#### Detailed Explanation
+In this platform, a PaymentService should not also handle notification, invoice generation, and PoS submission. Each service should have one clear responsibility. This reduces regression risk when business rules change.
+
+#### Final Interview Answer
+Single Responsibility Principle means one class or service should focus on one responsibility. For example, payment, notification, and invoice generation should be separate capabilities. This improves maintainability and testability.
+
+---
+
+### DP-B2. How do you apply Open/Closed Principle in payment gateway integration?
+
+#### Question Summary
+Tests extensible integration design.
+
+#### Crisp Answer
+The system should be open for adding new payment providers but closed for changing checkout logic.
+
+#### Detailed Explanation
+Checkout should depend on an IPaymentGateway interface. Each provider implements this interface. Adding a new provider should require a new adapter, not changes in core checkout logic.
+
+#### Final Interview Answer
+I apply Open/Closed Principle by introducing abstractions like IPaymentGateway. New payment providers can be added as new implementations without modifying checkout business logic.
+
+---
+
+### DP-B3. How do you apply Dependency Inversion Principle?
+
+#### Question Summary
+Tests Clean Architecture dependency direction.
+
+#### Crisp Answer
+High-level business logic should depend on abstractions, not concrete infrastructure.
+
+#### Detailed Explanation
+The application layer should define interfaces such as IPaymentGateway, IOrderRepository, IEventPublisher, and INotificationService. Infrastructure implements these interfaces using Azure services or vendor SDKs.
+
+#### Final Interview Answer
+I apply Dependency Inversion by keeping application/domain logic dependent on interfaces, while infrastructure provides implementations. This keeps business logic independent from Azure SDKs, payment gateways, and PoS systems.
+
+---
+
+### DP-B4. How do you avoid large interfaces?
+
+#### Question Summary
+Tests Interface Segregation Principle.
+
+#### Crisp Answer
+I create small, role-specific interfaces instead of one large interface.
+
+#### Detailed Explanation
+Instead of one large IOrderService with many unrelated methods, I can define focused interfaces or command handlers. This reduces unnecessary dependencies and makes testing easier.
+
+#### Final Interview Answer
+I avoid large interfaces by following Interface Segregation. Each interface should represent a focused capability, such as payment capture, refund processing, or notification sending.
+
+---
+
+### DP-B5. How do you design extensible service classes?
+
+#### Question Summary
+Tests maintainable service design.
+
+#### Crisp Answer
+I use abstractions, strategy pattern, adapter pattern, and dependency injection.
+
+#### Detailed Explanation
+If subsidy rules or payment providers change, the code should allow new strategies/providers without modifying stable business flows. This reduces regression and improves extensibility.
+
+#### Final Interview Answer
+I design extensible services using interfaces, dependency injection, and patterns like Strategy and Adapter. This allows new providers or business rules to be added with minimal changes.
+
+---
+
+## Section C: Domain-Driven Design Principles
+
+### DP-C1. How do you apply Domain-Driven Design in this JD?
+
+#### Question Summary
 Tests domain modelling skill.
 
-### Crisp Answer
+#### Crisp Answer
 I identify bounded contexts and model core business entities like Cart, Order, Payment, Refund, Subsidy, Store, Counter, and Menu.
 
-### Detailed Explanation
+#### Detailed Explanation
 DDD helps model business rules correctly. Order lifecycle, refund eligibility, subsidy calculation, and multi-counter fulfilment are domain problems. These rules should live in the domain layer, not scattered across controllers or database code.
 
-### Final Interview Answer
+#### Final Interview Answer
 I apply DDD by identifying bounded contexts like cart, checkout, order, payment, refund, subsidy, CMS, and PoS. I model aggregates and value objects around business rules so the code reflects the real domain.
 
 ---
 
-## DP-Q7. How do you apply CQRS?
+### DP-C2. How do you decide aggregate boundaries?
 
-### Question Summary
-Tests command/query separation.
+#### Question Summary
+Tests whether you understand transactional consistency boundaries.
 
-### Crisp Answer
-I use commands for state changes and queries for reads.
+#### Crisp Answer
+Aggregate boundaries should be based on business invariants and consistency needs.
 
-### Detailed Explanation
-Commands include PlaceOrder, CapturePayment, ApplySubsidy, CancelOrder, and InitiateRefund. Queries include GetMenu, GetCart, GetOrderStatus, and GetOrderHistory. This separation helps optimize reads and writes independently.
+#### Detailed Explanation
+Order can be an aggregate because it controls order status, items, payment status, and fulfilment state. Cart can be a separate aggregate because it is mutable before checkout. Payment and refund may be separate aggregates depending on lifecycle and audit requirements.
 
-### Final Interview Answer
-I apply CQRS by separating write use cases from read use cases. Command handlers enforce business rules and publish events, while query handlers use optimized read models and caching.
-
----
-
-## DP-Q8. How do you apply event-driven design?
-
-### Question Summary
-Tests asynchronous integration design.
-
-### Crisp Answer
-I use events to decouple workflows like payment, PoS submission, invoice generation, and notifications.
-
-### Detailed Explanation
-After payment capture, the system can publish PaymentCaptured. PoS, invoice, notification, and reporting consumers can process independently. This reduces coupling and improves resilience.
-
-### Final Interview Answer
-I use event-driven design with Service Bus to decouple workflows. Events like OrderPlaced, PaymentCaptured, InvoiceRequested, and NotificationRequested allow independent consumers to process asynchronously.
+#### Final Interview Answer
+I decide aggregate boundaries based on invariants and consistency needs. For example, Order owns valid state transitions, while Cart owns cart item changes before checkout. This keeps consistency rules clear.
 
 ---
 
-## DP-Q9. How do you design for idempotency?
+### DP-C3. Why should order be an immutable snapshot?
 
-### Question Summary
+#### Question Summary
+Tests historical correctness.
+
+#### Crisp Answer
+Order should store item, price, tax, discount, subsidy, and payment details as they were at checkout time.
+
+#### Detailed Explanation
+Menu prices and subsidy rules may change later. Historical orders should not change because of future updates. Therefore, the order stores a snapshot of business facts at the time of order placement.
+
+#### Final Interview Answer
+I design order as an immutable snapshot to preserve historical correctness. It stores the exact item names, prices, taxes, discounts, subsidy, and payment details used at checkout.
+
+---
+
+### DP-C4. Why is cart mutable but order immutable?
+
+#### Question Summary
+Tests lifecycle modelling.
+
+#### Crisp Answer
+Cart represents a user’s temporary selection, while order represents a confirmed business transaction.
+
+#### Detailed Explanation
+Users can add, remove, or update cart items. Once checkout is completed, the order should be stable and auditable. Changes after order placement should happen through defined actions like cancellation, refund, or status transition.
+
+#### Final Interview Answer
+Cart is mutable because users can change selections before checkout. Order is immutable because it represents a confirmed transaction and must remain auditable.
+
+---
+
+### DP-C5. How do you avoid anemic domain model?
+
+#### Question Summary
+Tests whether business rules are properly encapsulated.
+
+#### Crisp Answer
+I keep business rules and state transitions inside domain entities/aggregates instead of only in services.
+
+#### Detailed Explanation
+If Order is only a data object and all rules are in services, rules become scattered. Order should expose methods like MarkPaymentCaptured, SendToPoS, Cancel, and MarkReady, with validation inside.
+
+#### Final Interview Answer
+I avoid anemic domain model by placing business rules and valid state transitions inside domain entities/aggregates. Services coordinate, but domain objects protect invariants.
+
+---
+
+## Section D: API and Contract Design Principles
+
+### DP-D1. How do you apply API-first design?
+
+#### Question Summary
+Tests REST/OpenAPI contract discipline.
+
+#### Crisp Answer
+I define OpenAPI contracts, request/response schemas, error models, authentication, versioning, and examples before implementation.
+
+#### Detailed Explanation
+For mobile/PWA teams, API contracts are critical. APIs like cart, checkout, order, payment, refund, subsidy, and menu should be contract-driven. OpenAPI helps frontend, QA, and integration teams work in parallel.
+
+#### Final Interview Answer
+I use API-first design by defining REST/OpenAPI contracts before implementation. This includes endpoints, schemas, status codes, error contracts, auth requirements, and examples. It improves alignment and reduces integration issues.
+
+---
+
+### DP-D2. How do you design standard API error responses?
+
+#### Question Summary
+Tests API maturity and frontend integration readiness.
+
+#### Crisp Answer
+I use a consistent error contract with errorCode, message, correlationId, details, and validationErrors.
+
+#### Detailed Explanation
+Frontend and support teams need predictable errors. Avoid raw exceptions. Use business error codes like CART_EMPTY, PAYMENT_FAILED, SUBSIDY_NOT_ELIGIBLE, ORDER_NOT_FOUND, and DUPLICATE_REQUEST.
+
+#### Final Interview Answer
+I design standard API errors with error code, user-safe message, correlation ID, details, and validation errors. This improves frontend handling and production support.
+
+---
+
+### DP-D3. How do you design API versioning?
+
+#### Question Summary
+Tests backward compatibility.
+
+#### Crisp Answer
+I use versioned APIs and keep breaking changes in new versions.
+
+#### Detailed Explanation
+Mobile/PWA clients may not upgrade immediately. Breaking changes should not break existing users. Use /api/v1 or header-based versioning and publish OpenAPI specs for each version.
+
+#### Final Interview Answer
+I use API versioning to protect existing clients. Breaking changes go into a new version, while old versions are supported during migration.
+
+---
+
+### DP-D4. How do you design idempotent APIs?
+
+#### Question Summary
 Tests duplicate prevention.
 
-### Crisp Answer
-I use idempotency keys for critical operations like checkout, payment, refund, and webhook processing.
+#### Crisp Answer
+I use idempotency keys for critical APIs like checkout, payment, refund, and webhook processing.
 
-### Detailed Explanation
+#### Detailed Explanation
 Network retries can create duplicate orders or payments. The backend should store idempotency key, request hash, operation status, and response. Repeated requests return the original result.
 
-### Final Interview Answer
+#### Final Interview Answer
 I design idempotency for critical APIs by using idempotency keys and processed-event tracking. This prevents duplicate orders, duplicate payments, duplicate refunds, and repeated webhook processing.
 
 ---
 
-## DP-Q10. How do you design for resilience?
+### DP-D5. How do you design pagination, filtering, and sorting?
 
-### Question Summary
+#### Question Summary
+Tests scalable API design.
+
+#### Crisp Answer
+I define consistent query parameters, limits, default page size, max page size, filters, and sorting rules.
+
+#### Detailed Explanation
+Large order history or admin search APIs should never return unlimited data. Pagination protects performance and cost. Filtering and sorting should align with Cosmos DB indexing strategy.
+
+#### Final Interview Answer
+I design pagination and filtering consistently across APIs. I use default and max page sizes, indexed filters, sorting rules, and response metadata to avoid large responses and expensive queries.
+
+---
+
+## Section E: Event-Driven and CQRS Design Principles
+
+### DP-E1. How do you apply CQRS?
+
+#### Question Summary
+Tests command/query separation.
+
+#### Crisp Answer
+I use commands for state changes and queries for reads.
+
+#### Detailed Explanation
+Commands include PlaceOrder, CapturePayment, ApplySubsidy, CancelOrder, and InitiateRefund. Queries include GetMenu, GetCart, GetOrderStatus, and GetOrderHistory. This separation helps optimize reads and writes independently.
+
+#### Final Interview Answer
+I apply CQRS by separating write use cases from read use cases. Command handlers enforce business rules and publish events, while query handlers use optimized read models and caching.
+
+---
+
+### DP-E2. How do you apply event-driven design?
+
+#### Question Summary
+Tests asynchronous integration design.
+
+#### Crisp Answer
+I use events to decouple workflows like payment, PoS submission, invoice generation, and notifications.
+
+#### Detailed Explanation
+After payment capture, the system can publish PaymentCaptured. PoS, invoice, notification, and reporting consumers can process independently. This reduces coupling and improves resilience.
+
+#### Final Interview Answer
+I use event-driven design with Service Bus to decouple workflows. Events like OrderPlaced, PaymentCaptured, InvoiceRequested, and NotificationRequested allow independent consumers to process asynchronously.
+
+---
+
+### DP-E3. How do you decide queue vs topic?
+
+#### Question Summary
+Tests messaging design.
+
+#### Crisp Answer
+Use queue for one consumer workflow and topic when multiple subscribers need the same event.
+
+#### Detailed Explanation
+If one service processes PoS submission, a queue is enough. If PaymentCaptured should trigger PoS, invoice, notification, and reporting, use a topic with subscriptions.
+
+#### Final Interview Answer
+I use queues for point-to-point processing and topics for fan-out. For example, PaymentCaptured should usually be published to a topic because multiple downstream workflows need it.
+
+---
+
+### DP-E4. How do you design event contracts?
+
+#### Question Summary
+Tests message contract discipline.
+
+#### Crisp Answer
+Events should be explicit, versioned, minimal, and include metadata like eventId, correlationId, timestamp, eventType, and payloadVersion.
+
+#### Detailed Explanation
+Avoid sending huge payloads. Use stable contracts and include business identifiers. Large documents should be stored in Blob and passed by reference.
+
+#### Final Interview Answer
+I design event contracts with metadata, versioning, and minimal payload. This supports traceability, backward compatibility, and reliable event processing.
+
+---
+
+### DP-E5. How do you handle eventual consistency?
+
+#### Question Summary
+Tests distributed systems maturity.
+
+#### Crisp Answer
+I make consistency expectations explicit and provide user-friendly status tracking.
+
+#### Detailed Explanation
+After payment, PoS submission and invoice generation may complete asynchronously. The user should see accurate status like Payment Captured, Order Being Sent to Store, or Invoice Pending.
+
+#### Final Interview Answer
+I handle eventual consistency by using clear order states, background processing, status APIs, and reconciliation. The UI should show meaningful intermediate statuses.
+
+---
+
+## Section F: Resilience and Reliability Design Principles
+
+### DP-F1. How do you design for resilience?
+
+#### Question Summary
 Tests production reliability thinking.
 
-### Crisp Answer
+#### Crisp Answer
 I use timeout, retry, circuit breaker, fallback, DLQ, idempotency, and reconciliation.
 
-### Detailed Explanation
+#### Detailed Explanation
 External systems like payment gateway, PoS, CMS, and notification providers can fail. Resilience patterns ensure the platform does not fail unpredictably. Service Bus helps recover async workflows.
 
-### Final Interview Answer
+#### Final Interview Answer
 I design resilience using bounded retries, timeouts, circuit breakers, fallback paths, DLQ, idempotency, and reconciliation jobs. This ensures safe recovery from external dependency failures.
 
 ---
 
-## DP-Q11. How do you design for security?
+### DP-F2. How do you design retry strategy?
 
-### Question Summary
+#### Question Summary
+Tests safe retry thinking.
+
+#### Crisp Answer
+Retry only transient failures with bounded exponential backoff and idempotency.
+
+#### Detailed Explanation
+Do not retry validation errors or permanent failures. Payment and PoS retries must be idempotent. Retry count, delay, and failure handling should be defined clearly.
+
+#### Final Interview Answer
+I design retries for transient failures only, with bounded retry count and exponential backoff. For payment and PoS, idempotency is mandatory to prevent duplicates.
+
+---
+
+### DP-F3. How do you design circuit breaker?
+
+#### Question Summary
+Tests dependency failure control.
+
+#### Crisp Answer
+Use circuit breaker to stop repeatedly calling failing dependencies and fail fast.
+
+#### Detailed Explanation
+If PoS or payment gateway is down, repeated calls can increase latency and resource usage. Circuit breaker opens after threshold and later tests recovery.
+
+#### Final Interview Answer
+I use circuit breaker for unstable external dependencies like payment, PoS, CMS, and notification providers. It protects the platform and supports graceful fallback.
+
+---
+
+### DP-F4. How do you design DLQ handling?
+
+#### Question Summary
+Tests asynchronous recovery design.
+
+#### Crisp Answer
+Failed messages should move to DLQ after retry limit and be monitored, investigated, fixed, and replayed safely.
+
+#### Detailed Explanation
+DLQ requires operational process. Messages should contain correlation ID and failure reason. Replay must be idempotent to avoid duplicate side effects.
+
+#### Final Interview Answer
+I design DLQ as a recovery mechanism. I monitor DLQ counts, alert support teams, analyze failure reasons, and provide safe replay with idempotent consumers.
+
+---
+
+### DP-F5. How do you design reconciliation?
+
+#### Question Summary
+Tests recovery from inconsistent states.
+
+#### Crisp Answer
+Use reconciliation jobs to compare internal state with external systems and correct mismatches.
+
+#### Detailed Explanation
+Payment gateway may succeed but callback may fail. PoS may accept order but response may timeout. Reconciliation jobs compare transaction/order references and update state.
+
+#### Final Interview Answer
+I design reconciliation for payment, refund, and PoS workflows. It corrects mismatches caused by timeouts, webhook failures, or partial failures.
+
+---
+
+## Section G: Security and Privacy Design Principles
+
+### DP-G1. How do you design for security?
+
+#### Question Summary
 Tests security-by-design thinking.
 
-### Crisp Answer
+#### Crisp Answer
 I apply OAuth2/OIDC, JWT validation, APIM policies, least privilege, Key Vault, PII masking, and OWASP API controls.
 
-### Detailed Explanation
+#### Detailed Explanation
 Security should be built into the design, not added later. Every API should enforce authentication and authorization. Sensitive data should be protected in logs and storage. Secrets should be in Key Vault.
 
-### Final Interview Answer
+#### Final Interview Answer
 I design security using Entra ID/Okta/CIAM, OAuth2/OIDC, APIM JWT validation, policy-based authorization, Key Vault, managed identity, PII masking, and OWASP API Security controls.
 
 ---
 
-## DP-Q12. How do you design for observability?
+### DP-G2. How do you design least privilege?
 
-### Question Summary
+#### Question Summary
+Tests access control maturity.
+
+#### Crisp Answer
+Each user, service, and component should get only the permissions required.
+
+#### Detailed Explanation
+APIs should not use admin-level credentials. Services should use managed identity with scoped access. Users should access only their own orders or assigned store/counter data.
+
+#### Final Interview Answer
+I apply least privilege by granting only required access to users, APIs, Functions, and managed identities. Access is role-based, policy-based, and audited.
+
+---
+
+### DP-G3. How do you design PII handling?
+
+#### Question Summary
+Tests privacy and compliance awareness.
+
+#### Crisp Answer
+Classify PII, minimize collection, encrypt, mask logs, restrict access, and define retention.
+
+#### Detailed Explanation
+PII can include name, email, phone, order history, employee ID, and payment reference. Do not log sensitive data. Protect data using encryption and access control.
+
+#### Final Interview Answer
+I handle PII through classification, minimization, encryption, masking, access control, retention policies, and audit logging.
+
+---
+
+### DP-G4. How do you prevent broken object-level authorization?
+
+#### Question Summary
+Tests OWASP API security.
+
+#### Crisp Answer
+Validate resource ownership and permission for every object-level access.
+
+#### Detailed Explanation
+A customer should not access another customer’s order by changing orderId. Backend must check ownership and role permissions.
+
+#### Final Interview Answer
+I prevent broken object-level authorization by enforcing resource-level access checks in backend APIs and service layer, not only in frontend.
+
+---
+
+### DP-G5. How do you design secure secret management?
+
+#### Question Summary
+Tests secure operations.
+
+#### Crisp Answer
+Use Key Vault, managed identity, rotation, and no secrets in code or config files.
+
+#### Detailed Explanation
+Payment keys, PoS credentials, signing keys, and certificates must be stored securely. Pipelines and apps should access secrets through managed identity or Key Vault references.
+
+#### Final Interview Answer
+I use Azure Key Vault and managed identity for secrets. No API keys or passwords should be stored in source code, plain appsettings, or logs.
+
+---
+
+## Section H: Observability and Operations Design Principles
+
+### DP-H1. How do you design for observability?
+
+#### Question Summary
 Tests supportability and production readiness.
 
-### Crisp Answer
+#### Crisp Answer
 I add correlation IDs, structured logging, metrics, traces, dashboards, alerts, and business KPIs.
 
-### Detailed Explanation
+#### Detailed Explanation
 A single order flow may cross API, Service Bus, Function, payment, PoS, invoice, and notification systems. Correlation ID links these steps. Application Insights and dashboards help troubleshoot production issues.
 
-### Final Interview Answer
+#### Final Interview Answer
 I design observability by adding correlation IDs, structured logs, distributed traces, metrics, dashboards, and alerts across APIs, Functions, Service Bus, Cosmos DB, and external integrations.
 
 ---
 
-## DP-Q13. How do you design for scalability?
+### DP-H2. What business metrics would you monitor?
 
-### Question Summary
+#### Question Summary
+Tests product-aware observability.
+
+#### Crisp Answer
+Monitor order success rate, payment success rate, refund failure, PoS submission failures, invoice failures, and notification failures.
+
+#### Detailed Explanation
+Technical metrics are not enough. Business metrics show real customer impact. For food ordering, failed checkout or delayed PoS submission is more important than CPU alone.
+
+#### Final Interview Answer
+I monitor business KPIs like order conversion, checkout failure, payment success, PoS submission delay, refund failures, and order completion rate along with technical metrics.
+
+---
+
+### DP-H3. How do you design correlation ID?
+
+#### Question Summary
+Tests distributed tracing.
+
+#### Crisp Answer
+Generate or accept correlation ID at entry point and propagate it through APIs, messages, Functions, and external calls.
+
+#### Detailed Explanation
+Correlation ID should be included in logs, Service Bus messages, HTTP headers, and external integration calls where possible.
+
+#### Final Interview Answer
+I propagate correlation ID end-to-end from APIM/API to Service Bus, Functions, Cosmos DB logs, and external systems. This helps trace one order journey.
+
+---
+
+### DP-H4. How do you design operational runbooks?
+
+#### Question Summary
+Tests production support readiness.
+
+#### Crisp Answer
+Create runbooks for common incidents with symptoms, dashboards, queries, mitigation, owner, and escalation.
+
+#### Detailed Explanation
+Common incidents include payment failure, PoS outage, DLQ growth, Cosmos throttling, high 5xx errors, and failed deployment.
+
+#### Final Interview Answer
+I create runbooks for payment, PoS, DLQ, Cosmos throttling, deployment rollback, and high-error incidents. Each runbook includes detection, mitigation, escalation, and recovery steps.
+
+---
+
+### DP-H5. How do you design audit logging?
+
+#### Question Summary
+Tests traceability and compliance.
+
+#### Crisp Answer
+Log critical actions with user, timestamp, operation, resource, status, and correlation ID.
+
+#### Detailed Explanation
+Audit is important for payment, refund, subsidy, admin actions, order status changes, and security-sensitive operations.
+
+#### Final Interview Answer
+I design audit logging for critical actions like payment, refund, subsidy application, order status changes, and admin updates. Logs include who did what, when, resource ID, result, and correlation ID.
+
+---
+
+## Section I: Scalability, Performance, and Cost Design Principles
+
+### DP-I1. How do you design for scalability?
+
+#### Question Summary
 Tests high-volume platform design.
 
-### Crisp Answer
+#### Crisp Answer
 I use stateless APIs, autoscaling, queues, partitioning, caching, and optimized read models.
 
-### Detailed Explanation
+#### Detailed Explanation
 Food ordering traffic may spike during lunch hours. Menu browsing and checkout should scale independently. Cosmos partitioning and cache strategy are critical for performance.
 
-### Final Interview Answer
+#### Final Interview Answer
 I design scalability with stateless App Services, autoscaling Functions, Service Bus decoupling, Cosmos DB partitioning, menu caching, and read-optimized models.
 
 ---
 
-## DP-Q14. How do you design for cost optimization?
+### DP-I2. How do you design for performance?
 
-### Question Summary
+#### Question Summary
+Tests latency and throughput awareness.
+
+#### Crisp Answer
+Use async I/O, efficient queries, caching, pagination, projection, connection reuse, and dependency timeouts.
+
+#### Detailed Explanation
+Checkout and menu APIs must be fast. Avoid large payloads, cross-partition queries, unnecessary external calls, and blocking operations.
+
+#### Final Interview Answer
+I design performance using async APIs, optimized Cosmos queries, caching, pagination, DTO projection, efficient integration calls, and Application Insights monitoring.
+
+---
+
+### DP-I3. How do you design for cost optimization?
+
+#### Question Summary
 Tests cloud cost awareness.
 
-### Crisp Answer
+#### Crisp Answer
 I optimize Cosmos RUs, App Service sizing, Functions plan, APIM tier, caching, and unnecessary external calls.
 
-### Detailed Explanation
+#### Detailed Explanation
 Cosmos DB queries, APIM tier, App Service plan, and third-party calls can increase cost. Cost should be monitored and optimized based on usage patterns.
 
-### Final Interview Answer
+#### Final Interview Answer
 I design cost optimization by monitoring RU usage, avoiding cross-partition queries, caching read-heavy data, sizing App Services correctly, choosing the right Function plan, and tracking Azure budgets.
 
 ---
 
-## DP-Q15. How do you design for backward compatibility?
+### DP-I4. How do you design Cosmos DB for performance?
 
-### Question Summary
-Tests API and schema evolution thinking.
+#### Question Summary
+Tests Cosmos-specific design.
 
-### Crisp Answer
-I use API versioning, message versioning, schema versioning, and backward-compatible changes.
+#### Crisp Answer
+Use correct partition key, point reads, projection, indexing policy tuning, and avoid cross-partition queries.
 
-### Detailed Explanation
-Mobile/PWA clients may not upgrade immediately. APIs and message contracts should support older clients. Breaking changes should go to a new version.
+#### Detailed Explanation
+Cosmos performance depends heavily on access patterns and partitioning. Hot partitions and SELECT * queries can increase RU and latency.
 
-### Final Interview Answer
-I maintain backward compatibility using versioned APIs, versioned event contracts, schemaVersion fields, and additive changes. Breaking changes are released through new versions.
-
----
-
-## DP-Q16. How do you decide between synchronous and asynchronous design?
-
-### Question Summary
-Tests workflow design maturity.
-
-### Crisp Answer
-Use synchronous calls for immediate user feedback and asynchronous events for long-running or unreliable operations.
-
-### Detailed Explanation
-Cart validation and price calculation may be synchronous. PoS submission, invoice generation, notification, and reconciliation should be asynchronous.
-
-### Final Interview Answer
-I use synchronous APIs for immediate user-facing validation and asynchronous Service Bus workflows for long-running or external dependency operations.
+#### Final Interview Answer
+I design Cosmos performance by selecting partition keys based on access patterns, using point reads, tuning indexes, projecting required fields, and monitoring RU and throttling.
 
 ---
 
-## DP-Q17. How do you avoid tight coupling with third-party systems?
+### DP-I5. How do you handle peak traffic?
 
-### Question Summary
-Tests integration architecture.
+#### Question Summary
+Tests scale planning.
 
-### Crisp Answer
-Use adapter/connector pattern and anti-corruption layer.
+#### Crisp Answer
+Use autoscaling, queue-based decoupling, caching, pre-warmed instances, and capacity planning.
 
-### Detailed Explanation
-Payment, PoS, CMS, notification, and invoice engines should be behind interfaces and adapters. Domain should not depend on vendor-specific models.
+#### Detailed Explanation
+Food ordering platforms may peak during lunch or events. Menu browsing, checkout, payment, and PoS flows should be tested under peak load.
 
-### Final Interview Answer
-I avoid tight coupling by using adapters and anti-corruption layers. Third-party schemas are transformed into internal contracts, keeping the domain stable.
-
----
-
-## DP-Q18. How do you design for testability?
-
-### Question Summary
-Tests maintainable code design.
-
-### Crisp Answer
-Use interfaces, dependency injection, Clean Architecture, unit tests, integration tests, and contract tests.
-
-### Detailed Explanation
-Business rules should be testable without Azure dependencies. External systems should be mocked or tested with contract tests. Domain logic should be covered by unit tests.
-
-### Final Interview Answer
-I design for testability by isolating domain logic, using dependency injection, defining interfaces for external dependencies, and writing unit, integration, and contract tests.
+#### Final Interview Answer
+I handle peak traffic using autoscale, caching, Service Bus decoupling, optimized queries, load testing, and capacity planning based on expected traffic patterns.
 
 ---
 
-## DP-Q19. How do you design for maintainability?
+## Section J: Governance and Delivery Design Principles
 
-### Question Summary
-Tests long-term platform thinking.
+### DP-J1. How do you design for governance?
 
-### Crisp Answer
-Use clear boundaries, naming conventions, coding standards, documentation, ADRs, and reviews.
-
-### Detailed Explanation
-Maintainability comes from good structure, not just clean code. HLD, LLD, OpenAPI contracts, ADRs, and code reviews help keep the platform understandable.
-
-### Final Interview Answer
-I design maintainability through Clean Architecture, clear domain boundaries, consistent API standards, documentation, ADRs, PR reviews, and technical debt tracking.
-
----
-
-## DP-Q20. How do you design for governance?
-
-### Question Summary
+#### Question Summary
 Tests architect-level ownership.
 
-### Crisp Answer
+#### Crisp Answer
 Use design reviews, PR reviews, quality gates, ADRs, risk assessments, and release governance.
 
-### Detailed Explanation
+#### Detailed Explanation
 Governance ensures teams follow architecture standards. It includes HLD/LLD review, API contract review, data model review, security review, and production readiness checks.
 
-### Final Interview Answer
+#### Final Interview Answer
 I design governance through architecture standards, design reviews, PR reviews, SonarQube quality gates, ADRs, risk registers, and release approval processes.
 
 ---
 
-## Additional Design Principle Questions to Prepare
+### DP-J2. How do you document architecture decisions?
 
-21. How do you apply single responsibility principle in service design?  
-22. How do you apply open/closed principle in payment gateway integration?  
-23. How do you apply dependency inversion in Clean Architecture?  
-24. How do you design extensible payment provider integration?  
-25. How do you design replaceable PoS connectors?  
-26. How do you design stable domain models?  
-27. How do you design aggregate boundaries?  
-28. How do you prevent anemic domain model?  
-29. How do you decide aggregate root?  
-30. How do you define domain events?  
-31. How do you design immutable order snapshot?  
-32. How do you design mutable cart and immutable order?  
-33. How do you design API error contracts?  
-34. How do you design standard response models?  
-35. How do you design pagination standards?  
-36. How do you design API filtering standards?  
-37. How do you design OpenAPI governance?  
-38. How do you design API deprecation strategy?  
-39. How do you design event contract versioning?  
-40. How do you design schema versioning in Cosmos DB?  
-41. How do you design data retention?  
-42. How do you design audit trail?  
-43. How do you design secure logging?  
-44. How do you design PII masking?  
-45. How do you design least privilege access?  
-46. How do you design resource-level authorization?  
-47. How do you design APIM policy governance?  
-48. How do you design reusable integration connectors?  
-49. How do you design failure recovery?  
-50. How do you design DLQ replay safely?  
-51. How do you design retry without duplication?  
-52. How do you design circuit breaker thresholds?  
-53. How do you design timeout strategy?  
-54. How do you design fallback behavior?  
-55. How do you design reconciliation jobs?  
-56. How do you design operational dashboards?  
-57. How do you design production alerts?  
-58. How do you design health checks?  
-59. How do you design readiness probes?  
-60. How do you design liveness probes?  
-61. How do you design CI/CD quality gates?  
-62. How do you design release rollback?  
-63. How do you design blue-green deployment?  
-64. How do you design canary release?  
-65. How do you design feature flags?  
-66. How do you design environment-specific configuration?  
-67. How do you design secret rotation?  
-68. How do you design key rotation?  
-69. How do you design multi-region failover?  
-70. How do you design active-active consistency?  
-71. How do you design cost controls?  
-72. How do you design Cosmos RU governance?  
-73. How do you design Service Bus governance?  
-74. How do you design Function scaling?  
-75. How do you design App Service scaling?  
-76. How do you design frontend/backend contract alignment?  
-77. How do you design PWA offline limitations?  
-78. How do you design secure token flow?  
-79. How do you design customer identity integration?  
-80. How do you design admin identity integration?  
-81. How do you design multi-tenant boundaries?  
-82. How do you design tenant isolation?  
-83. How do you design store isolation?  
-84. How do you design counter-level fulfilment?  
-85. How do you design pre-order activation?  
-86. How do you design refund approval flow?  
-87. How do you design payment reconciliation?  
-88. How do you design PoS reconciliation?  
-89. How do you design CMS cache invalidation?  
-90. How do you design invoice template versioning?  
-91. How do you design notification preference handling?  
-92. How do you design localization?  
-93. How do you design accessibility support?  
-94. How do you design performance testing?  
-95. How do you design contract testing?  
-96. How do you design integration testing?  
-97. How do you design architecture risk register?  
-98. How do you design ADR process?  
-99. How do you design technical debt backlog?  
-100. How do you design architecture governance checklist?  
+#### Question Summary
+Tests decision traceability.
 
+#### Crisp Answer
+Use ADRs with context, options, decision, consequences, and status.
 
+#### Detailed Explanation
+ADRs help future teams understand why Cosmos DB was selected, why Service Bus topics were used, or why a specific partition key was chosen.
+
+#### Final Interview Answer
+I document important decisions using ADRs. Each ADR captures context, options considered, decision, consequences, and current status.
 
 ---
+
+### DP-J3. How do you manage technical debt?
+
+#### Question Summary
+Tests long-term engineering maturity.
+
+#### Crisp Answer
+Track technical debt with impact, priority, owner, and remediation plan.
+
+#### Detailed Explanation
+Technical debt should be visible and prioritized. Security, performance, and reliability debt should be addressed earlier than cosmetic improvements.
+
+#### Final Interview Answer
+I manage technical debt using a debt register with severity, business impact, owner, and target date. High-risk debt is prioritized in the roadmap.
+
+---
+
+### DP-J4. How do you design quality gates?
+
+#### Question Summary
+Tests CI/CD governance.
+
+#### Crisp Answer
+Use automated build, tests, SonarQube, security scans, coverage gates, and approval gates.
+
+#### Detailed Explanation
+Quality gates prevent poor code from moving to production. They should check tests, vulnerabilities, code smells, duplication, and release readiness.
+
+#### Final Interview Answer
+I design quality gates using unit tests, integration tests, SonarQube, dependency scans, security checks, and environment approvals in Azure DevOps.
+
+---
+
+### DP-J5. How do you align design with business goals?
+
+#### Question Summary
+Tests stakeholder collaboration.
+
+#### Crisp Answer
+Map technical decisions to business outcomes like faster checkout, fewer failed orders, secure payments, and better operational visibility.
+
+#### Detailed Explanation
+Architecture should support business goals. For example, Service Bus improves checkout resilience, Cosmos supports low-latency reads, and observability improves support response.
+
+#### Final Interview Answer
+I align architecture with business goals by linking design decisions to outcomes like performance, reliability, customer experience, security, and operational efficiency.
+
+---
+
+## Section-wise Design Principle Question List
+
+### A. Core Architecture Design Principles
+
+1. What design principles do you follow while designing enterprise applications?
+2. How do you apply separation of concerns?
+3. How do you apply Clean Architecture?
+4. How do you decide between modular monolith and microservices?
+5. How do you communicate architecture trade-offs?
+6. How do you define architecture principles for a new platform?
+7. How do you design for maintainability?
+8. How do you design for extensibility?
+9. How do you design for replaceability of components?
+10. How do you decide service boundaries?
+
+### B. SOLID and Object-Oriented Design Principles
+
+11. What is Single Responsibility Principle?
+12. How do you apply Open/Closed Principle in payment gateway integration?
+13. How do you apply Dependency Inversion Principle?
+14. How do you avoid large interfaces?
+15. How do you design extensible service classes?
+16. How do you apply Liskov Substitution Principle?
+17. How do you use Strategy pattern?
+18. How do you use Adapter pattern?
+19. How do you use Factory pattern?
+20. How do you avoid tight coupling in code?
+
+### C. Domain-Driven Design Principles
+
+21. How do you apply Domain-Driven Design in this JD?
+22. How do you decide aggregate boundaries?
+23. Why should order be an immutable snapshot?
+24. Why is cart mutable but order immutable?
+25. How do you avoid anemic domain model?
+26. How do you identify bounded contexts?
+27. How do you define ubiquitous language?
+28. How do you model value objects?
+29. How do you model domain events?
+30. How do you protect domain invariants?
+
+### D. API and Contract Design Principles
+
+31. How do you apply API-first design?
+32. How do you design standard API error responses?
+33. How do you design API versioning?
+34. How do you design idempotent APIs?
+35. How do you design pagination, filtering, and sorting?
+36. How do you design OpenAPI governance?
+37. How do you design backward-compatible APIs?
+38. How do you design request validation?
+39. How do you design response contracts?
+40. How do you design API deprecation strategy?
+
+### E. Event-Driven and CQRS Design Principles
+
+41. How do you apply CQRS?
+42. How do you apply event-driven design?
+43. How do you decide queue vs topic?
+44. How do you design event contracts?
+45. How do you handle eventual consistency?
+46. How do you design outbox pattern?
+47. How do you design idempotent consumers?
+48. How do you design saga workflows?
+49. How do you design compensation actions?
+50. How do you version events?
+
+### F. Resilience and Reliability Design Principles
+
+51. How do you design for resilience?
+52. How do you design retry strategy?
+53. How do you design circuit breaker?
+54. How do you design DLQ handling?
+55. How do you design reconciliation?
+56. How do you design graceful degradation?
+57. How do you design fallback behavior?
+58. How do you design timeout policy?
+59. How do you design failure recovery?
+60. How do you design operational runbooks?
+
+### G. Security and Privacy Design Principles
+
+61. How do you design for security?
+62. How do you design least privilege?
+63. How do you design PII handling?
+64. How do you prevent broken object-level authorization?
+65. How do you design secure secret management?
+66. How do you apply OWASP API Security?
+67. How do you design resource-level authorization?
+68. How do you design secure logging?
+69. How do you design Key Vault integration?
+70. How do you design token validation?
+
+### H. Observability and Operations Design Principles
+
+71. How do you design for observability?
+72. What business metrics would you monitor?
+73. How do you design correlation ID?
+74. How do you design operational runbooks?
+75. How do you design audit logging?
+76. How do you design dashboards?
+77. How do you design alerts?
+78. How do you design distributed tracing?
+79. How do you design dependency monitoring?
+80. How do you design production support handover?
+
+### I. Scalability, Performance, and Cost Design Principles
+
+81. How do you design for scalability?
+82. How do you design for performance?
+83. How do you design for cost optimization?
+84. How do you design Cosmos DB for performance?
+85. How do you handle peak traffic?
+86. How do you design caching?
+87. How do you design RU governance?
+88. How do you design App Service scaling?
+89. How do you design Function scaling?
+90. How do you design load testing?
+
+### J. Governance and Delivery Design Principles
+
+91. How do you design for governance?
+92. How do you document architecture decisions?
+93. How do you manage technical debt?
+94. How do you design quality gates?
+95. How do you align design with business goals?
+96. How do you conduct design reviews?
+97. How do you conduct PR reviews?
+98. How do you manage release governance?
+99. How do you handle architecture risk assessment?
+100. How do you create an architecture governance checklist?
+
+
 
 # 01 Architecture and Platform Design
 
