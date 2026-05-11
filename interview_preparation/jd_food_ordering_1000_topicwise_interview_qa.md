@@ -1126,10 +1126,12 @@ Tests whether you can explain your architecture thinking beyond technologies.
 I follow separation of concerns, SOLID, Clean Architecture, API-first design, domain-driven design, CQRS, event-driven architecture, security by design, observability by design, and resilience by design.
 
 #### Detailed Explanation
-For enterprise applications, design principles help maintain quality as the system grows. In this JD, the platform includes cart, checkout, payments, PoS, CMS, notifications, invoices, and subsidies. If these concerns are mixed together, the system becomes hard to change. I would separate API, application, domain, and infrastructure responsibilities. I would use CQRS for clear command/query separation and events for asynchronous integration workflows.
+While designing enterprise applications, I mainly follow separation of concerns, SOLID, Clean Architecture, security by design, observability by design, and resilience by design. These are my baseline principles because they keep the system maintainable, testable, secure, and production-ready.
+Based on the use case, I apply additional patterns. For example, if the domain is complex, I use DDD to model bounded contexts like cart, checkout, order, payment, refund, and subsidy. If read and write workloads are different, I use CQRS. If payment, PoS, invoice, and notification workflows need decoupling, I use event-driven design with Service Bus. For critical operations like checkout and payment, I apply idempotency.
+So I do not apply every principle blindly. I select the right principle based on complexity, scalability, maintainability, security, and operational needs.
 
 #### Final Interview Answer
-I follow design principles like separation of concerns, SOLID, Clean Architecture, DDD, CQRS, event-driven design, security by design, observability by design, and resilience by design. These principles help keep the platform maintainable, scalable, secure, and production-ready.
+My baseline principles are separation of concerns, SOLID, Clean Architecture, security, observability, and resilience. Then, based on the problem, I apply DDD, CQRS, event-driven design, idempotency, or API-first design. I do not use all patterns blindly; I use them where they solve a real architectural problem.
 
 ---
 
