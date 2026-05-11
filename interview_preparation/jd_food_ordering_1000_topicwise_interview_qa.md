@@ -2080,10 +2080,16 @@ I align architecture with business goals by linking design decisions to outcomes
 ## Q1. How would you handle end-to-end digital food ordering architecture in this JD?
 
 ### Question Summary
-Tests your understanding of end-to-end digital food ordering architecture in the context of a .NET Core, Azure, and digital food ordering platform.
+Tests whether you can design the complete digital food ordering platform covering mobile/PWA, APIs, CMS, PoS, payments, orders, subsidy, invoice, notifications, Azure services, and production readiness.
 
 ### Crisp Answer
-For end-to-end digital food ordering architecture, I would define the business requirement, identify the impacted components, and apply the right .NET/Azure design pattern. The design should consider security, scalability, reliability, observability, cost, and operational support.
+For end-to-end digital food ordering architecture, I would design an API-first, cloud-native, event-driven platform on Azure.
+The React/Ionic mobile app or PWA would call ASP.NET Core Web APIs through Azure API Management.
+The backend would follow Clean Architecture and CQRS with separate domains for cart, checkout, order, payment, refund, subsidy, CMS, PoS, invoice, and notification.
+Cosmos DB would store cart/order data with proper partitioning, RU optimization, and ETag concurrency.
+Service Bus and Azure Functions would handle asynchronous workflows like payment confirmation, PoS submission, invoice generation, and notifications.
+Security would be handled using OAuth2/OIDC, Entra ID/Okta/CIAM, APIM policies, Key Vault, and PII protection.
+Application Insights would provide logging, tracing, metrics, and production monitoring.
 
 ### Detailed Explanation
 While designing enterprise applications, I mainly follow separation of concerns, SOLID, Clean Architecture, security by design, observability by design, and resilience by design. These are my baseline principles because they keep the system maintainable, testable, secure, and production-ready.
@@ -2091,7 +2097,11 @@ Based on the use case, I apply additional patterns. For example, if the domain i
 So I do not apply every principle blindly. I select the right principle based on complexity, scalability, maintainability, security, and operational needs.
 
 ### Final Interview Answer
-My baseline principles are separation of concerns, SOLID, Clean Architecture, security, observability, and resilience. Then, based on the problem, I apply DDD, CQRS, event-driven design, idempotency, or API-first design. I do not use all patterns blindly; I use them where they solve a real architectural problem.
+I would design the digital food ordering platform as an API-first and event-driven Azure architecture. The React/Ionic mobile app or PWA would call ASP.NET Core Web APIs through Azure API Management. The backend would follow Clean Architecture and CQRS, with separate domains for cart, checkout, order lifecycle, payment, refund, subsidy, CMS/menu, PoS integration, invoice, and notifications.
+
+Cosmos DB would be used for cart and order data with proper partitioning, RU optimization, schema design, and ETag-based concurrency. Azure Service Bus would decouple long-running workflows such as payment confirmation, PoS submission, invoice generation, refunds, and notifications. Azure Functions would process these background events. Blob Storage would store invoices and CMS assets, Key Vault would manage secrets, and Application Insights would provide end-to-end observability.
+
+Security would be handled using OAuth2/OIDC, Entra ID or Okta/CIAM, APIM policies, OWASP API controls, and PII protection. This architecture gives scalability, reliability, maintainability, security, and production readiness.
 
 ---
 
