@@ -1,0 +1,189 @@
+A. LangChain Basics
+What is LangChain?
+What problem does LangChain solve?
+Why do we use LangChain in LLM applications?
+Is LangChain mandatory for building AI applications?
+What are the main components of LangChain?
+What is a chain in LangChain?
+What is the difference between a simple LLM call and a LangChain chain?
+What is a prompt template in LangChain?
+What is an output parser in LangChain?
+How does LangChain help in building RAG applications?
+B. LangChain Architecture
+How do you design a LangChain-based application?
+Where does LangChain fit in an enterprise AI architecture?
+How do you integrate LangChain with FastAPI?
+How do you integrate LangChain with Azure OpenAI?
+How do you integrate LangChain with Azure AI Search?
+How do you integrate LangChain with vector databases?
+How do you structure a LangChain project?
+How do you separate prompts, tools, retrievers, and services?
+How do you make LangChain code production-ready?
+What are the limitations of LangChain?
+C. LangChain for RAG
+How do you build RAG using LangChain?
+What is a retriever in LangChain?
+What is the difference between vector store and retriever?
+How do you load documents in LangChain?
+What are document loaders?
+What are text splitters?
+How do you decide chunk size and overlap?
+How do you generate embeddings in LangChain?
+How do you store embeddings in a vector database?
+How do you retrieve relevant chunks?
+How do you implement hybrid search in LangChain?
+How do you implement metadata filtering?
+How do you implement source citations?
+How do you reduce hallucination in LangChain RAG?
+How do you evaluate RAG quality?
+How do you handle stale documents?
+How do you re-index documents?
+How do you secure document retrieval?
+How do you implement ACL trimming in RAG?
+What are common mistakes in LangChain RAG?
+D. LangChain Tool Calling and Agents
+What is a tool in LangChain?
+What is tool calling?
+How do you define a custom tool?
+What is an agent in LangChain?
+How is an agent different from a chain?
+When should you use an agent instead of a normal chain?
+How does an agent decide which tool to call?
+How do you restrict tools available to an agent?
+What is tool allowlisting?
+How do you validate tool input before execution?
+How do you handle tool failure?
+How do you retry failed tool calls?
+How do you prevent dangerous tool execution?
+Which tools should be read-only?
+Which tools should require human approval?
+How do you audit tool calls?
+How do you secure tool access?
+How do you pass user identity to tools?
+How do you prevent prompt injection in tool calling?
+What are the risks of autonomous agents?
+E. LangChain Memory and State
+What is memory in LangChain?
+Difference between conversation memory and workflow state.
+When should you use memory?
+When should you avoid memory?
+How do you store conversation history?
+How do you manage long conversations?
+How do you summarize memory?
+How do you avoid leaking sensitive data in memory?
+How do you persist memory in Redis/Cosmos DB/SQL?
+What are the risks of uncontrolled memory?
+F. LangGraph Basics
+What is LangGraph?
+Why was LangGraph introduced beyond LangChain?
+What problem does LangGraph solve?
+How is LangGraph different from LangChain?
+When should you use LangGraph instead of LangChain?
+What is a graph in LangGraph?
+What is a node in LangGraph?
+What is an edge in LangGraph?
+What is conditional routing in LangGraph?
+What is state in LangGraph?
+G. LangGraph Architecture
+How do you design a LangGraph workflow?
+What is graph state?
+How do you model state in LangGraph?
+How do you define nodes in LangGraph?
+How do you define edges in LangGraph?
+How do you define conditional edges?
+How do you prevent infinite loops in LangGraph?
+How do you implement retries in LangGraph?
+How do you implement fallback paths?
+How do you pause and resume a LangGraph workflow?
+H. LangGraph Agentic Patterns
+How do you implement planner-executor pattern in LangGraph?
+How do you implement supervisor pattern in LangGraph?
+How do you implement router pattern in LangGraph?
+How do you implement reflection pattern in LangGraph?
+How do you implement human-in-the-loop in LangGraph?
+How do you implement approval workflow in LangGraph?
+How do you implement multi-agent systems in LangGraph?
+How do you coordinate specialist agents?
+How do you aggregate outputs from multiple agents?
+How do you control agent autonomy in LangGraph?
+I. LangGraph Production Readiness
+How do you checkpoint LangGraph workflows?
+What is checkpointing in LangGraph?
+Why is checkpointing important?
+How do you resume a failed workflow?
+How do you persist graph state?
+How do you debug LangGraph execution?
+How do you trace each node execution?
+How do you monitor graph latency?
+How do you monitor tool-call success rate?
+How do you handle graph versioning?
+J. LangChain vs LangGraph
+LangChain vs LangGraph: what is the difference?
+When is LangChain enough?
+When is LangGraph required?
+Why is LangGraph better for complex agent workflows?
+Why is LangChain better for simple RAG?
+Can LangChain and LangGraph be used together?
+How does LangGraph improve reliability over free-running agents?
+How does LangGraph help with state management?
+How does LangGraph help with human approval?
+How does LangGraph help with long-running workflows?
+K. Enterprise Security Questions
+How do you secure LangChain/LangGraph applications?
+How do you prevent prompt injection?
+How do you protect against data leakage?
+How do you enforce user authorization in RAG?
+How do you enforce tool-level authorization?
+How do you implement ACL trimming?
+How do you handle PII in prompts and responses?
+How do you avoid logging sensitive data?
+How do you implement audit logs?
+How do you approve risky actions?
+L. Azure Integration Questions
+How do you use LangChain with Azure OpenAI?
+How do you use LangChain with Azure AI Search?
+How do you use LangChain with Blob Storage documents?
+How do you use LangChain with Cosmos DB?
+How do you use LangGraph with Azure Functions?
+How do you use LangGraph with Service Bus?
+How do you deploy LangChain/FastAPI on Azure App Service?
+How do you secure secrets using Key Vault?
+How do you monitor with Application Insights?
+How do you design APIM in front of LangChain/FastAPI?
+M. Evaluation and Observability
+How do you evaluate LangChain RAG output?
+How do you evaluate LangGraph agent workflows?
+How do you test tool-calling accuracy?
+How do you test prompt changes?
+How do you perform prompt regression testing?
+How do you monitor hallucination rate?
+How do you monitor grounding quality?
+How do you monitor retrieval quality?
+How do you monitor cost per request?
+How do you monitor token usage?
+Most Important 25 Questions to Prepare First
+What problem does LangChain solve?
+What problem does LangGraph solve beyond LangChain?
+LangChain vs LangGraph.
+What is a chain?
+What is an agent?
+What is a tool?
+What is a retriever?
+How do you build RAG using LangChain?
+What are document loaders and text splitters?
+How do you decide chunk size and overlap?
+How do you implement source citations?
+How do you reduce hallucination in RAG?
+How do you secure RAG with ACL trimming?
+How do you define tools safely?
+How do you prevent dangerous tool execution?
+What is state in LangGraph?
+How do you model state in LangGraph?
+What are nodes and edges in LangGraph?
+How do you implement planner-executor pattern?
+How do you implement supervisor pattern?
+How do you implement human-in-the-loop?
+How do you prevent infinite loops?
+How do you checkpoint and resume workflows?
+How do you monitor LangGraph workflows?
+How do you deploy LangChain/LangGraph on Azure?
