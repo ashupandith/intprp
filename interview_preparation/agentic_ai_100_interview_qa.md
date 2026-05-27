@@ -189,14 +189,25 @@ So the main difference is: chatbot is mostly conversational, while Agentic AI is
 Tests your understanding of what are the main components of an agentic ai system in enterprise Agentic AI architecture.
 
 ### Crisp Answer
-The design should combine planning, state, tools, memory/RAG, guardrails, validation, and observability.
+The main components of an Agentic AI system are: user interface, API/auth layer, agent orchestrator, planner/router, LLM, RAG/memory layer, tool-calling layer, state store, policy/guardrail layer, human approval workflow, output validation, and observability/audit layer.
 
 ### Detailed Explanation
-Agentic AI systems must be designed as controlled workflows, not free-running chatbots. The agent should understand the goal, plan steps, use approved tools, maintain state, validate outputs, and escalate when needed.
+An Agentic AI system is not just an LLM. It is a controlled architecture around the LLM.
+
+The user interface receives the request. The API/auth layer authenticates the user and checks basic access. The agent orchestrator controls the workflow. The planner or router decides whether the request needs RAG, tool calling, human approval, or direct response.
+
+The LLM performs reasoning and language generation. The RAG or memory layer retrieves enterprise knowledge from documents using embeddings and search. The tool-calling layer allows the agent to call approved APIs, such as order status, payment status, ticket creation, or notification APIs.
+
+The state store keeps workflow state, conversation/session data, tool results, retry count, and approval status. The policy/guardrail layer validates whether the agent is allowed to access data or execute a tool. For risky actions like refund, cancellation, or external email, the system should use human-in-the-loop approval.
+
+Finally, the output validation and observability layer checks grounding, PII leakage, policy violations, tool-call success, latency, token usage, cost, and audit logs.
 
 ### Final Interview Answer
-I design agents with clear responsibilities, controlled tool usage, explicit state, guardrails, validation, monitoring, and human approval for risky actions.
+The main components of an Agentic AI system are the user interface, API/authentication layer, agent orchestrator, planner or router, LLM, RAG or memory layer, tool-calling layer, state store, guardrail/policy layer, human approval workflow, output validation, and observability/audit layer.
 
+The orchestrator controls the workflow. The planner decides the next steps. RAG retrieves enterprise knowledge when the agent needs documents. The tool layer allows the agent to call approved APIs, but every tool call should be validated for authorization, schema, risk, and approval requirement. The state store tracks workflow progress, retries, tool results, and approval status.
+
+In an enterprise system, I would not allow the LLM to freely access data or execute actions. I would design it with tool allowlisting, ACL trimming, prompt injection defense, PII masking, human approval for risky actions, and full monitoring through logs, metrics, traces, token usage, cost, and audit logs.
 ---
 ## Q5. What is an agent in AI architecture?
 
