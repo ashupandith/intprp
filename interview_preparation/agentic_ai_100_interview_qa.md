@@ -166,13 +166,21 @@ Standard RAG answers questions using retrieved context. Agentic AI can use RAG p
 Tests your understanding of how is agentic ai different from a normal chatbot in enterprise Agentic AI architecture.
 
 ### Crisp Answer
-The design should combine planning, state, tools, memory/RAG, guardrails, validation, and observability.
+A normal chatbot mainly answers user questions or continues a conversation. Agentic AI goes beyond chat: it can understand a goal, plan steps, retrieve knowledge, call approved tools/APIs, maintain state, validate results, and take controlled actions. In enterprise systems, Agentic AI also needs guardrails, authorization, observability, audit logs, and human approval for risky actions
 
 ### Detailed Explanation
-Agentic AI systems must be designed as controlled workflows, not free-running chatbots. The agent should understand the goal, plan steps, use approved tools, maintain state, validate outputs, and escalate when needed.
+A normal chatbot is mostly a conversational interface. It receives a user message and generates a response. It may answer FAQs, summarize text, or provide simple guidance, but usually it does not own a multi-step workflow.
+
+Agentic AI is designed to complete a task or goal. For example, if a user asks, “Why is this order stuck?”, an Agentic AI system may check order status, payment status, PoS status, search SOP documents using RAG, identify the issue, and recommend the next action. If the next action is risky, such as refund or cancellation, it should pause for human approval.
+
+So the key difference is that a chatbot mainly responds, while Agentic AI plans, acts, validates, and tracks state. But in enterprise architecture, the agent should not be free-running. Tool access must be allowlisted, user authorization must be checked, output must be validated, and all actions must be logged.
 
 ### Final Interview Answer
-I design agents with clear responsibilities, controlled tool usage, explicit state, guardrails, validation, monitoring, and human approval for risky actions.
+A normal chatbot mainly responds to user questions or conversations. Agentic AI is more goal-oriented. It can understand the user’s intent, plan multiple steps, use RAG to retrieve enterprise knowledge, call approved tools or APIs, maintain workflow state, validate results, and take controlled actions.
+
+For example, a chatbot may answer “what is the refund policy?”, but an Agentic AI system can check the order status, payment status, refund eligibility, search the policy document, and prepare a refund recommendation. If refund execution is risky, it should go through human approval.
+
+So the main difference is: chatbot is mostly conversational, while Agentic AI is workflow-driven and action-oriented. In enterprise systems, I would design Agentic AI with tool allowlisting, authorization, guardrails, state management, observability, audit logs, and human approval for sensitive actions.
 
 ---
 ## Q4. What are the main components of an Agentic AI system?
